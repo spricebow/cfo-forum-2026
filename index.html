@@ -196,6 +196,56 @@ body { font-family:'Arial Nova',Arial,sans-serif; background:var(--ow); color:va
 .hm-dim-header { background:var(--navy); }
 .hm-dim-label { color:var(--aqua); font-weight:700; font-size:10px; padding:4px 8px; }
 
+/* Facilitator slide deck */
+.slide-shell { position:relative; }
+.slide-nav-bar { display:flex; align-items:center; justify-content:space-between; 
+  background:var(--navy); border-radius:2px; padding:10px 14px; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
+.slide-counter { font-size:11px; color:var(--slate); text-align:center; flex:1; }
+.slide-counter strong { color:#fff; font-size:13px; }
+.slide-btn { padding:8px 18px; border-radius:2px; border:1px solid rgba(255,255,255,0.2); 
+  background:transparent; color:#fff; font-size:12px; font-weight:700; cursor:pointer; 
+  font-family:inherit; transition:background .15s; }
+.slide-btn:hover { background:rgba(255,255,255,0.1); }
+.slide-btn:disabled { opacity:0.3; cursor:not-allowed; }
+.slide-btn.primary { background:var(--teal); border-color:var(--teal); }
+.slide-btn.primary:hover { background:#005a6b; }
+.slide-dots { display:flex; gap:5px; justify-content:center; flex-wrap:wrap; }
+.slide-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.2); 
+  cursor:pointer; border:none; transition:background .15s; padding:0; }
+.slide-dot.active { background:var(--teal); }
+.slide-dot.done { background:rgba(18,198,163,0.4); }
+.slide-title-bar { display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.slide-dim-badge { width:36px; height:36px; border-radius:50%; background:var(--navy); 
+  display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; 
+  color:var(--aqua); flex-shrink:0; }
+.slide-dim-title { font-size:18px; font-weight:700; color:var(--navy); }
+.slide-dim-compass { font-size:10px; color:var(--teal); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+.slide-two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.slide-stat-row { display:grid; grid-template-columns:repeat(4,1fr); gap:7px; margin-bottom:14px; }
+.slide-stat { background:var(--ow); border:1px solid var(--pearl); border-radius:2px; padding:9px 10px; text-align:center; }
+.slide-stat-val { font-size:20px; font-weight:700; line-height:1; }
+.slide-stat-label { font-size:9px; color:var(--slate); text-transform:uppercase; letter-spacing:0.4px; margin-top:3px; }
+.slide-section-label { font-size:10px; font-weight:700; color:var(--slate); text-transform:uppercase; 
+  letter-spacing:0.5px; margin-bottom:8px; margin-top:14px; }
+.slide-failure-tabs { display:flex; border-radius:2px; overflow:hidden; border:1px solid var(--pearl); margin-bottom:0; }
+.slide-ftab { flex:1; padding:6px 4px; font-size:10px; font-weight:700; text-align:center; 
+  cursor:pointer; border:none; background:#fff; font-family:inherit; border-right:1px solid var(--pearl); }
+.slide-ftab:last-child { border-right:none; }
+.slide-ftab.act-lag { background:#C0392B15; color:#C0392B; }
+.slide-ftab.act-emg { background:#88395A15; color:#88395A; }
+.slide-ftab.act-eff { background:#006C8015; color:#006C80; }
+.slide-ftab.act-bic { background:#118B8015; color:#118B80; }
+.slide-fbody { display:none; padding:12px 13px; background:var(--ow); border:1px solid var(--pearl); 
+  border-top:none; border-radius:0 0 2px 2px; font-size:12px; color:var(--steel); line-height:1.65; }
+.slide-fbody.open { display:block; }
+.action-slide-item { display:flex; gap:10px; align-items:flex-start; margin-bottom:7px; 
+  padding:10px 12px; background:var(--ow); border:1px solid var(--pearl); border-radius:2px; border-left:3px solid var(--teal); }
+@media(max-width:640px) {
+  .slide-two-col { grid-template-columns:1fr; }
+  .slide-stat-row { grid-template-columns:1fr 1fr; }
+  .slide-dim-title { font-size:15px; }
+}
+
 /* Facilitator enrichment */
 .enrich-section { margin-bottom:2rem; }
 .enrich-title { font-size:13px; font-weight:700; color:var(--navy); margin-bottom:6px; }
@@ -1819,175 +1869,252 @@ function renderFacilitator() {
 }
 
 function renderFacilitatorWithData(sh, responses) {
-  const n=responses.length;
-  if(!n){sh.innerHTML=`<div class="card"><div class="section-title">Facilitator Dashboard</div><div class="section-rule"></div><div class="empty-state"><div style="font-size:32px;margin-bottom:10px">📊</div><div>No responses yet.</div><div style="font-size:12px;margin-top:6px">Ask participants to complete the assessment and click "Submit to group".</div></div><div style="margin-top:14px;text-align:center"><button class="btn" onclick="renderFacilitator()" style="font-size:12px">↺ Refresh</button></div></div>`;return;}
+  var n = responses.length;
 
-  // Compute modal band (most frequent) and average for each dim
-  const dimModes=DIMS.map((_,d)=>{const counts=[0,0,0,0];responses.forEach(r=>{if(r.scores[d]!=null)counts[r.scores[d]]++;});const max=Math.max(...counts);return counts.indexOf(max);});
-  const dimAvgBand=DIMS.map((_,d)=>{const vs=responses.map(r=>r.scores[d]).filter(v=>v!=null);return vs.length?(vs.reduce((a,b)=>a+b,0)/vs.length):0;});
-  const overallAvg=(dimAvgBand.reduce((a,b)=>a+b,0)/6);
-  const overallBand=Math.round(overallAvg);
+  // Compute group stats
+  var dimAvgBand = DIMS.map(function(_,d){
+    var vs=responses.map(function(r){return r.scores[d];}).filter(function(v){return v!=null;});
+    return vs.length?(vs.reduce(function(a,b){return a+b;},0)/vs.length):0;
+  });
+  var dists = DIMS.map(function(_,d){
+    var c=[0,0,0,0];
+    responses.forEach(function(r){var v=r.scores[d];if(v!=null)c[v]++;});
+    return c;
+  });
+  var weakIdx   = dimAvgBand.indexOf(Math.min.apply(null,dimAvgBand));
+  var strongIdx = dimAvgBand.indexOf(Math.max.apply(null,dimAvgBand));
+  var overallBand = Math.round(dimAvgBand.reduce(function(a,b){return a+b;},0)/9);
+  var groupBands = DIMS.map(function(_,d){
+    var vs=responses.map(function(r){return r.scores[d];}).filter(function(v){return v!=null;});
+    return vs.length?Math.round(vs.reduce(function(a,b){return a+b;},0)/vs.length):null;
+  });
 
-  const dists=DIMS.map((_,d)=>{const c=[0,0,0,0];responses.forEach(r=>{if(r.scores[d]!=null)c[r.scores[d]]++;});return c;});
-  const weakIdx=dimAvgBand.indexOf(Math.min(...dimAvgBand));
-  const strongIdx=dimAvgBand.indexOf(Math.max(...dimAvgBand));
-  const spread=dists[weakIdx].filter(c=>c>0).length>2;
-  const lagCount=dists[weakIdx][0]+dists[weakIdx][1];
+  // Slide definitions
+  // Slides 0-8: one per dimension
+  // Slide 9: Group overview (radar + value foundations + heatmap)
+  // Slide 10: Action plan
+  // Slide 11: Individual profiles + discussion prompts
+  var TOTAL_SLIDES = 12;
 
-  // Chart builder with summary panel
-  const distHtml=DIMS.map((d,di)=>{
-    const counts=dists[di];
-    const rawMax=Math.max(...counts,0);
-    const yMax=rawMax+1;
-    const chartH=100,leftPad=30,topPad=14,bottomPad=28;
-    const vbBarW=52,vbGap=20;
-    const chartInnerW=4*(vbBarW+vbGap)-vbGap; // 4 bars for 4 bands
-    const totalVbW=leftPad+chartInnerW+10;
-    const totalVbH=topPad+chartH+bottomPad;
-    const ticks=Array.from({length:yMax+1},(_,i)=>i);
-    const gridLines=ticks.map(val=>{const y=topPad+chartH-Math.round((val/yMax)*chartH);return`<line x1="${leftPad-6}" y1="${y}" x2="${leftPad+chartInnerW+6}" y2="${y}" stroke="#E4DEE0" stroke-width="1"/><text x="${leftPad-9}" y="${y+4}" text-anchor="end" font-size="10" fill="#9192AB" font-family="Arial,sans-serif">${val}</text>`;}).join('');
-    const svgBars=counts.map((c,j)=>{const barH=c>0?Math.max(4,Math.round((c/yMax)*chartH)):0;const x=leftPad+j*(vbBarW+vbGap);const y=topPad+chartH-barH;return`${barH>0?`<rect x="${x}" y="${y}" width="${vbBarW}" height="${barH}" rx="2" fill="${BAND_COLORS[j]}"/>`:''}${c>0?`<text x="${x+vbBarW/2}" y="${y-6}" text-anchor="middle" font-size="12" font-weight="700" fill="#0B0C44" font-family="Arial,sans-serif">${c}</text>`:''}<text x="${x+vbBarW/2}" y="${topPad+chartH+18}" text-anchor="middle" font-size="10" fill="#9192AB" font-family="Arial,sans-serif">${BAND_SHORT[j]}</text>`;}).join('');
-    const ac=BAND_COLORS[Math.round(dimAvgBand[di])];
-    const total=counts.reduce((a,b)=>a+b,0);
-    const pct=v=>total>0?Math.round(v/total*100):0;
-    const lagEm=counts[0]+counts[1],eff=counts[2],bic=counts[3];
-    const interp=dimAvgBand[di]>=2.5?'Group broadly at PE-standard on this dimension.':dimAvgBand[di]>=1.5?'Functional but investment needed to reach Effective.':'Significant gaps — this dimension needs urgent prioritisation.';
-    const summaryPanel=`<div style="background:var(--ow);border:1px solid var(--pearl);border-radius:2px;padding:13px 14px;display:flex;flex-direction:column;gap:9px;justify-content:center;">
-      <div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px">Group snapshot</div>
-      <div style="display:flex;align-items:baseline;gap:6px;padding-bottom:8px;border-bottom:1px solid var(--pearl)">
-        <div style="font-size:22px;font-weight:700;color:${ac};line-height:1">${BAND_NAMES[Math.round(dimAvgBand[di])]}</div>
-        <div style="font-size:11px;color:var(--slate)">modal · ${total} resp.</div>
-      </div>
-      ${[{label:'Lagging–Emerging',count:lagEm,color:BAND_COLORS[0]},{label:'Effective',count:eff,color:BAND_COLORS[2]},{label:'Best-in-Class',count:bic,color:BAND_COLORS[3]}].map(b=>`<div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
-          <div style="font-size:11px;color:var(--steel)">${b.label}</div>
-          <div style="font-size:11px;font-weight:700;color:${b.color}">${b.count} <span style="font-weight:400;color:var(--slate)">(${pct(b.count)}%)</span></div>
-        </div>
-        <div style="height:4px;background:var(--pearl);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct(b.count)}%;background:${b.color};border-radius:2px"></div></div>
-      </div>`).join('')}
-      <div style="font-size:11.5px;color:var(--steel);line-height:1.45;padding-top:4px;border-top:1px solid var(--pearl);font-style:italic">${interp}</div>
-    </div>`;
+  function goSlide(n) {
+    facSlide = Math.max(0, Math.min(TOTAL_SLIDES-1, n));
+    renderFacilitator();
+  }
 
-    // KPI benchmarks for this dimension
-    const kpiData=BENCHMARKS_KPI.find(b=>b.dim===d.label);
-    const kpiHtml=kpiData?`<div style="margin-top:10px">
-      <div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px">KPI benchmarks</div>
-      <table class="benchmark-table">
-        <thead><tr><th>KPI</th><th>Effective</th><th>Best-in-Class</th><th>Note</th></tr></thead>
-        <tbody>${kpiData.kpis.map(k=>`<tr><td class="bm-kpi">${k.kpi}</td><td class="bm-eff">${k.eff}</td><td class="bm-bic">${k.bic}</td><td>${k.note}</td></tr>`).join('')}</tbody>
-      </table>
-    </div>`:'';
-
-    // Benchmark text examples
-    const bm=BENCHMARKS[di];
-    const bmHtml=`<div style="margin-top:12px">
-      <div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">What each band looks like in practice</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px">
-        ${[bm.low,bm.mid,bm.high,bm.bic].map((b,bi)=>`<div style="border:1px solid ${BAND_COLORS[bi]}28;border-left:3px solid ${BAND_COLORS[bi]};border-radius:2px;padding:9px 11px;background:${BAND_COLORS[bi]}06">
-          <div style="font-size:9px;font-weight:700;color:${BAND_COLORS[bi]};text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">${b.label}</div>
-          ${b.points.map(p=>`<div style="display:flex;gap:5px;align-items:flex-start;margin-bottom:4px"><div style="width:4px;height:4px;border-radius:50%;background:${BAND_COLORS[bi]};flex-shrink:0;margin-top:4px"></div><div style="font-size:11px;color:#465576;line-height:1.4">${p}</div></div>`).join('')}
-        </div>`).join('')}
-      </div>
-    </div>`;
-
-    // Org charts for dim 0 only
-    const orgHtml = di===0 ? renderOrgCharts() : '';
-
-    return`<div class="dim-section">
-      <div class="dim-section-title">${d.label}
-        <span class="dim-avg-pill" style="color:${ac};border-color:${ac}22;background:${ac}10">${BAND_NAMES[Math.round(dimAvgBand[di])]}</span>
-        <span style="font-size:10px;font-weight:400;color:var(--slate)">${d.compass}</span>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 220px;gap:14px;align-items:start;margin-bottom:14px">
-        <div style="width:100%">
-          <svg viewBox="0 0 ${totalVbW} ${totalVbH}" preserveAspectRatio="xMidYMid meet" style="display:block;width:100%;height:auto">
-            ${gridLines}
-            <line x1="${leftPad-6}" y1="${topPad}" x2="${leftPad-6}" y2="${topPad+chartH}" stroke="#E4DEE0" stroke-width="1"/>
-            <line x1="${leftPad-6}" y1="${topPad+chartH}" x2="${leftPad+chartInnerW+6}" y2="${topPad+chartH}" stroke="#E4DEE0" stroke-width="1"/>
-            ${svgBars}
-          </svg>
-        </div>
-        ${summaryPanel}
-      </div>
-      ${kpiHtml}
-      ${bmHtml}
-      ${orgHtml}
-    </div>`;
+  // ── Nav bar ──────────────────────────────────────────────────────────────
+  var slideLabels = DIMS.map(function(d){ return d.short; })
+    .concat(['Overview','Action Plan','Profiles & Prompts']);
+  var dots = slideLabels.map(function(l,i){
+    var cls = i===facSlide?'active':i<facSlide?'done':'';
+    return '<button class="slide-dot '+cls+'" title="'+l+'" onclick="goSlide('+i+')" aria-label="'+l+'"></button>';
   }).join('');
 
-  // Group foundations
-  const groupBands=DIMS.map((_,d)=>{const vs=responses.map(r=>r.scores[d]).filter(v=>v!=null);return vs.length?Math.round(vs.reduce((a,b)=>a+b,0)/vs.length):null;});
-  const groupFoundations=renderFoundations(groupBands);
+  var navBar = '<div class="slide-nav-bar">'
+    + '<button class="slide-btn" onclick="goSlide('+(facSlide-1)+')" '+(facSlide===0?'disabled':'')+'>&#8592; Prev</button>'
+    + '<div style="flex:1;text-align:center">'
+    + '<div class="slide-dots">'+dots+'</div>'
+    + '<div class="slide-counter" style="margin-top:5px"><strong>'+slideLabels[facSlide]+'</strong> &nbsp;·&nbsp; '+( facSlide+1)+' / '+TOTAL_SLIDES+'</div>'
+    + '</div>'
+    + '<button class="slide-btn primary" onclick="goSlide('+(facSlide+1)+')" '+(facSlide===TOTAL_SLIDES-1?'disabled':'')+'>Next &#8594;</button>'
+    + '</div>';
 
-  // Profile cards
-  const profileHtml=responses.map((r,i)=>{
-    const vs=r.scores;
-    const avgB=Math.round(vs.filter(v=>v!=null).reduce((a,b)=>a+b,0)/vs.filter(v=>v!=null).length||0);
-    return`<div class="profile-card"><div class="profile-id">Participant ${r.id}</div>${DIMS.map((d,di)=>{const v=vs[di];return`<div class="profile-row"><div class="profile-dim" title="${d.label}">${d.short}</div><div class="profile-bar-track"><div class="profile-bar-fill" style="width:${v==null?0:(v+1)/4*100}%;background:${bandColor(v)}"></div></div><div class="profile-band" style="color:${bandColor(v)}">${v==null?'—':BAND_SHORT[v]}</div></div>`;}).join('')}<div class="profile-avg" style="color:${BAND_COLORS[avgB]}">${BAND_NAMES[avgB]}</div></div>`;
-  }).join('');
+  // ── Toolbar ───────────────────────────────────────────────────────────────
+  var toolbar = '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">'
+    + '<div class="section-title">Facilitator Dashboard</div>'
+    + '<div style="display:flex;gap:6px;flex-wrap:wrap">'
+    + '<button class="btn" onclick="renderFacilitator()" style="font-size:11px;padding:6px 12px">&#8635; Refresh</button>'
+    + '<button class="btn" onclick="showQR()" style="font-size:11px;padding:6px 12px;background:var(--teal);color:#fff;border-color:var(--teal)">QR Code</button>'
+    + '<button class="btn" onclick="exportToExcel()" style="font-size:11px;padding:6px 12px;background:var(--emerald);color:#fff;border-color:var(--emerald)">&#8595; Excel</button>'
+    + '<button class="btn" onclick="if(confirm(\'Clear all responses?\')){clearResponses().then(function(){renderFacilitator();});}" style="font-size:11px;padding:6px 12px;color:#C0392B;border-color:#C0392B">Clear all</button>'
+    + '</div></div>'
+    + '<div class="section-rule"></div>'
+    + '<div style="font-size:12px;color:var(--slate);margin-bottom:10px">'
+    + n + ' response' + (n!==1?'s':'') + ' received &nbsp;·&nbsp; Group overall: '
+    + '<strong style="color:'+BAND_COLORS[overallBand]+'">'+BAND_NAMES[overallBand]+'</strong>'
+    + '</div>';
 
-  // Discussion prompts
-  const prompts=[
-    `<strong>${DIMS[weakIdx].label}</strong> is the group's weakest dimension — ${lagCount>0?`${lagCount} participant${lagCount>1?'s':''} rated themselves Lagging or Emerging. `:''}What is the single biggest structural barrier holding this area back?`,
-    spread?`There is a wide spread of bands on <strong>${DIMS[weakIdx].label}</strong>. What explains the gap between those at Effective/BIC and those at Lagging/Emerging?`:`<strong>${DIMS[strongIdx].label}</strong> is the group's strongest area. Is that strength sustainable through a buy-and-build or pre-exit period?`,
-    `Looking at Cash & Working Capital — how many of you are running cash as a genuine strategic lever vs. just reporting it? What would it take to change that?`,
-    `On Business Partnering — is finance in the room when commercial decisions get made, or does it find out afterwards? What is the single change that would shift that dynamic?`,
-    `On Data Quality — how many of you have a KPI that means something different in finance vs. in the business? That gap is also an exit risk: buyers will find the inconsistency.`,
-    `If you had to move one dimension from Lagging/Emerging to Effective in the next 90 days, which would it be — and what is the single first action?`,
-    `Looking at the Value Foundations overlay — is the weakness structural (People, Process) or operational (Technology, Data)? How does that change your prioritisation?`,
+  // ── No responses state ───────────────────────────────────────────────────
+  if (!n) {
+    sh.innerHTML = '<div class="card">' + toolbar
+      + '<div class="empty-state"><div style="font-size:32px;margin-bottom:10px">&#128202;</div>'
+      + '<div>No responses yet.</div>'
+      + '<div style="font-size:12px;margin-top:6px">Ask participants to complete the assessment and click "Submit to group".</div></div>'
+      + '<div style="margin-top:14px;text-align:center"><button class="btn" onclick="renderFacilitator()" style="font-size:12px">&#8635; Refresh</button></div>'
+      + '</div>';
+    return;
+  }
+
+  // ── Dimension slide (slides 0-8) ──────────────────────────────────────────
+  if (facSlide <= 8) {
+    var di = facSlide;
+    var counts = dists[di];
+    var total = counts.reduce(function(a,b){return a+b;},0);
+    var avg = dimAvgBand[di];
+    var modal = Math.round(avg);
+    var ac = BAND_COLORS[modal];
+
+    // Mini bar chart SVG
+    var rawMax = Math.max.apply(null,counts);
+    var yMax = rawMax + 1;
+    var chartH=90,leftPad=22,topPad=10,botPad=24,barW=44,gap=14;
+    var innerW = 4*(barW+gap)-gap;
+    var totalW = leftPad+innerW+8;
+    var totalH = topPad+chartH+botPad;
+    var gridLines = '';
+    for (var gi=0;gi<=yMax;gi++) {
+      var gy = topPad+chartH-Math.round((gi/yMax)*chartH);
+      gridLines += '<line x1="'+(leftPad-4)+'" y1="'+gy+'" x2="'+(leftPad+innerW+4)+'" y2="'+gy+'" stroke="#E4DEE0" stroke-width="1"/>';
+      gridLines += '<text x="'+(leftPad-6)+'" y="'+(gy+4)+'" text-anchor="end" font-size="9" fill="#9192AB" font-family="Arial,sans-serif">'+gi+'</text>';
+    }
+    var svgBars = counts.map(function(c,j){
+      var bH = c>0?Math.max(4,Math.round((c/yMax)*chartH)):0;
+      var bx = leftPad+j*(barW+gap);
+      var by = topPad+chartH-bH;
+      return (bH>0?'<rect x="'+bx+'" y="'+by+'" width="'+barW+'" height="'+bH+'" rx="2" fill="'+BAND_COLORS[j]+'"/>':'')
+        +(c>0?'<text x="'+(bx+barW/2)+'" y="'+(by-5)+'" text-anchor="middle" font-size="11" font-weight="700" fill="#0B0C44" font-family="Arial,sans-serif">'+c+'</text>':'')
+        +'<text x="'+(bx+barW/2)+'" y="'+(topPad+chartH+16)+'" text-anchor="middle" font-size="9" fill="#9192AB" font-family="Arial,sans-serif">'+BAND_SHORT[j]+'</text>';
+    }).join('');
+    var chartSvg = '<svg viewBox="0 0 '+totalW+' '+totalH+'" style="width:100%;height:auto;display:block">'
+      + '<line x1="'+(leftPad-4)+'" y1="'+topPad+'" x2="'+(leftPad-4)+'" y2="'+(topPad+chartH)+'" stroke="#E4DEE0" stroke-width="1"/>'
+      + '<line x1="'+(leftPad-4)+'" y1="'+(topPad+chartH)+'" x2="'+(leftPad+innerW+4)+'" y2="'+(topPad+chartH)+'" stroke="#E4DEE0" stroke-width="1"/>'
+      + gridLines + svgBars + '</svg>';
+
+    // Group snapshot panel
+    var pct = function(v){ return total>0?Math.round(v/total*100):0; };
+    var lagEm=counts[0]+counts[1], eff=counts[2], bic=counts[3];
+    var interp = avg>=2.5?'Group is broadly at PE-standard on this dimension.'
+               : avg>=1.5?'Functional but investment needed to reach Effective.'
+               : 'Significant gaps — this dimension needs urgent prioritisation.';
+
+    var snapshotPanel = '<div style="background:var(--ow);border:1px solid var(--pearl);border-radius:2px;padding:13px 14px">'
+      + '<div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Group snapshot</div>'
+      + '<div style="font-size:22px;font-weight:700;color:'+ac+';margin-bottom:4px">'+BAND_NAMES[modal]+'</div>'
+      + '<div style="font-size:11px;color:var(--slate);margin-bottom:10px">'+total+' responses</div>'
+      + [['Lagging–Emerging',lagEm,BAND_COLORS[0]],['Effective',eff,BAND_COLORS[2]],['Best-in-Class',bic,BAND_COLORS[3]]].map(function(b){
+          return '<div style="margin-bottom:6px">'
+            +'<div style="display:flex;justify-content:space-between;margin-bottom:2px">'
+            +'<div style="font-size:11px;color:var(--steel)">'+b[0]+'</div>'
+            +'<div style="font-size:11px;font-weight:700;color:'+b[2]+'">'+b[1]+' ('+pct(b[1])+'%)</div>'
+            +'</div>'
+            +'<div style="height:4px;background:var(--pearl);border-radius:2px;overflow:hidden">'
+            +'<div style="height:100%;width:'+pct(b[1])+'%;background:'+b[2]+';border-radius:2px"></div>'
+            +'</div></div>';
+        }).join('')
+      + '<div style="font-size:11.5px;color:var(--steel);font-style:italic;margin-top:8px;padding-top:8px;border-top:1px solid var(--pearl)">'+interp+'</div>'
+      + '</div>';
+
+    // KPI benchmarks
+    var kpiData = BENCHMARKS_KPI.find(function(b){return b.dim===DIMS[di].label;});
+    var kpiHtml = kpiData ? '<div class="slide-section-label">KPI benchmarks</div>'
+      + '<table class="benchmark-table"><thead><tr><th>KPI</th><th>Effective</th><th>Best-in-Class</th></tr></thead><tbody>'
+      + kpiData.kpis.map(function(k){return '<tr><td class="bm-kpi">'+k.kpi+'</td><td class="bm-eff">'+k.eff+'</td><td class="bm-bic">'+k.bic+'</td></tr>';}).join('')
+      + '</tbody></table>' : '';
+
+    // Failure patterns
+    var fp = FAILURE_PATTERNS.find(function(f){return f.dim===di;});
+    var fpHtml = '';
+    if (fp) {
+      var bkeys = ['lag','emg','eff','bic'];
+      var bnames = ['Lagging','Emerging','Effective','Best-in-Class'];
+      var ftabs = bkeys.map(function(bk,bi){
+        var act = bi===modal?' act-'+['lag','emg','eff','bic'][bi]:'';
+        return '<button class="slide-ftab'+act+'" onclick="slideFPTab('+di+','+bi+')">'+ bnames[bi]+'</button>';
+      }).join('');
+      var fbodies = bkeys.map(function(bk,bi){
+        return '<div class="slide-fbody'+(bi===modal?' open':'')+'" id="sfp-'+di+'-'+bi+'">'+fp.patterns[bk]+'</div>';
+      }).join('');
+      fpHtml = '<div class="slide-section-label">Common failure patterns</div>'
+        + '<div class="slide-failure-tabs">'+ftabs+'</div>'+fbodies;
+    }
+
+    // Top action for this dimension
+    var ta = TOP_ACTIONS.find(function(a){return a.dim===di;});
+    var bkey = avg<1?'lag':avg<2?'emg':avg<2.7?'eff':'bic';
+    var actionHtml = ta ? '<div class="slide-section-label">Priority action</div>'
+      + '<div class="action-slide-item" style="border-left-color:'+ac+'">'
+      + '<div style="font-size:9px;font-weight:700;color:'+ac+';text-transform:uppercase;letter-spacing:0.4px;flex-shrink:0;padding-top:1px;width:70px">'+DIMS[di].short+'</div>'
+      + '<div style="font-size:12.5px;color:var(--steel);line-height:1.5">'+ta[bkey]+'</div>'
+      + '</div>' : '';
+
+    var slideHtml = '<div class="card slide-shell">' + toolbar + navBar
+      + '<div class="slide-title-bar">'
+      + '<div class="slide-dim-badge">'+(di+1)+'</div>'
+      + '<div><div class="slide-dim-title">'+DIMS[di].label+'</div>'
+      + '<div class="slide-dim-compass">'+DIMS[di].compass+'</div></div>'
+      + '</div>'
+      + '<div class="slide-two-col">'
+      + '<div>'+chartSvg+'</div>'
+      + '<div>'+snapshotPanel+'</div>'
+      + '</div>'
+      + kpiHtml
+      + fpHtml
+      + actionHtml
+      + '</div>';
+
+    sh.innerHTML = slideHtml;
+    return;
+  }
+
+  // ── Slide 9: Group overview ───────────────────────────────────────────────
+  if (facSlide === 9) {
+    var radarSvg = drawRadar(groupBands, 280, '#006C80');
+    var foundHtml = renderFoundations(groupBands);
+    sh.innerHTML = '<div class="card slide-shell">' + toolbar + navBar
+      + '<div class="slide-section-label">Group radar — all dimensions</div>'
+      + '<div style="max-width:300px;margin:0 auto 1.2rem">'+radarSvg+'</div>'
+      + '<div class="sep"></div>'
+      + '<div class="slide-section-label">Value foundations</div>'
+      + foundHtml
+      + '<div class="sep"></div>'
+      + '<div class="slide-section-label">Group capability heat map</div>'
+      + '<div style="font-size:12px;color:var(--slate);margin-bottom:8px">Ticks show capabilities each participant confirmed. Gaps in red are likely DD risk areas.</div>'
+      + renderGroupHeatmap(responses)
+      + '</div>';
+    return;
+  }
+
+  // ── Slide 10: Action plan ─────────────────────────────────────────────────
+  if (facSlide === 10) {
+    sh.innerHTML = '<div class="card slide-shell">' + toolbar + navBar
+      + renderConsolidatedNextSteps(responses, dimAvgBand)
+      + '</div>';
+    return;
+  }
+
+  // ── Slide 11: Individual profiles + discussion prompts ────────────────────
+  var lagCount = dists[weakIdx][0]+dists[weakIdx][1];
+  var spread = dists[weakIdx].filter(function(c){return c>0;}).length>2;
+  var prompts = [
+    '<strong>'+DIMS[weakIdx].label+'</strong> is the group weakest dimension'+(lagCount>0?' — '+lagCount+' participant'+(lagCount>1?'s':'')+' rated themselves Lagging or Emerging.':'.  ')+' What is the single biggest structural barrier holding this area back?',
+    spread?'There is a wide spread of bands on <strong>'+DIMS[weakIdx].label+'</strong>. What explains the gap between those at Effective/BIC and those at Lagging/Emerging?':'<strong>'+DIMS[strongIdx].label+'</strong> is the group strongest area. Is that strength sustainable through a buy-and-build or pre-exit period?',
+    'Looking at Cash &amp; Working Capital — how many of you are running cash as a genuine strategic lever vs. just reporting it? What would it take to change that?',
+    'On Business Partnering — is finance in the room when commercial decisions get made, or does it find out afterwards? What is the single change that would shift that dynamic?',
+    'On Data Quality — how many of you have a KPI that means something different in finance vs. in the business? That gap is also an exit risk: buyers will find the inconsistency.',
+    'If you had to move one dimension from Lagging/Emerging to Effective in the next 90 days, which would it be — and what is the single first action?',
+    'Looking at the Value Foundations overlay — is the weakness structural (People, Process) or operational (Technology, Data)? How does that change your prioritisation?',
   ];
 
-  sh.innerHTML=`<div class="card">
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px">
-      <div class="section-title">Facilitator Dashboard</div>
-      ${SUPABASE_URL === 'YOUR_SUPABASE_URL' ? '<div style=\"background:#FFF3CD;border:1px solid #FBBF24;border-radius:2px;padding:10px 14px;margin-bottom:12px;font-size:12px;color:#92400E\"><strong>&#9888; Running in offline mode</strong> — responses stored locally only.</div>' : ''}
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button class="btn" onclick="renderFacilitator()" style="font-size:11px;padding:6px 12px">↺ Refresh</button>
-        <span id="live-indicator" style="font-size:10px;color:var(--teal);font-weight:700;padding:4px 8px;background:#e6f4f1;border-radius:2px;border:1px solid var(--teal)">● Live</span>
-        <button class="btn" onclick="showQR()" style="font-size:11px;padding:6px 12px;background:var(--teal);color:#fff;border-color:var(--teal)">QR Code</button>
-        <button class="btn" onclick="if(confirm('Clear all responses?')){clearResponses().then(function(){renderFacilitator();});}" style="font-size:11px;padding:6px 12px;color:#C0392B;border-color:#C0392B">Clear all</button>
-      </div>
-    </div>
-    <div class="section-rule"></div>
-    <div class="dash-grid">
-      <div class="dash-stat"><div class="dash-stat-label">Participants</div><div class="dash-stat-val">${n}</div><div class="dash-stat-sub">responses submitted</div></div>
-      <div class="dash-stat"><div class="dash-stat-label">Group rating</div><div class="dash-stat-val" style="font-size:16px;padding-top:4px;color:${BAND_COLORS[overallBand]}">${BAND_NAMES[overallBand]}</div><div class="dash-stat-sub">overall modal band</div></div>
-      <div class="dash-stat"><div class="dash-stat-label">Biggest gap</div><div class="dash-stat-val" style="font-size:14px;padding-top:4px">${DIMS[weakIdx].short}</div><div class="dash-stat-sub">${BAND_NAMES[Math.round(dimAvgBand[weakIdx])]} avg</div></div>
-    </div>
-    <div class="sep"></div>
-    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:14px">Score distributions by dimension</div>
-    ${distHtml}
-    <div class="sep"></div>
-    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px">Group average radar</div>
-    <div class="radar-wrap" style="max-width:320px;margin:0 auto 1.3rem">${drawRadar(groupBands,280,'#006C80')}</div>
-    <div class="sep"></div>
-    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px">Group value foundations</div>
-    <div style="font-size:12px;color:var(--slate);margin-bottom:10px">Derived from group average scores — where are the structural gaps?</div>
-    ${groupFoundations}
-    <div class="sep"></div>
-    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px">Group capability heat map</div>
-    <div style="font-size:12px;color:var(--slate);margin-bottom:10px">Ticks show which capabilities each participant confirmed they can produce. Gaps highlighted in red are likely DD risk areas.</div>
-    ${renderGroupHeatmap(responses)}
-    <div class="sep"></div>
-    ${renderConsolidatedNextSteps(responses, dimAvgBand)}
-    <div class="sep"></div>
-    ${renderReferenceCards()}
-    <div class="sep"></div>
-    ${renderFailurePatterns(dimAvgBand)}
-    <div class="sep"></div>
-    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px">Individual profiles <span style="font-size:11px;font-weight:400;color:var(--slate)">(anonymised)</span></div>
-    <div class="profiles-grid" style="margin-bottom:1.2rem">${profileHtml}</div>
-    <div class="sep"></div>
-    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px">Discussion prompts</div>
-    ${prompts.map((p,i)=>`<div class="prompt-row"><div class="prompt-num">${i+1}</div><div class="prompt-text">${p}</div></div>`).join('')}
-    <div style="margin-top:1.2rem;display:flex;gap:8px;flex-wrap:wrap">
-      <button class="print-btn" onclick="window.print()">🖨 Print dashboard</button>
-      <button class="print-btn" onclick="exportToExcel()" style="background:var(--emerald);color:#fff;border-color:var(--emerald)">⬇ Export to Excel</button>
-    </div>
-  </div>`;
+  var profileHtml = responses.map(function(r){
+    var vs=r.scores;
+    var avgB=Math.round(vs.filter(function(v){return v!=null;}).reduce(function(a,b){return a+b;},0)/vs.filter(function(v){return v!=null;}).length||0);
+    return '<div class="profile-card"><div class="profile-id">Participant '+r.id+'</div>'
+      +DIMS.map(function(d,di){var v=vs[di];return '<div class="profile-row"><div class="profile-dim" title="'+d.label+'">'+d.short+'</div><div class="profile-bar-track"><div class="profile-bar-fill" style="width:'+(v==null?0:(v+1)/4*100)+'%;background:'+bandColor(v)+'"></div></div><div class="profile-band" style="color:'+bandColor(v)+'">'+(v==null?'—':BAND_SHORT[v])+'</div></div>';}).join('')
+      +'<div class="profile-avg" style="color:'+BAND_COLORS[avgB]+'">'+BAND_NAMES[avgB]+'</div></div>';
+  }).join('');
+
+  sh.innerHTML = '<div class="card slide-shell">' + toolbar + navBar
+    + '<div class="slide-section-label">Individual profiles (anonymised)</div>'
+    + '<div class="profiles-grid" style="margin-bottom:1.2rem">'+profileHtml+'</div>'
+    + '<div class="sep"></div>'
+    + '<div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px">Discussion prompts</div>'
+    + prompts.map(function(p,i){return '<div class="prompt-row"><div class="prompt-num">'+(i+1)+'</div><div class="prompt-text">'+p+'</div></div>';}).join('')
+    + '<div style="margin-top:1.2rem;display:flex;gap:8px;flex-wrap:wrap">'
+    + '<button class="print-btn" onclick="window.print()">&#128438; Print dashboard</button>'
+    + '</div>'
+    + '</div>';
 }
 
-// ── Org charts (Team Model dim 0 only) ───────────────────────────────────────
+
 function renderOrgCharts() {
   function node(x,y,w,h,label,sub,fill,tc,bc){const ls=label.split('\n');const lh=13,th=ls.length*lh+(sub?14:0);const ty=y+(h-th)/2+lh*.75;const te=ls.map((l,i)=>`<text x="${x+w/2}" y="${ty+i*lh}" text-anchor="middle" font-size="9.5" font-weight="700" fill="${tc}" font-family="Arial,sans-serif">${l}</text>`).join('');const se=sub?`<text x="${x+w/2}" y="${ty+ls.length*lh+2}" text-anchor="middle" font-size="8" fill="${tc}" opacity=".75" font-family="Arial,sans-serif">${sub}</text>`:'';return`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${fill}" stroke="${bc}" stroke-width="1.5"/>${te}${se}`;}
   function arr(x1,y1,x2,y2,col){return`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="1.2" marker-end="url(#arr-${col.replace('#','')})"/>`;}
@@ -2096,18 +2223,30 @@ function addEdItem(di,bi){const e=getOrCreateEntry(DIMS[di].label,bi);e.items.pu
 nsData=loadNS();
 go(0);
 
-// ── Auto-refresh facilitator view every 15 seconds when active ────────────
-var autoRefreshTimer = null;
-function startAutoRefresh() {
-  stopAutoRefresh();
-  autoRefreshTimer = setInterval(function() {
-    if (mode === 'facilitator') renderFacilitator();
-  }, 15000);
+
+// ── Facilitator slide state ──────────────────────────────────────────────────
+var facSlide = 0; // current slide index
+
+function goSlide(n) {
+  facSlide = Math.max(0, Math.min(11, n));
+  renderFacilitator();
 }
-function stopAutoRefresh() {
-  if (autoRefreshTimer) { clearInterval(autoRefreshTimer); autoRefreshTimer = null; }
+
+function slideFPTab(di, bi) {
+  var bkeys = ['lag','emg','eff','bic'];
+  for (var i=0;i<4;i++) {
+    var body = document.getElementById('sfp-'+di+'-'+i);
+    if (body) body.classList.toggle('open', i===bi);
+  }
+  var first = document.getElementById('sfp-'+di+'-0');
+  if (first && first.parentElement) {
+    var tabs = first.parentElement.previousElementSibling.querySelectorAll('.slide-ftab');
+    var colors = ['lag','emg','eff','bic'];
+    tabs.forEach(function(tab,i){
+      tab.className = 'slide-ftab'+(i===bi?' act-'+colors[i]:'');
+    });
+  }
 }
-startAutoRefresh();
 
 // ── QR Code ───────────────────────────────────────────────────────────────
 function showQR() {
