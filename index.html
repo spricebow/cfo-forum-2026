@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0B0C44">
+<title>CFO Forum 2026 — Self Assessment | Bowmark Capital</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy:#0B0C44; --steel:#465576; --ow:#F1EFF0; --slate:#9192AB;
+  --pearl:#E4DEE0; --teal:#006C80; --aqua:#12C6A3; --emerald:#118B80;
+  --sp:#8B7495; --coral:#FF6661;
+}
+body { font-family:'Arial Nova',Arial,sans-serif; background:var(--ow); color:var(--navy); min-height:100vh; }
+
+.top-bar { background:var(--navy); padding:0.85rem 1.5rem; }
+.top-bar-inner { max-width:860px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.top-left { display:flex; align-items:center; gap:12px; }
+.top-pip { width:5px; height:32px; background:var(--teal); border-radius:1px; flex-shrink:0; }
+.top-title { font-size:14px; font-weight:700; color:#fff; }
+.top-sub { font-size:11px; color:var(--slate); margin-top:1px; }
+.mode-toggle { display:flex; gap:4px; flex-wrap:wrap; }
+.mode-btn { padding:6px 13px; border-radius:2px; border:1px solid rgba(145,146,171,0.4); background:transparent; font-size:11px; font-weight:700; color:var(--slate); cursor:pointer; font-family:inherit; transition:all .15s; }
+.mode-btn.active { background:var(--teal); color:#fff; border-color:var(--teal); }
+.mode-btn.edit-active { background:var(--sp); color:#fff; border-color:var(--sp); }
+.mode-btn:hover:not(.active):not(.edit-active) { color:#fff; border-color:rgba(255,255,255,0.4); }
+
+.progress-wrap { background:#fff; border-bottom:1px solid var(--pearl); padding:0.65rem 1.5rem; position:sticky; top:0; z-index:10; }
+.progress-inner { max-width:860px; margin:0 auto; }
+.progress-label { font-size:11px; color:var(--slate); margin-bottom:5px; }
+.progress-bar { display:flex; gap:4px; }
+.prog-step { flex:1; height:3px; border-radius:1px; background:var(--pearl); transition:background .3s; }
+.prog-step.done { background:var(--teal); }
+.prog-step.active { background:var(--navy); }
+
+.shell { max-width:860px; margin:0 auto; padding:1.75rem 1.5rem 4rem; }
+.card { background:#fff; border-radius:2px; padding:1.6rem; margin-bottom:1.1rem; border:1px solid var(--pearl); }
+.section-title { font-size:20px; font-weight:700; color:var(--navy); margin-bottom:4px; }
+.section-rule { height:3px; background:var(--teal); width:36px; margin-bottom:1.2rem; }
+.sep { height:1px; background:var(--pearl); margin:1.2rem 0; }
+
+.intro-card { background:var(--ow); border-radius:2px; padding:0.9rem 1.1rem; margin-bottom:0.85rem; border-left:3px solid var(--teal); }
+.intro-card h3 { font-size:11px; font-weight:700; color:var(--navy); margin-bottom:4px; text-transform:uppercase; letter-spacing:0.5px; }
+.intro-card p { font-size:13px; color:var(--steel); line-height:1.6; }
+.hold-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-top:9px; }
+.hold-card { border-radius:2px; padding:9px 11px; border:1px solid var(--pearl); background:#fff; }
+.hold-stage { font-size:10px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:2px; }
+.hold-target { font-size:12px; color:var(--steel); }
+.dim-dots { display:flex; flex-wrap:wrap; gap:5px; margin-top:9px; }
+.dim-dot { font-size:11px; padding:3px 9px; border-radius:20px; border:1px solid var(--pearl); color:var(--steel); background:#fff; word-break:break-word; }
+
+/* 4-band score options */
+.score-band-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; padding:2px 6px 2px 0; }
+.dim-header { display:flex; align-items:center; gap:12px; margin-bottom:1.1rem; }
+.dim-badge { width:38px; height:38px; border-radius:50%; background:var(--navy); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:var(--aqua); flex-shrink:0; }
+.dim-title { font-size:17px; font-weight:700; color:var(--navy); }
+.dim-sub { font-size:12px; color:var(--steel); margin-top:2px; }
+.score-option { display:flex; align-items:stretch; border:1px solid var(--pearl); border-radius:2px; margin-bottom:7px; cursor:pointer; overflow:hidden; transition:border-color .15s, box-shadow .15s; }
+.score-option:hover { border-color:var(--teal); box-shadow:0 0 0 3px rgba(0,108,128,0.08); }
+.score-option:active { transform:scale(0.99); }
+.score-option.selected { border-color:var(--teal); border-width:2px; }
+.score-num { width:90px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#fff; flex-shrink:0; padding:8px 4px; text-align:center; line-height:1.2; gap:2px; }
+.score-num-val { font-size:18px; font-weight:700; }
+.score-text { padding:11px 14px; font-size:12.5px; color:var(--steel); line-height:1.5; display:flex; align-items:center; }
+.score-option.selected .score-text { color:var(--navy); font-weight:600; }
+
+.nav-row { display:flex; justify-content:space-between; align-items:center; margin-top:1.4rem; flex-wrap:wrap; gap:8px; }
+.btn { padding:9px 20px; border-radius:2px; border:1px solid var(--pearl); background:#fff; font-size:13px; font-weight:700; cursor:pointer; color:var(--navy); font-family:inherit; transition:background .15s; }
+.btn:hover { background:var(--ow); }
+.btn:disabled { opacity:0.3; cursor:not-allowed; }
+.btn-primary { background:var(--navy); color:var(--aqua); border-color:var(--navy); }
+.btn-primary:hover { background:#14165c; }
+.btn-teal { background:var(--teal); color:#fff; border-color:var(--teal); }
+.btn-teal:hover { background:#005a6b; }
+.step-label { font-size:12px; color:var(--slate); }
+
+/* Results */
+.radar-wrap { display:flex; justify-content:center; margin:0.5rem 0 1.3rem; overflow:visible; }
+.score-summary { display:grid; grid-template-columns:1fr 1fr; gap:7px; margin-bottom:1.1rem; }
+.sum-card { background:var(--ow); border-radius:2px; padding:10px 12px; border:1px solid var(--pearl); }
+.sum-label { font-size:10px; color:var(--slate); margin-bottom:3px; text-transform:uppercase; letter-spacing:0.4px; }
+.sum-val { font-size:14px; font-weight:700; }
+.sum-band { font-size:10px; margin-top:2px; font-weight:700; }
+.sum-bar-wrap { height:3px; background:var(--pearl); border-radius:1px; margin-top:5px; overflow:hidden; }
+.sum-bar { height:100%; border-radius:1px; transition:width .8s; }
+.avg-card { background:var(--navy); border-radius:2px; padding:1rem 1.2rem; margin-bottom:1.1rem; display:flex; gap:14px; align-items:center; }
+.avg-num { font-size:28px; font-weight:700; color:var(--aqua); line-height:1; }
+.avg-text { font-size:13px; color:#C8CAD8; line-height:1.5; flex:1; border-left:1px solid #2a2d60; padding-left:14px; }
+.sub-banner { background:#e6f4f1; border:1px solid var(--teal); border-radius:2px; padding:9px 12px; margin-bottom:10px; font-size:12.5px; color:var(--teal); font-weight:700; }
+.reflect-list { list-style:none; }
+.reflect-list li { padding:9px 0 9px 22px; border-bottom:1px solid var(--pearl); font-size:13px; color:var(--steel); line-height:1.55; position:relative; }
+.reflect-list li::before { content:"Q"; position:absolute; left:0; font-size:9px; font-weight:700; color:var(--teal); top:12px; }
+.reflect-list li:last-child { border-bottom:none; }
+
+/* Next steps */
+.ns-panel { background:var(--ow); border:1px solid var(--pearl); border-radius:2px; padding:13px; margin-bottom:9px; }
+.ns-title { font-size:11px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:9px; display:flex; align-items:center; gap:6px; }
+.ns-pip { width:3px; height:13px; background:var(--teal); border-radius:1px; }
+.ns-item { display:flex; gap:7px; align-items:flex-start; margin-bottom:6px; }
+.ns-item:last-child { margin-bottom:0; }
+.ns-badge { font-size:9px; font-weight:700; padding:2px 6px; border-radius:2px; flex-shrink:0; margin-top:2px; text-transform:uppercase; letter-spacing:0.4px; }
+.ns-badge.vendor { background:rgba(11,12,68,0.08); color:var(--navy); }
+.ns-badge.process { background:rgba(0,108,128,0.1); color:var(--teal); }
+.ns-text { font-size:12.5px; color:var(--steel); line-height:1.45; }
+
+/* Phased roadmap */
+.roadmap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; }
+.roadmap-col { border-radius:2px; overflow:hidden; border:1px solid var(--pearl); }
+.roadmap-header { padding:7px 10px; font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
+.roadmap-body { padding:8px 10px; background:#fff; }
+.roadmap-item { font-size:11.5px; color:var(--steel); padding:4px 0; border-bottom:1px solid var(--pearl); line-height:1.4; display:flex; gap:5px; align-items:flex-start; }
+.roadmap-item:last-child { border-bottom:none; }
+.roadmap-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+
+/* Value Foundations overlay */
+.foundations-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px; }
+.foundation-card { border-radius:2px; padding:10px 12px; border:1px solid var(--pearl); background:var(--ow); }
+.foundation-label { font-size:10px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+.foundation-bar-wrap { height:6px; background:var(--pearl); border-radius:2px; overflow:hidden; margin-bottom:4px; }
+.foundation-bar { height:100%; border-radius:2px; }
+.foundation-level { font-size:10px; font-weight:700; }
+.foundation-desc { font-size:11px; color:var(--slate); margin-top:2px; line-height:1.4; }
+
+/* Facilitator */
+.dash-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; margin-bottom:1.1rem; }
+.dash-stat { background:var(--ow); border:1px solid var(--pearl); border-radius:2px; padding:10px 14px; }
+.dash-stat-label { font-size:10px; color:var(--slate); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; }
+.dash-stat-val { font-size:24px; font-weight:700; color:var(--navy); }
+.dash-stat-sub { font-size:11px; color:var(--slate); margin-top:2px; }
+.dim-section { margin-bottom:1.6rem; }
+.dim-section-title { font-size:13px; font-weight:700; color:var(--navy); margin-bottom:10px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.dim-avg-pill { font-size:10px; font-weight:700; padding:2px 9px; border-radius:10px; }
+.profiles-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:8px; }
+.profile-card { background:var(--ow); border:1px solid var(--pearl); border-radius:2px; padding:10px; }
+.profile-id { font-size:10px; font-weight:700; color:var(--slate); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; }
+.profile-row { display:flex; align-items:center; gap:6px; margin-bottom:4px; }
+.profile-dim { font-size:10px; color:var(--slate); width:62px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.profile-bar-track { flex:1; height:5px; background:var(--pearl); border-radius:1px; overflow:hidden; }
+.profile-bar-fill { height:100%; border-radius:1px; }
+.profile-band { font-size:9px; font-weight:700; flex-shrink:0; }
+.profile-avg { font-size:11px; font-weight:700; margin-top:6px; padding-top:6px; border-top:1px solid var(--pearl); }
+.prompt-row { display:flex; gap:10px; align-items:flex-start; margin-bottom:9px; }
+.prompt-num { width:22px; height:22px; border-radius:50%; background:var(--navy); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--aqua); flex-shrink:0; margin-top:1px; }
+.prompt-text { font-size:13px; color:var(--steel); line-height:1.55; padding:9px 12px; border:1px solid var(--pearl); border-radius:2px; flex:1; background:var(--ow); }
+.print-btn { display:inline-flex; align-items:center; gap:5px; padding:8px 16px; border-radius:2px; border:1px solid var(--teal); background:transparent; font-size:12px; font-weight:700; color:var(--teal); cursor:pointer; font-family:inherit; }
+.print-btn:hover { background:rgba(0,108,128,0.06); }
+.empty-state { text-align:center; padding:2.5rem 1rem; color:var(--slate); font-size:13px; }
+
+/* KPI Benchmarks */
+.benchmark-table { width:100%; border-collapse:collapse; font-size:11.5px; margin-top:10px; }
+.benchmark-table th { background:var(--navy); color:#fff; padding:6px 10px; font-weight:700; font-size:10px; text-transform:uppercase; letter-spacing:0.4px; text-align:left; }
+.benchmark-table td { padding:7px 10px; border-bottom:1px solid var(--pearl); color:var(--steel); vertical-align:top; }
+.benchmark-table tr:last-child td { border-bottom:none; }
+.benchmark-table tr:nth-child(even) td { background:var(--ow); }
+.bm-kpi { color:var(--navy); font-weight:600; }
+.bm-eff { color:var(--sp); font-weight:700; }
+.bm-bic { color:var(--teal); font-weight:700; }
+
+/* Capability checklist */
+.cap-section { margin-top:14px; border-top:1px solid var(--pearl); padding-top:12px; }
+.cap-section-title { font-size:10px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; }
+.cap-section-sub { font-size:11.5px; color:var(--slate); margin-bottom:10px; line-height:1.4; }
+.cap-item { border-radius:2px; margin-bottom:6px; background:#fff; border:1px solid var(--pearl); overflow:hidden; transition:border-color .15s; }
+.cap-item:hover { border-color:var(--teal); }
+.cap-item-header { padding:9px 12px 7px; }
+.cap-item-label { font-size:12.5px; color:var(--navy); line-height:1.4; font-weight:600; }
+.cap-item-help { font-size:11px; color:var(--slate); margin-top:2px; line-height:1.35; }
+.cap-item-btns { display:grid; grid-template-columns:1fr 1fr 1fr; border-top:1px solid var(--pearl); }
+.cap-btn { border:none; background:transparent; padding:9px 4px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; transition:background .12s; border-right:1px solid var(--pearl); text-align:center; line-height:1.3; }
+.cap-btn:last-child { border-right:none; }
+.cap-btn:hover { background:var(--ow); }
+.cap-btn.sel-monthly { background:#118B8015; color:#118B80; }
+.cap-btn.sel-adhoc   { background:#8B749515; color:#8B7495; }
+.cap-btn.sel-no      { background:#C0392B12; color:#C0392B; }
+.cap-item.state-monthly { border-color:#118B80; }
+.cap-item.state-adhoc   { border-color:#8B7495; }
+.cap-item.state-no      { border-color:#C0392B; }
+
+/* Heat map */
+.heatmap-wrap { overflow-x:auto; margin-top:10px; }
+.heatmap { border-collapse:collapse; font-size:11px; min-width:500px; }
+.heatmap th { background:var(--navy); color:#fff; padding:6px 8px; font-weight:700; font-size:10px; text-align:left; white-space:nowrap; }
+.heatmap th.rotate { vertical-align:bottom; padding:8px 4px 4px; }
+.heatmap th.rotate span { writing-mode:vertical-rl; transform:rotate(180deg); display:block; max-height:80px; overflow:hidden; font-size:9px; letter-spacing:0.3px; }
+.heatmap td { padding:5px 8px; border:1px solid var(--pearl); vertical-align:middle; }
+.heatmap tr.data-row:nth-child(even) td:not(.hm-monthly):not(.hm-adhoc):not(.hm-no) { background:var(--ow); }
+.hm-label { font-size:11px; color:var(--navy); font-weight:600; white-space:nowrap; max-width:220px; overflow:hidden; text-overflow:ellipsis; }
+.hm-monthly { background:#118B8022 !important; text-align:center; font-size:11px; font-weight:700; color:#118B80; }
+.hm-adhoc   { background:#8B749520 !important; text-align:center; font-size:11px; font-weight:700; color:#8B7495; }
+.hm-no      { background:#C0392B15 !important; text-align:center; font-size:11px; font-weight:700; color:#C0392B; }
+.hm-grp-score { font-size:11px; font-weight:700; text-align:center; }
+.hm-grp-pct { font-size:9px; color:var(--slate); }
+.hm-dim-header { background:var(--navy); }
+.hm-dim-label { color:var(--aqua); font-weight:700; font-size:10px; padding:4px 8px; }
+
+/* Facilitator enrichment */
+.enrich-section { margin-bottom:2rem; }
+.enrich-title { font-size:13px; font-weight:700; color:var(--navy); margin-bottom:6px; }
+.enrich-sub { font-size:12px; color:var(--slate); margin-bottom:12px; line-height:1.5; }
+
+/* Reference cards */
+.ref-card-wrap { border:1px solid var(--pearl); border-radius:2px; margin-bottom:10px; overflow:hidden; }
+.ref-card-header { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; cursor:pointer; background:var(--ow); user-select:none; }
+.ref-card-dim { font-size:13px; font-weight:700; color:var(--navy); }
+.ref-card-chevron { font-size:12px; color:var(--slate); transition:transform .2s; }
+.ref-card-body { display:none; padding:14px; background:#fff; }
+.ref-card-body.open { display:block; }
+.ref-bands-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.ref-band { border-radius:2px; padding:10px 11px; border:1px solid var(--pearl); }
+.ref-band-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:7px; }
+.ref-band-points { list-style:none; }
+.ref-band-points li { font-size:11px; color:var(--steel); line-height:1.45; margin-bottom:5px; padding-left:12px; position:relative; }
+.ref-band-points li::before { content:"\2022"; position:absolute; left:0; color:inherit; opacity:.5; }
+@media(max-width:640px) { .ref-bands-grid { grid-template-columns:1fr 1fr; } }
+
+/* Failure patterns */
+.pattern-card { border:1px solid var(--pearl); border-radius:2px; margin-bottom:8px; overflow:hidden; }
+.pattern-header { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; cursor:pointer; background:var(--ow); }
+.pattern-dim { font-size:13px; font-weight:700; color:var(--navy); }
+.pattern-band-tabs { display:flex; border-top:1px solid var(--pearl); }
+.pattern-tab { flex:1; padding:7px 6px; font-size:10px; font-weight:700; text-align:center; cursor:pointer; border-right:1px solid var(--pearl); color:var(--slate); background:#fff; border:none; font-family:inherit; transition:background .12s; }
+.pattern-tab:last-child { border-right:none; }
+.pattern-tab.active-lag     { background:#C0392B15; color:#C0392B; }
+.pattern-tab.active-emg     { background:#88395A15; color:#88395A; }
+.pattern-tab.active-eff     { background:#006C8015; color:#006C80; }
+.pattern-tab.active-bic     { background:#118B8015; color:#118B80; }
+.pattern-body { display:none; padding:13px 14px; background:#fff; font-size:12.5px; color:var(--steel); line-height:1.65; }
+.pattern-body.open { display:block; }
+
+/* Consolidated next steps */
+.action-group { margin-bottom:14px; }
+.action-group-title { font-size:11px; font-weight:700; color:var(--navy); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; display:flex; align-items:center; gap:7px; }
+.action-item { display:flex; gap:10px; align-items:flex-start; margin-bottom:7px; padding:10px 12px; background:var(--ow); border:1px solid var(--pearl); border-radius:2px; border-left:3px solid var(--teal); }
+.action-dim-label { font-size:9px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:0.4px; flex-shrink:0; padding-top:1px; width:80px; }
+.action-text { font-size:12.5px; color:var(--steel); line-height:1.5; }
+.action-item.urgency-high { border-left-color:#C0392B; }
+.action-item.urgency-high .action-dim-label { color:#C0392B; }
+.action-item.urgency-mid { border-left-color:#8B7495; }
+.action-item.urgency-mid .action-dim-label { color:#8B7495; }
+
+/* Editor */
+.ed-section { margin-bottom:20px; }
+.ed-sec-title { font-size:13px; font-weight:700; color:var(--navy); margin-bottom:10px; padding-bottom:6px; border-bottom:2px solid var(--teal); }
+.ed-band { background:var(--ow); border-radius:2px; padding:12px; margin-bottom:8px; border:1px solid var(--pearl); }
+.ed-band-label { font-size:10px; font-weight:700; color:var(--teal); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.ed-pip { width:10px; height:10px; border-radius:1px; display:inline-block; }
+.ed-item { display:flex; gap:6px; align-items:center; margin-bottom:5px; }
+.ed-type { font-size:11px; padding:5px 7px; border:1px solid var(--pearl); border-radius:2px; background:#fff; color:var(--navy); cursor:pointer; font-family:inherit; flex-shrink:0; }
+.ed-input { flex:1; font-size:12.5px; padding:7px 9px; border:1px solid var(--pearl); border-radius:2px; background:#fff; color:var(--navy); font-family:inherit; }
+.ed-input:focus { outline:none; border-color:var(--teal); }
+.ed-del { width:26px; height:26px; border-radius:2px; border:1px solid var(--pearl); background:#fff; cursor:pointer; font-size:15px; color:var(--slate); flex-shrink:0; font-family:inherit; display:flex; align-items:center; justify-content:center; }
+.ed-del:hover { border-color:#C0392B; color:#C0392B; }
+.ed-add { font-size:11.5px; color:var(--teal); cursor:pointer; font-weight:700; margin-top:6px; background:none; border:none; font-family:inherit; padding:0; display:inline-flex; align-items:center; gap:3px; }
+.ed-add:hover { text-decoration:underline; }
+.ed-info { background:#e6f4f1; border:1px solid var(--teal); border-radius:2px; padding:9px 12px; margin-bottom:14px; font-size:12.5px; color:var(--teal); }
+
+/* ── Mobile: base adjustments (≤640px) ─────────────────────────────── */
+@media (max-width:640px) {
+  /* Layout */
+  .shell { padding:0.85rem 0.75rem 5rem; }
+  .card { padding:1.2rem 1rem; margin-bottom:0.85rem; }
+
+  /* Top bar */
+  .top-bar { padding:0.7rem 0.9rem; }
+  .top-title { font-size:13px; }
+  .top-sub { font-size:10px; }
+  .mode-btn { padding:5px 10px; font-size:10px; }
+
+  /* Progress bar — thicker for thumb visibility */
+  .progress-wrap { padding:0.6rem 0.9rem; }
+  .prog-step { height:5px; border-radius:2px; }
+
+  /* Score bands — full width, generous touch target */
+  .score-option { margin-bottom:10px; min-height:60px; }
+  .score-num { width:72px; min-height:60px; }
+  .score-num-val { font-size:20px; }
+  .score-text { font-size:13px; padding:13px 12px; line-height:1.55; }
+
+  /* Dimension header */
+  .dim-badge { width:34px; height:34px; font-size:14px; }
+  .dim-title { font-size:15px; }
+  .dim-sub { font-size:12px; }
+
+  /* Nav row — full-width buttons, sticky bottom */
+  .nav-row { 
+    position:fixed; bottom:0; left:0; right:0;
+    background:#fff; border-top:1px solid var(--pearl);
+    padding:0.75rem 1rem; margin:0;
+    display:flex; justify-content:space-between; align-items:center;
+    z-index:20; box-shadow:0 -2px 8px rgba(0,0,0,0.08);
+  }
+  .btn { padding:11px 18px; font-size:13px; min-height:44px; }
+  .btn-primary { padding:11px 22px; }
+  .step-label { font-size:11px; color:var(--slate); }
+
+  /* Results grids */
+  .score-summary { grid-template-columns:1fr 1fr; gap:6px; }
+  .hold-grid { grid-template-columns:1fr 1fr; gap:6px; }
+  .foundations-grid { grid-template-columns:1fr 1fr; gap:6px; }
+  .roadmap-grid { grid-template-columns:1fr; gap:8px; }
+  .avg-card { flex-direction:column; gap:10px; }
+  .avg-text { border-left:none; border-top:1px solid #2a2d60; padding-left:0; padding-top:10px; }
+  .avg-num { font-size:24px; }
+
+  /* Capability checklist — bigger touch targets */
+  .cap-item { padding:11px 12px; margin-bottom:6px; }
+  .cap-item input[type=checkbox] { width:18px; height:18px; margin-top:2px; }
+  .cap-item-label { font-size:13px; }
+  .cap-item-help { font-size:11.5px; }
+
+  /* Next steps panels */
+  .ns-panel { padding:11px; }
+  .ns-text { font-size:12.5px; }
+
+  /* Intro dots */
+  .dim-dots { gap:4px; }
+  .dim-dot { font-size:10.5px; padding:3px 8px; }
+
+  /* Section titles */
+  .section-title { font-size:17px; }
+
+  /* Heat map — horizontal scroll on mobile */
+  .heatmap-wrap { -webkit-overflow-scrolling:touch; }
+  .hm-label { max-width:160px; font-size:10px; }
+
+  /* Benchmark table */
+  .benchmark-table { font-size:10.5px; }
+  .benchmark-table th, .benchmark-table td { padding:5px 7px; }
+}
+
+/* ── Very small phones (≤380px) ─────────────────────────────────────── */
+@media (max-width:380px) {
+  .score-num { width:60px; }
+  .score-text { font-size:12px; padding:11px 10px; }
+  .btn { padding:10px 14px; font-size:12px; }
+  .dim-title { font-size:14px; }
+  .score-summary, .hold-grid, .foundations-grid { grid-template-columns:1fr 1fr; }
+}
+@media print {
+  .top-bar,.progress-wrap,.nav-row,.print-btn,.mode-toggle { display:none !important; }
+  body { background:#fff; }
+  .shell { padding:0; max-width:100%; }
+  .card { border:1px solid #ddd; break-inside:avoid; }
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div class="top-left">
+      <div class="top-pip"></div>
+      <div>
+        <div class="top-title">Bowmark Capital — CFO Forum 2026 Self Assessment</div>
+        <div class="top-sub">CFO Forum &nbsp;|&nbsp; Self-Assessment Tool &nbsp;|&nbsp; Confidential</div>
+      </div>
+    </div>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btn-participant" onclick="setMode('participant')">Participant</button>
+      <button class="mode-btn" id="btn-facilitator" onclick="setMode('facilitator')">Facilitator</button>
+      <button class="mode-btn" id="btn-editor" onclick="setMode('editor')">Edit content</button>
+    </div>
+  </div>
+</div>
+
+<div class="progress-wrap" id="progress-wrap">
+  <div class="progress-inner">
+    <div class="progress-label" id="prog-label">Introduction</div>
+    <div class="progress-bar" id="prog"></div>
+  </div>
+</div>
+
+<div class="shell" id="shell"></div>
+
+<script>
+// ── 4-band scoring system ─────────────────────────────────────────────────────
+// Bands: 0=Lagging, 1=Emerging, 2=Effective, 3=Best-in-Class
+const BAND_NAMES = ['Lagging','Emerging','Effective','Best-in-Class'];
+const BAND_COLORS = ['#C0392B','#88395A','#006C80','#118B80'];
+const BAND_SHORT = ['LAG','EMG','EFF','BIC'];
+
+function bandColor(b) { return b == null ? '#C8CAD8' : BAND_COLORS[b]; }
+function bandName(b)  { return b == null ? '—' : BAND_NAMES[b]; }
+// Convert 0-3 band to 0-1 pct for bars
+function bandPct(b)   { return b == null ? 0 : (b+1)/4; }
+
+// ── Dimensions (9 now) ────────────────────────────────────────────────────────
+const DIMS = [
+  { label:'Team Model & Structure',        short:'Team Model',    q:'How well designed is your overall finance function structure?',          compass:'Value Creation' },
+  { label:'Role Design & Seniority Mix',   short:'Role Design',   q:'Are the right people in the right roles at the right levels?',           compass:'Value Creation' },
+  { label:'Outsourcing & Co-sourcing',     short:'Outsourcing',   q:'How smartly are you using external resource?',                           compass:'Value Protection' },
+  { label:'Systems & Automation',          short:'Systems',       q:'Does your tech stack match the scale and pace of the business?',         compass:'Value Enablement' },
+  { label:'Governance & Reporting',        short:'Governance',    q:'Does finance drive the business rhythm, or react to it?',               compass:'Value Enablement' },
+  { label:'Exit Readiness',               short:'Exit Ready',    q:'Is your finance function positioned to maximise exit value?',            compass:'Value Realisation' },
+  { label:'Cash & Working Capital',        short:'Cash & WC',     q:'Are you running cash as a strategic lever, or just tracking it?',       compass:'Value Creation' },
+  { label:'Data Quality & Analytics',      short:'Data',          q:'How mature is your data foundation and analytics culture?',             compass:'Value Enablement' },
+  { label:'Business Partnering',           short:'Biz Partnering',q:'Is finance genuinely embedded in commercial decision-making?',         compass:'Value Enablement' },
+];
+
+// ── Rubric: 4 bands per dimension ─────────────────────────────────────────────
+const RUB = [
+  // Team Model
+  ['Ad-hoc structure, unclear ownership — finance team firefighting constantly with no separation of roles',
+   'Basic in-house team in place but over-reliant on CFO with little specialist depth; structure has not been deliberately designed',
+   'Functional structure with CFO, FC and FP&A — stewardship and commercial finance broadly separated; team works but is stretched',
+   'Investor-ready structure; lean core + smart outsourcing; clear role separation; CFO operating as a strategic partner to CEO'],
+  // Role Design
+  ['Roles undefined or duplicated; wrong seniority mix causing bottlenecks; no JDs or levelling framework',
+   'Roles exist on paper but accountabilities blur; CFO doing FC work; seniority mix slightly off but broadly in place',
+   'Clear JDs and right seniority levels; stewardship and commercial finance genuinely distinct; some succession risk remains',
+   'Benchmark-quality role design; succession evident at every level; CFO profile deliberately matched to hold stage; exit-ready'],
+  // Outsourcing
+  ['Everything done in-house including low-value transactional tasks; high cost, low leverage; no managed services',
+   'Some outsourcing in place (e.g. payroll) but poorly governed; unclear SLAs; in-house team still stretched on specialist areas',
+   'Smart split: AP/AR/payroll outsourced; tax and IA co-sourced; in-house team focused on FP&A and value-add work',
+   'Fully optimised model; outsource/co-source decisions reviewed annually; PE firm resources leveraged; best-in-class providers'],
+  // Systems
+  ['Finance runs on spreadsheets; no single source of truth; consolidation manual; close takes 10+ working days',
+   'Basic ERP in place but FP&A still runs in Excel; two versions of the truth in play; reporting still largely manual',
+   'Integrated ERP + FP&A tooling; automated close and consolidation; dashboards available; close in 5–7 days',
+   'Best-in-class stack fully integrated (ERP/CRM/HR/BI); AI-assisted reporting; real-time KPI visibility; close in ≤4 days'],
+  // Governance
+  ['Reporting late, inconsistent or disputed; no agreed template with PE board; no close calendar; flash P&L absent',
+   'Monthly close happens but takes too long; board packs assembled under pressure; commentary backward-looking only',
+   'Tight close calendar; board pack agreed with investors; commentary includes forward outlook; FP&A partners add real value',
+   'Finance drives the business rhythm; rolling 12-month reforecast; exit-ready reporting; board pack out by day 8'],
+  // Exit Readiness
+  ['No defined exit route; equity story absent; data room not considered; finance team not prepared for DD scrutiny',
+   'High-level awareness of exit requirements; some buyer mapping done; MI improving but not diligence-ready; no formal exit plan',
+   'Exit readiness review completed; equity story articulated; KPIs aligned to buyer expectations; data room populated',
+   'Fully diligence-ready; compelling equity story with data-backed proof points; CFO rehearsed for buyer Q&A; no surprises'],
+  // Cash & Working Capital
+  ['No visibility of cash conversion drivers; DSO/DPO/DIO not tracked; cash forecast produced ad hoc by finance only; working capital seen as a compliance metric',
+   'Basic cash flow forecast in place; DSO/DPO/DIO tracked but improvement efforts are reactive; limited cross-functional accountability for working capital',
+   'Rolling 13-week cash forecast integrated with ERP; working capital targets embedded in budgets; weekly cash reviews; DSO/DPO/DIO owned by business functions',
+   'Cash treated as a strategic value lever; predictive analytics on receivables, payables and inventory; dynamic scenario modelling; cash excellence programme tied to VCP and IRR'],
+  // Data Quality & Analytics
+  ['KPIs defined inconsistently across functions; no data dictionary; multiple versions of the truth; analytics done ad hoc by finance on request',
+   'Core KPIs broadly agreed but methodology varies; basic dashboards exist but are manually refreshed; limited drill-down; data trust issues common',
+   'Group-wide KPI dictionary with definitions, calculation logic and data source; self-serve dashboards available; data reconciled to GL; budget holders use data regularly',
+   'Enterprise data model with golden records; KPI taxonomy embedded in ERP/BI tools; AI-driven insight standard; business self-serves; finance controls logic and narrative'],
+  // Business Partnering
+  ['Finance operates as a back-office function; no defined business partner roles; meetings backward-looking (budget vs actual only); no commercial challenge',
+   'Some individuals provide commentary to the business but roles are unclear; finance attends reviews but mainly reports numbers rather than insight; challenge limited to cost control',
+   'Defined finance business partner roles distinct from controllers; monthly performance reviews with insight, trends and actions; finance challenges revenue, margin and pricing assumptions',
+   'Finance is a core strategic arm of decision-making; proactive insight on growth, pricing and customer economics; business cases owned end-to-end; partners treated as trusted advisors'],
+];
+
+// ── KPI Benchmarks per dimension ──────────────────────────────────────────────
+const BENCHMARKS_KPI = [
+  { dim:'Team Model & Structure', kpis:[
+    { kpi:'Finance FTEs per £100m revenue', eff:'5–7 FTEs', bic:'3–5 FTEs', note:'Measures finance efficiency vs revenue scale' },
+    { kpi:'Total cost of finance (% of revenue)', eff:'1.2–1.6%', bic:'0.8–1.2%', note:'Includes people and non-people costs' },
+    { kpi:'Cost per Finance FTE', eff:'£70–90k', bic:'£60–75k', note:'Includes salaries, benefits and training' },
+  ]},
+  { dim:'Role Design & Seniority Mix', kpis:[
+    { kpi:'CFO time on strategic vs operational work', eff:'40–50% strategic', bic:'>60% strategic', note:'Proxy for role design maturity' },
+    { kpi:'Key-person dependency (roles with no cover)', eff:'≤2 roles', bic:'0 roles', note:'Succession readiness indicator' },
+    { kpi:'Finance team retention rate', eff:'>80%', bic:'>90%', note:'Reflects career pathways and culture' },
+  ]},
+  { dim:'Outsourcing & Co-sourcing', kpis:[
+    { kpi:'% of transactional finance outsourced (AP/AR/payroll)', eff:'60–80%', bic:'>90%', note:'Measures leverage of managed services' },
+    { kpi:'SLA compliance with outsource providers', eff:'>85%', bic:'>95%', note:'Governs outsource quality' },
+    { kpi:'Average invoice processing cost', eff:'£2–£4', bic:'£1–£2', note:'Reflects automation and shared service leverage' },
+  ]},
+  { dim:'Systems & Automation', kpis:[
+    { kpi:'Days to close (monthly)', eff:'5–7 working days', bic:'2–4 working days', note:'Core accounting cycle close; PE average ~6' },
+    { kpi:'% of key controls automated', eff:'40–60%', bic:'70%+', note:'Proxy for finance control digitisation maturity' },
+    { kpi:'Finance tech adoption rate (core tools in use)', eff:'80–90%', bic:'95%+', note:'ERP, CPM, BI, RPA coverage' },
+    { kpi:'Finance system cost (% of finance function cost)', eff:'12–18%', bic:'8–12%', note:'Reflects consolidation and cloud optimisation' },
+  ]},
+  { dim:'Governance & Reporting', kpis:[
+    { kpi:'Days to report (board pack, post month-end)', eff:'8–10 working days', bic:'4–6 working days', note:'End-to-end from period close to pack issuance' },
+    { kpi:'Board pack automation (%)', eff:'40–60%', bic:'80%+', note:'BI/AI-driven vs copy-paste from Excel' },
+    { kpi:'Forecast accuracy (EBITDA variance)', eff:'±3–5%', bic:'±0–3%', note:'Rolling forecast discipline indicator' },
+    { kpi:'% of KPIs with defined owner and action', eff:'70–80%', bic:'90%+', note:'Measures accountability and performance cadence' },
+  ]},
+  { dim:'Exit Readiness', kpis:[
+    { kpi:'Data room readiness (% of documents prepared)', eff:'60–75%', bic:'90%+', note:'Measures exit preparation completeness' },
+    { kpi:'Months of preparation ahead of exit process', eff:'12–18 months', bic:'24+ months', note:'Best practice is to begin exit preparation early' },
+    { kpi:'% of VCP initiatives with validated benefit', eff:'70–85%', bic:'90%+', note:'Credibility of equity story with buyers' },
+    { kpi:'Mock diligence completed', eff:'Partially', bic:'Fully rehearsed', note:'Dry-run Q&A with advisors to stress-test narrative' },
+  ]},
+  { dim:'Cash & Working Capital', kpis:[
+    { kpi:'Days Sales Outstanding (DSO)', eff:'40–50 days', bic:'<35 days', note:'Tight credit control and billing accuracy; sector-dependent' },
+    { kpi:'Days Payable Outstanding (DPO)', eff:'40–50 days', bic:'55–65 days', note:'Strategic working capital management' },
+    { kpi:'Cash conversion (EBITDA to operating cash flow)', eff:'80–90%', bic:'90%+', note:'Business model and sector dependent' },
+    { kpi:'Cash forecast accuracy (13-week)', eff:'±5–10%', bic:'±0–5%', note:'Integrated treasury and FP&A forecast discipline' },
+    { kpi:'Net working capital (% of revenue)', eff:'8–10%', bic:'<5%', note:'Measures capital efficiency; best-in-class lean structures' },
+  ]},
+  { dim:'Data Quality & Analytics', kpis:[
+    { kpi:'KPI pack timeliness (post month-end)', eff:'5–7 working days', bic:'Real-time', note:'Reflects speed and automation of insight delivery' },
+    { kpi:'% of KPIs with defined owner and calculation logic', eff:'70–80%', bic:'90%+', note:'Data governance maturity indicator' },
+    { kpi:'Planning system coverage (% of entities)', eff:'70–80%', bic:'100%', note:'CPM adoption rate; key to forecast automation' },
+    { kpi:'Forecasting tool data sync frequency', eff:'Weekly', bic:'Daily/real-time', note:'Proxy for ERP/BI/CPM integration maturity' },
+    { kpi:'% of forecasts that are driver-based', eff:'70–80%', bic:'90%+', note:'Indicates modelling maturity and operational alignment' },
+  ]},
+  { dim:'Business Partnering', kpis:[
+    { kpi:'% of budget holders with self-serve dashboard access', eff:'50–70%', bic:'90%+', note:'Enables commercial finance at scale' },
+    { kpi:'% of major business decisions with finance input', eff:'70–80%', bic:'95%+', note:'Measures strategic embeddedness of finance' },
+    { kpi:'Finance business partner ratio (FTEs per BU/function)', eff:'1 per 2–3 BUs', bic:'1 per BU', note:'Depth of commercial finance resource' },
+    { kpi:'Net Promoter Score from business stakeholders', eff:'>6/10', bic:'>8/10', note:'Qualitative measure of finance partnership quality' },
+  ]},
+];
+
+// ── Benchmark examples (text) per dimension ───────────────────────────────────
+const BENCHMARKS = [
+  { low:{ label:'Lagging', points:['CFO acts as FC, FP&A lead and business partner simultaneously — no bandwidth for strategic work','Finance structured around individuals rather than functions; no clear handoff between control and commercial','Single point of failure on reporting; close collapses when CFO is out','No separation between transactional processing and management accounting'] },
+    mid:{ label:'Emerging', points:['CFO + FC in place with a small team beneath; works at current scale but visibly straining at volume or on M&A','FP&A exists but is one person deep — any absence disrupts the forecasting cycle','Stewardship and commercial finance nominally separate but FC still covers both in practice','Team structure copied from previous business rather than designed for PE ownership'] },
+    high:{ label:'Effective', points:['Distinct stewardship layer (FC, management accountants) fully separate from FP&A and business partnering','CFO operating as a strategic partner to the CEO — not in the weeds of close or reporting','Lean in-house core with managed services for transactional work; PE firm resources leveraged for tax/IA','Finance org chart would survive DD scrutiny without restructuring'] },
+    bic:{ label:'Best-in-Class', points:['Finance operating model optimised by process domain (P2P, R2R, O2C) with global process owners','Shared service or centre of excellence delivers transactional work; business-facing finance focused on value creation','Finance roles fully mapped to the value chain; every role has explicit accountability and performance metrics','CFO co-owns the value creation plan with the deal team; finance KPIs mirror sponsor expectations'] } },
+  { low:{ label:'Lagging', points:['CFO hired for brand name rather than PE fit — previously Director of Finance in a large corporate','FC role vacant or filled by a management accountant acting up; creates systemic reporting risk','Two senior hires doing similar work with unclear ownership; tension absorbs CFO time','No JDs or levelling framework; roles have drifted from original scope'] },
+    mid:{ label:'Emerging', points:['Right roles broadly in place but seniority mix slightly off — one too many senior hires, thin on execution layer','CFO capable but spends 60%+ of time on reporting rather than value creation or M&A','FC is strong technically but not yet a credible business partner to operational leadership','Succession risk at FC level — CFO would struggle to backfill quickly'] },
+    high:{ label:'Effective', points:['Clear JDs, right levels; stewardship and commercial finance genuinely distinct; RACI embedded in key processes','FC is capable and business-partnering effectively; CFO focused on strategy and investor relations','Defined succession plans for CFO and FC; potential successors identified and tracked','Finance operating model documented and reviewed annually'] },
+    bic:{ label:'Best-in-Class', points:['CFO profile deliberately matched to hold stage: operator at entry, strategist/transaction lead at exit','FC is exit-ready — could step up to CFO or lead a DD process independently','Benchmark-quality role design; succession plans embedded in VCP governance with formal talent reviews','Distinct career pathways for controllership, FP&A and business partnering; finance is a net talent exporter'] } },
+  { low:{ label:'Lagging', points:['AP, AR, payroll and expenses all processed in-house by qualified finance staff — high cost, low leverage','CFO personally approves invoices and expenses; no segregation of duties','Previous outsourcing attempt failed due to poor SLA design; team reverted to doing everything in-house','Tax compliance prepared internally by FC — specialist knowledge thin, risk of error high'] },
+    mid:{ label:'Emerging', points:['Payroll outsourced but AP/AR still in-house; team stretched on month-end','Outsource provider in place but SLAs not reviewed since go-live; quality has drifted','Internal audit either absent or done informally by FC — not credible to a sophisticated buyer','Tax outsourced but no co-source model; external adviser reactive rather than embedded'] },
+    high:{ label:'Effective', points:['AP/AR/payroll/expenses all on managed service; in-house team focused entirely on value-add work','Co-sourced IA programme running to a formal annual plan; findings reported direct to audit committee','Tax adviser embedded quarterly; transfer pricing and group structure reviewed proactively','Outsource decisions reviewed annually against cost, quality and strategic fit'] },
+    bic:{ label:'Best-in-Class', points:['Tiered outsourcing model (strategic / tactical / transactional) optimised across all finance processes','Supplier portals with self-service, PO visibility, invoice status and SLA dashboards','Co-sourced IA, tax and treasury aligned to PE exit timeline; specialist advisers embedded in key decisions','Outsource ROI tracked to EBITDA and cash savings; continuous improvement culture embedded'] } },
+  { low:{ label:'Lagging', points:['Finance runs on spreadsheets; no single source of truth; consolidation is manual and error-prone; close takes 10+ days','Multiple finance systems from bolt-on deals, none integrated; no single P&L view across the group','Budget model is a 40-tab Excel file owned by one person; inaccessible when they are on leave','Board pack assembled manually in PowerPoint each month from multiple spreadsheet sources'] },
+    mid:{ label:'Emerging', points:['NetSuite or Business Central in place but configured at acquisition and not updated for current complexity','ERP handles AP/AR and GL but FP&A still runs in Excel; two versions of the truth in play','Some close automation (auto-reconciliations) but commentary and pack assembly still manual','Self-service reporting attempted but not adopted — budget holders still email finance for their numbers'] },
+    high:{ label:'Effective', points:['Single ERP instance across all entities; close runs in 5–7 working days with automated consolidation','FP&A tool (Pigment, Mosaic or similar) connected to ERP; budget holders own their forecasts directly','Board pack auto-populated from live data; CFO reviews narrative, not numbers','Self-serve dashboards (Power BI/Tableau) available to budget holders; KPI definitions consistent'] },
+    bic:{ label:'Best-in-Class', points:['Unified finance tech stack: ERP + CRM + HR + BI + banking fully integrated with real-time data flow','AI/automation driving efficiency: straight-through processing across AP, AR, close and treasury','Close in ≤4 working days; real-time KPI dashboard accessible to PE board without finance involvement','Predictive analytics standard: automated forecasting, root-cause prediction, and action recommendations'] } },
+  { low:{ label:'Lagging', points:['Reporting late, inconsistent or disputed; investor reporting often revised post-submission','No agreed template with the PE investor — format changes quarterly based on who asked last','Close calendar exists as a concept but is not enforced; same bottlenecks recur every month','Flash P&L not produced; PE board first sees financials 3–4 weeks after month end'] },
+    mid:{ label:'Emerging', points:['Close runs in 7–8 working days; board pack out by day 12–15 — functional but not investor-grade','Template agreed with PE board but commentary is backward-looking; little forward guidance included','Finance business partners in place but still reactive — answering questions rather than anticipating them','Annual budget produced but no rolling forecast; in-year surprises land without warning'] },
+    high:{ label:'Effective', points:['5-day close; board pack with full commentary out by day 8 — PE board have financials before the monthly call','Board pack template co-designed with PE investor; narrative is forward-looking with 3-month outlook','Rolling 12-month reforecast updated monthly; CFO can articulate the full-year landing with confidence','Finance drives the operational rhythm — budget holders forecast, own variances and present to the board'] },
+    bic:{ label:'Best-in-Class', points:['Finance operates as a core enabler of the value creation plan; every KPI mapped to a value-driver tree','Near-real-time board dashboards integrating financial and operational data; automated variance explanations','Continuous forecasting capability integrated with budgeting tool; rolling 12–15-month outlook','Reporting cycle <5 working days; live dashboards support CFO, Board and PE sponsor access simultaneously'] } },
+  { low:{ label:'Lagging', points:['No defined exit route; buyers considered only when process is imminent; no exit readiness work done','Equity story absent or focused only on historical performance; no clear "why us" narrative','Financial and operational data fragmented; KPIs inconsistent; limited forecast integrity','Management team not aligned on exit requirements; finance seen as a compliance function only'] },
+    mid:{ label:'Emerging', points:['High-level understanding of likely buyer groups (trade vs PE) but limited insight into their specific priorities','Draft equity case exists but lacks cohesion, data and tailored proof points for buyers','Basic diligence pack assembled reactively; financials audit-ready but not insight-rich','Early engagement plan with clear ownership (CFO, CEO, sponsor) but exit readiness not yet formalised'] },
+    high:{ label:'Effective', points:['Exit readiness review completed 12–24 months ahead of process; buyer mapping linked to strategic positioning','Clear and credible equity case supported by data, KPIs and growth evidence; linked to VCP and market trends','Reliable 3-year historicals, forecast model aligned with KPIs and revenue/cost bridges reconciled to the data pack','Clear management roles and responsibilities across workstreams; resourcing scaled for exit process'] },
+    bic:{ label:'Best-in-Class', points:['CFO positioned as the face of the exit process; buyer engagement rehearsed and data-driven','Fully investor-grade equity story with tailored versions per buyer type; anticipates buyer pushback with data-backed responses','Fully diligence-ready "one version of truth" spanning financial, operational and ESG data; buyers can re-run analyses seamlessly','Mock diligence completed; shadow data room maintained live; "no surprises" ethos embedded across management team'] } },
+  // Cash & Working Capital
+  { low:{ label:'Lagging', points:['No visibility of cash conversion drivers; DSO/DPO/DIO not tracked; cash seen only as finance responsibility','Rolling cash forecast absent or produced monthly at best; accuracy not measured; frequent cash surprises','AR, AP and inventory managed in silos with no formal targets or accountability; aged debt and late payments common','Finance and operations work in silos on working capital; improvement efforts are reactive and uncoordinated'] },
+    mid:{ label:'Emerging', points:['Rolling 13-week cash forecast in place but spreadsheet-based and reliant on manual inputs; accuracy moderate','DSO/DPO/DIO targets exist but ownership is unclear; manual tracking with limited visibility of trade-offs across levers','Basic cash review meetings happen but are finance-only with limited commercial ownership of assumptions','Working capital recognised as important but improvement initiatives are piecemeal; data only at aggregated level'] },
+    high:{ label:'Effective', points:['Rolling forecast integrated with ERP; accuracy tracked monthly; forecast-to-actual variance <10%; budget holders accountable for inputs','Defined ownership for receivables, payables and inventory; weekly DSO/DPO/DIO reviews with clear improvement actions','Cash mindset embedded beyond finance — budget holders accountable for working capital KPIs and variances','Structured variance and root-cause analysis by BU/customer/supplier; issues logged and resolved with accountability'] },
+    bic:{ label:'Best-in-Class', points:['Cash treated as a core strategic KPI; end-to-end working capital model links operational metrics to liquidity and IRR','Predictive analytics on receivables, payables and inventory; dynamic scenario modelling on cash optimisation trade-offs','Integrated cash excellence programme covering all levers; DSO <35 days; optimisation embedded in commercial policy and incentive plans','CFO and sponsor track cash conversion as a primary value creation lever; cash forecast accuracy consistently within ±5%'] } },
+  // Data Quality & Analytics
+  { low:{ label:'Lagging', points:['KPIs defined differently across functions; no data dictionary; analysts spend majority of time reconciling rather than analysing','Multiple versions of the truth; finance manually fixes data errors; reports built in Excel from multiple disconnected sources','Analytics done ad hoc by finance on request; management makes decisions on intuition rather than data','No data governance; COA inconsistent across entities; customer/product codes duplicated; master data ungoverned'] },
+    mid:{ label:'Emerging', points:['Core KPIs broadly agreed but calculation methodology varies; basic dashboards exist but rely on manual uploads','Data often late or incomplete; finance spends time fixing errors rather than providing insight; access controlled by IT','Some self-service reporting attempted but not adopted; budget holders still email finance for their numbers','COA partially standardised; master data manually controlled; errors fixed retrospectively rather than prevented'] },
+    high:{ label:'Effective', points:['Group-wide KPI dictionary with definitions, calculation logic and data source; owners accountable for each KPI','Self-serve dashboards (Power BI/Tableau) with automated refresh; reconciled to GL; drill-down by segment, entity or customer','KPI review rhythm embedded into monthly performance meetings; decisions routinely challenged with data','Group-wide COA, entity structures and master data governance in place; finance owns data standards; change control exists'] },
+    bic:{ label:'Best-in-Class', points:['Enterprise data model with golden records for customers, vendors, SKUs and cost centres; live synchronised across ERP/CRM/BI','KPI taxonomy embedded in ERP/BI tools; fully automated; each KPI linked to value driver tree and cascaded to personal scorecards','Data is the default decision language; frontline teams understand their value drivers; business self-serves with finance guardrails','AI-driven insight standard; predictive analytics for revenue, cost and cash; exit DD-ready data infrastructure'] } },
+  // Business Partnering
+  { low:{ label:'Lagging', points:['Finance operates as a back-office function; no defined business partner roles; meetings focus on budget vs actual only','No commercial challenge from finance; pricing, customer and investment decisions made without finance involvement','Finance seen as a gatekeeper or policeman rather than a strategic partner; relationships with ops teams adversarial','Business case development ad hoc; post-investment reviews absent; ROI on major decisions not tracked'] },
+    mid:{ label:'Emerging', points:['Some individuals provide commentary to the business but roles are unclear; controller and business partner blurred','Finance attends reviews but mainly reports numbers; challenge is limited to cost control rather than commercial insight','Limited data access for business partners; insights are backward-looking and descriptive rather than forward-looking','Finance supports business case preparation but primarily validates costs; ROI analysis variable in quality'] },
+    high:{ label:'Effective', points:['Defined finance business partner roles distinct from controllers; monthly performance reviews with insight, trends and actions','Finance challenges revenue, margin, pricing and investment assumptions; partners respected as trusted advisors','Self-serve data access in place for budget holders; business partners provide forward-looking commercial insight','Standardised business case framework with finance challenge; post-mortems conducted; accuracy improving'] },
+    bic:{ label:'Best-in-Class', points:['Finance is a core strategic arm; proactive insight on growth, pricing, customer economics and ROI — not just reactive reporting','Business cases owned end-to-end by finance: assumptions, sensitivities, payback, and post-investment delivery tracking','Commercial challenge embedded as a discipline: deals won/lost, customer churn, pricing power and margin leakage all in scope','Finance operating model aligned with VCP; roles evolve proactively; skills mix reflects exit-readiness and business partnering depth'] } },
+];
+
+// ── Phased roadmap per dimension ──────────────────────────────────────────────
+const ROADMAP = [
+  { dim:'Team Model & Structure', phases:[
+    { label:'90 days', color:'#C0392B', items:['Map current team vs standard PE finance org chart','Identify single points of failure and coverage gaps','Separate stewardship and commercial finance reporting lines'] },
+    { label:'6 months', color:'#006C80', items:['Define target operating model for end of hold period','Introduce dedicated FP&A resource (even 0.5 FTE)','Engage interim/fractional resource where gaps persist'] },
+    { label:'12 months', color:'#118B80', items:['Build full team to scale; formalise outsource/co-source model','Document finance org chart and RACI; review annually','Align team structure to VCP and exit horizon'] },
+  ]},
+  { dim:'Role Design & Seniority Mix', phases:[
+    { label:'90 days', color:'#C0392B', items:['Conduct role clarity workshop; define "good" for each role','Benchmark salary and seniority vs PE portfolio peers','Document JDs and levelling framework for all finance roles'] },
+    { label:'6 months', color:'#006C80', items:['Build succession plans for CFO and FC roles','Review CFO time allocation vs hold stage priorities','Address any seniority imbalances with targeted hires or exits'] },
+    { label:'12 months', color:'#118B80', items:['Annual org review vs hold stage needs','CFO coaching/development aligned to exit readiness','Finance talent pipeline embedded in VCP governance'] },
+  ]},
+  { dim:'Outsourcing & Co-sourcing', phases:[
+    { label:'90 days', color:'#C0392B', items:['Process-map AP/AR/payroll; quantify in-house cost vs managed service','Issue RFP for transactional outsourcing (start with payroll)','Audit existing outsource providers against original SLAs'] },
+    { label:'6 months', color:'#006C80', items:['Move AP/AR to managed service if not already done','Co-source internal audit to formal annual programme','Embed tax adviser on a quarterly basis'] },
+    { label:'12 months', color:'#118B80', items:['Annual review of all outsource/co-source arrangements','Optimise co-sourced tax for exit (transfer pricing, structuring)','Benchmark providers vs market; renegotiate or retender'] },
+  ]},
+  { dim:'Systems & Automation', phases:[
+    { label:'90 days', color:'#C0392B', items:['Freeze new spreadsheet-based tools; document all manual processes','Commission ERP/FP&A tooling review with PE-specialist implementer','Agree target systems architecture with CFO and PE board'] },
+    { label:'6 months', color:'#006C80', items:['Implement or reconfigure ERP; close FP&A Excel gap with dedicated tool','Automate month-end close checklist (FloQast/BlackLine)','Deploy self-service dashboards for budget holders (Power BI/Tableau)'] },
+    { label:'12 months', color:'#118B80', items:['Full ERP/FP&A/CRM integration in place; single source of truth','AI-assisted variance analysis and narrative in production','Real-time KPI dashboard live for PE board; close in ≤5 days'] },
+  ]},
+  { dim:'Governance & Reporting', phases:[
+    { label:'90 days', color:'#C0392B', items:['Agree fixed board pack template with PE investor','Publish month-end close calendar with named owners','Set 5-working-day close as 12-month target; baseline now'] },
+    { label:'6 months', color:'#006C80', items:['Introduce rolling 12-month reforecast alongside annual budget','Shift board commentary from backward to forward-looking','Finance business partners attending all commercial reviews'] },
+    { label:'12 months', color:'#118B80', items:['Board pack automated from live data; CFO reviews narrative only','Forecasting accuracy consistently within ±5% EBITDA','Finance drives business rhythm; budget holders own variances'] },
+  ]},
+  { dim:'Exit Readiness', phases:[
+    { label:'90 days', color:'#C0392B', items:['Complete exit readiness diagnostic; identify top 5 data room gaps','Begin buyer mapping with sponsor; define equity story outline','Align KPIs to buyer-relevant metrics; identify narrative risks'] },
+    { label:'6 months', color:'#006C80', items:['Populate shadow data room; align historicals to buyer GAAP','Draft investor-grade equity story; rehearse with advisors','Complete mock Q&A session; identify areas requiring remediation'] },
+    { label:'12 months', color:'#118B80', items:['Full diligence readiness achieved; VDD-ready financials','Equity story finalised and tested with PE sponsor','Management team aligned, incentives set, CFO rehearsed'] },
+  ]},
+  { dim:'Cash & Working Capital', phases:[
+    { label:'90 days', color:'#C0392B', items:['Build rolling 13-week cash forecast connected to ERP actuals','Baseline DSO/DPO/DIO by entity; identify quick wins on collections and payables','Establish weekly cash review rhythm; assign working capital ownership to business functions'] },
+    { label:'6 months', color:'#006C80', items:['Embed DSO/DPO/DIO targets in budget; link to commercial team incentives','Launch root-cause analytics on aged debtors and payables delays','Renegotiate key supplier payment terms; introduce dynamic discounting where beneficial'] },
+    { label:'12 months', color:'#118B80', items:['Cash conversion consistently tracking; forecast accuracy within ±5% over 13 weeks','Working capital as a board-level KPI; integrated in monthly pack and investor reporting','Cash optimisation embedded in VCP; deleveraging impact modelled and tracked'] },
+  ]},
+  { dim:'Data Quality & Analytics', phases:[
+    { label:'90 days', color:'#C0392B', items:['Audit KPI definitions across finance and business — identify where methodology diverges','Standardise chart of accounts and master data governance; freeze ad hoc COA changes','Deploy first self-serve dashboard for at least one BU or function'] },
+    { label:'6 months', color:'#006C80', items:['Publish group-wide KPI dictionary with definitions, owners and calculation logic','Connect ERP to BI layer; automate core dashboard refresh; remove manual Excel data pulls','Train budget holders on self-serve analytics; track adoption monthly'] },
+    { label:'12 months', color:'#118B80', items:['Enterprise data model in place; golden records for customers, vendors, SKUs and cost centres','AI-assisted variance analysis piloted for CFO and FP&A team','Analytics culture embedded; data is default language in performance reviews and business cases'] },
+  ]},
+  { dim:'Business Partnering', phases:[
+    { label:'90 days', color:'#C0392B', items:['Define business partner roles separately from controller roles; document scope and accountabilities','Identify which business reviews finance currently attends — shift agenda from reporting to insight','Audit data access: can business partners drill into data without IT involvement?'] },
+    { label:'6 months', color:'#006C80', items:['Embed finance business partner in at least one commercial team meeting monthly','Introduce standardised business case template with finance-led challenge and ROI framework','Deploy self-serve dashboards for revenue, margin and KPIs; enable budget holders to self-serve'] },
+    { label:'12 months', color:'#118B80', items:['Finance partners attend all key commercial decisions; pricing, customer and investment decisions involve finance by default','Post-investment reviews conducted quarterly; forecast vs actual ROI tracked by initiative','Finance seen as a strategic partner; net promoter score from business leaders tracked and improving'] },
+  ]},
+];
+
+// ── Capability checklists ────────────────────────────────────────────────────
+// Each capability maps to a dimension; participants tick what they can produce today
+const CAPABILITIES = [
+  { id:'rev_bridge',   dim:7, label:'Revenue bridge (price vs volume vs mix vs churn)',              help:'Can you decompose revenue movement into its component drivers in <2 hours?' },
+  { id:'cohort',       dim:7, label:'Cohort analysis (customer retention by acquisition period)',     help:'Can you show retention and revenue by cohort without a data project?' },
+  { id:'cac',          dim:7, label:'CAC by channel (customer acquisition cost)',                     help:'Do you know what it costs to acquire a customer through each sales channel?' },
+  { id:'cltv',         dim:7, label:'CLTV / LTV by customer segment or product',                     help:'Can you model lifetime value by segment or product line?' },
+  { id:'contract_mgn', dim:7, label:'Contract or product margin (fully loaded)',                      help:'Can you show margin by contract or product including allocated overhead and cost-to-serve?' },
+  { id:'unit_econ',    dim:7, label:'Unit economics by SKU, customer or geography',                   help:'Do you have a unit economics model that finance and commercial share?' },
+  { id:'churn_nrr',    dim:7, label:'Churn rate and net revenue retention',                           help:'Can you produce monthly gross and net churn with revenue impact in <1 day?' },
+  { id:'cust_rank',    dim:8, label:'Customer profitability ranking',                                 help:'Can you rank customers by profitability (not just revenue) today?' },
+  { id:'pricing_sens', dim:8, label:'Pricing sensitivity analysis',                                   help:'Can you model the EBITDA impact of a 1% price change across the portfolio?' },
+  { id:'biz_case_roi', dim:8, label:'Business case with post-investment ROI tracking',                help:'Do you have a standard business case template with finance-led challenge and live ROI tracking?' },
+  { id:'pipeline_rev', dim:8, label:'Sales pipeline to revenue conversion model',                     help:'Can you link commercial pipeline data to a revenue forecast?' },
+  { id:'rolling_fcst', dim:4, label:'Rolling 12-month reforecast (updated monthly)',                  help:'Is a rolling reforecast produced automatically each month, or is it a manual exercise?' },
+  { id:'scenario_mdl', dim:4, label:'Scenario / downside model (3 cases)',                            help:'Do you have a live base / upside / downside model ready to share with the PE board?' },
+  { id:'flash_pl',     dim:4, label:'Flash P&L within 2 working days of month-end',                  help:'Can you produce a reliable flash result within 2 days, or does it take longer?' },
+  { id:'fwd_board_pk', dim:4, label:'Board pack with forward-looking commentary',                     help:'Does your board pack include a 3-month forward outlook, or only historical variance commentary?' },
+  { id:'cash_13wk',    dim:6, label:'13-week cash flow forecast (connected to ERP)',                  help:'Is your 13-week cash forecast driven by system data, or built manually in Excel?' },
+  { id:'aged_dr_cr',   dim:6, label:'Aged debtor and creditor analysis by BU',                        help:'Can you see aged debtors and creditors split by business unit and customer?' },
+  { id:'dso_trend',    dim:6, label:'DSO / DPO / DIO trend by entity (monthly)',                      help:'Do you track working capital metrics monthly by entity with trend analysis?' },
+  { id:'cov_cert',     dim:6, label:'Covenant compliance certificate (on time)',                      help:'Is your covenant certificate produced on time every period with a finance review before submission?' },
+  { id:'three_yr_pl',  dim:5, label:'3-year audited P&L, balance sheet and cash flow',               help:'Are your last 3 years of financials audited, clean and immediately available for a buyer?' },
+  { id:'ebitda_bridge',dim:5, label:'Normalised / adjusted EBITDA bridge',                           help:'Can you produce a clear EBITDA bridge from statutory to adjusted, with all add-backs documented?' },
+  { id:'wc_sched',     dim:5, label:'Working capital movement schedule',                             help:'Do you have a working capital schedule that reconciles to the balance sheet?' },
+  { id:'mgmt_stat',    dim:5, label:'Management accounts reconciled to statutory accounts',           help:'Can you reconcile management and statutory accounts with differences limited to presentation items?' },
+  { id:'kpi_dd_pack',  dim:5, label:'Data room-ready KPI pack',                                      help:'Is your KPI pack formatted, defined and reconciled well enough to withstand buyer scrutiny?' },
+];
+
+// Group capabilities by dimension for rendering
+function capsByDim(dimIdx) { return CAPABILITIES.filter(c=>c.dim===dimIdx); }
+
+// ── Next steps / vendor content ───────────────────────────────────────────────
+const BANDS = [[0,1],[2],[3]]; // Lagging/Emerging, Effective, BIC
+const BAND_LABELS_ED = ['Lagging–Emerging','Effective','Best-in-Class'];
+const RESP_KEY = 'bowmark_v4_responses';
+const NS_KEY   = 'bowmark_v4_nextsteps';
+
+const DEFAULT_NS = [
+  { dim:'Team Model & Structure', band:0, items:[
+    { type:'process', text:'Map your current team against a standard PE finance org chart — identify single points of failure and coverage gaps immediately' },
+    { type:'process', text:'Separate stewardship and commercial finance into distinct reporting lines within 90 days, even if headcount is thin' },
+    { type:'vendor',  text:'Interim CFO/FD resource: Odgers Interim, Freshminds, Exe-cut — use to bridge structural gaps while permanent hire is secured' },
+    { type:'vendor',  text:'Org design advisory: Korn Ferry, Spencer Stuart — PE-specialist practices for finance function benchmarking' },
+  ]},
+  { dim:'Team Model & Structure', band:1, items:[
+    { type:'process', text:'Define the target operating model for the end of the hold period and work backwards — what needs to be built and when?' },
+    { type:'process', text:'Introduce a dedicated FP&A resource (even 0.5 FTE) to separate insight from reporting workload' },
+    { type:'vendor',  text:'Interim FP&A or FC support: Volt, Robert Half — for targeted capability injection without permanent headcount' },
+  ]},
+  { dim:'Role Design & Seniority Mix', band:0, items:[
+    { type:'process', text:'Conduct a role clarity workshop — define what good looks like for each position before re-hiring or reorganising' },
+    { type:'process', text:'Benchmark salary and seniority against PE portfolio peers; over-paying at the wrong level is a common early-hold mistake' },
+    { type:'vendor',  text:'Executive search: Odgers Berndtson, Korn Ferry, Heidrick & Struggles — for CFO and FC hires with genuine PE experience' },
+    { type:'vendor',  text:'Finance recruitment: Robert Half, Marks Sattin, Brewer Morris — for qualified mid-level finance hires' },
+  ]},
+  { dim:'Role Design & Seniority Mix', band:1, items:[
+    { type:'process', text:'Build succession plans for CFO and FC — PE exits are long; key-person dependency at either level is a real risk' },
+    { type:'process', text:'Review whether CFO time allocation matches the hold stage priorities — strategy vs. operations vs. transactions' },
+    { type:'vendor',  text:'Leadership development: Hemming Morse, Teneo — for CFO coaching and PE-readiness development programmes' },
+  ]},
+  { dim:'Outsourcing & Co-sourcing', band:0, items:[
+    { type:'process', text:'Conduct a process mapping exercise across AP, AR, payroll and expenses — quantify in-house cost vs. a managed service' },
+    { type:'process', text:'Issue a simple RFP for transactional outsourcing; even a pilot on one process (e.g. payroll) builds confidence quickly' },
+    { type:'vendor',  text:'Payroll outsourcing: ADP, Sage HR, MHR — established providers with good mid-market PE track records' },
+    { type:'vendor',  text:'Transactional finance outsourcing: Auxis, Genpact, Capita — for AP/AR/expenses managed service' },
+  ]},
+  { dim:'Outsourcing & Co-sourcing', band:1, items:[
+    { type:'process', text:'Move tax compliance and internal audit to a co-source model — retain strategic oversight, outsource execution' },
+    { type:'process', text:'Review SLAs with existing outsource providers annually — most PE-backed businesses set and forget' },
+    { type:'vendor',  text:'Co-sourced internal audit: KPMG, Deloitte, BDO — all offer PE-focused co-source IA packages' },
+    { type:'vendor',  text:'Co-sourced tax: Grant Thornton, RSM — strong mid-market PE tax practices with co-source capability' },
+  ]},
+  { dim:'Systems & Automation', band:0, items:[
+    { type:'process', text:'Prioritise a single source of truth for financial data above all else — even a well-configured mid-tier ERP beats multiple spreadsheets' },
+    { type:'process', text:'Freeze any new spreadsheet-based reporting tools; document all current manual processes ahead of system selection' },
+    { type:'vendor',  text:'Mid-market ERP: Sage Intacct, NetSuite, Microsoft Business Central — all have strong PE portfolio track records at £10–100m revenue' },
+    { type:'vendor',  text:'Implementation partner: Bluerock, Clarus, Fynapse — PE-specialist ERP implementers who understand investor reporting requirements' },
+  ]},
+  { dim:'Systems & Automation', band:1, items:[
+    { type:'process', text:'Layer FP&A tooling on top of your ERP — do not try to run budgeting and scenario planning in the ERP itself' },
+    { type:'process', text:'Automate the month-end close checklist — tools like FloQast or BlackLine pay back in close-time reduction within 3 months' },
+    { type:'vendor',  text:'FP&A platforms: Pigment, Mosaic, Adaptive Planning — evaluate based on model complexity and team size' },
+    { type:'vendor',  text:'Close management: FloQast, BlackLine — both have strong mid-market implementations and fast time-to-value' },
+  ]},
+  { dim:'Systems & Automation', band:2, items:[
+    { type:'process', text:'Explore AI-assisted variance analysis and narrative generation — tools are maturing fast and CFO time is the scarcest resource' },
+    { type:'vendor',  text:'AI finance tools: Workiva, Leapfin — emerging category; pilot before committing to full deployment' },
+    { type:'vendor',  text:'Data visualisation: Power BI, Tableau — for self-service dashboards that reduce ad-hoc finance team requests' },
+  ]},
+  { dim:'Governance & Reporting', band:0, items:[
+    { type:'process', text:'Agree a fixed board pack template with your PE investor in the next 30 days — format disputes after submission are expensive' },
+    { type:'process', text:'Publish a month-end close calendar with named owners for each task; make it visible to the whole finance team' },
+    { type:'process', text:'Aim for a 5-working-day close as a 12-month target — benchmark yourself now and track monthly' },
+    { type:'vendor',  text:'Reporting automation: Vena, Planful — for automating board pack assembly and investor reporting packs' },
+  ]},
+  { dim:'Governance & Reporting', band:1, items:[
+    { type:'process', text:'Shift board pack commentary from backward-looking to forward-looking — investors want the next 3 months, not last month explained' },
+    { type:'process', text:'Introduce rolling 12-month forecasting alongside the annual budget — PE investors value in-year visibility over year-end surprises' },
+    { type:'vendor',  text:'Integrated reporting: Workiva, Vena — for combining narrative, financials and KPIs in a single investor-grade output' },
+    { type:'vendor',  text:'FP&A advisory: FTI Consulting, Alvarez & Marsal — for building PE-standard planning and forecasting frameworks' },
+  ]},
+  { dim:'Exit Readiness', band:0, items:[
+    { type:'process', text:'Complete an exit readiness diagnostic immediately — identify the top 5 data room gaps and assign owners to each' },
+    { type:'process', text:'Begin buyer mapping with your PE sponsor; define the equity story outline and identify narrative risks early' },
+    { type:'vendor',  text:'Exit readiness advisory: EY-Parthenon, Alvarez & Marsal, FTI Consulting — for structured exit preparation programmes' },
+    { type:'vendor',  text:'Commercial due diligence pre-positioning: LEK, Bain, OC&C — for strengthening the equity story with market evidence' },
+  ]},
+  { dim:'Exit Readiness', band:1, items:[
+    { type:'process', text:'Populate a shadow data room now; align historical financials to buyer GAAP; identify any normalisation items upfront' },
+    { type:'process', text:'Complete a mock Q&A session with your advisors; identify the three questions you are least comfortable answering' },
+    { type:'vendor',  text:'Financial due diligence preparation: KPMG, Deloitte, Grant Thornton — for vendor due diligence (VDD) and QoE preparation' },
+    { type:'vendor',  text:'Data room management: Intralinks, Datasite — for shadow data room build and diligence-ready document management' },
+  ]},
+  { dim:'Cash & Working Capital', band:0, items:[
+    { type:'process', text:'Build a rolling 13-week cash forecast connected to ERP actuals; measure accuracy from day one' },
+    { type:'process', text:'Baseline DSO, DPO and DIO by entity and BU; run root-cause analysis on the three largest aged debtor items' },
+    { type:'process', text:'Establish a weekly cash review meeting; assign named owners for receivables, payables and inventory' },
+    { type:'vendor',  text:'Cash flow forecasting tools: Cashforce, Kyriba — purpose-built treasury forecasting with ERP integration' },
+    { type:'vendor',  text:'Collections automation: Chaser, YayPay (now Quadient) — for automated dunning and AR acceleration' },
+  ]},
+  { dim:'Cash & Working Capital', band:1, items:[
+    { type:'process', text:'Embed DSO/DPO/DIO targets into the annual budget cycle; link working capital KPIs to commercial team incentives' },
+    { type:'process', text:'Review key supplier payment terms strategically; model the EBITDA and cash impact of extending DPO' },
+    { type:'vendor',  text:'Supply chain finance / dynamic discounting: Taulia, C2FO — for optimising payables without damaging supplier relationships' },
+    { type:'vendor',  text:'Working capital advisory: FTI Consulting, Alvarez & Marsal — for structured cash excellence programmes with PE experience' },
+  ]},
+  { dim:'Data Quality & Analytics', band:0, items:[
+    { type:'process', text:'Audit KPI definitions across finance and business — map every definition discrepancy and assign a single owner to resolve' },
+    { type:'process', text:'Standardise the chart of accounts across all entities; freeze any ad hoc COA changes pending a governance review' },
+    { type:'vendor',  text:'BI and self-serve analytics: Microsoft Power BI, Tableau — low-cost entry points for dashboard deployment' },
+    { type:'vendor',  text:'Master data management: Stibo Systems, Informatica — for enterprise-grade MDM if data fragmentation is severe' },
+  ]},
+  { dim:'Data Quality & Analytics', band:1, items:[
+    { type:'process', text:'Publish a group-wide KPI dictionary: definition, calculation logic, data source and named owner for every metric' },
+    { type:'process', text:'Connect your ERP to the BI layer; automate the core dashboard refresh and eliminate manual Excel data pulls' },
+    { type:'vendor',  text:'Data warehouse / integration: Azure Data Factory, dbt, Fivetran — for building a governed single source of truth' },
+    { type:'vendor',  text:'AI analytics overlay: Pigment AI, Workiva — for narrative generation and anomaly detection on top of existing data' },
+  ]},
+  { dim:'Business Partnering', band:0, items:[
+    { type:'process', text:'Formally separate business partner roles from controller roles — document scope, accountabilities and success metrics for each' },
+    { type:'process', text:'Attend three business team meetings in the next month; shift the agenda from variance reporting to forward-looking insight' },
+    { type:'process', text:'Introduce a standard business case template; require finance sign-off on all investment decisions above a defined threshold' },
+    { type:'vendor',  text:'Finance business partnering training: CIMA, FP&A Advisory, The FP&A Guy — structured development for finance teams moving from control to insight' },
+  ]},
+  { dim:'Business Partnering', band:1, items:[
+    { type:'process', text:'Deploy self-serve dashboards for at least one BU; track adoption monthly and use low adoption as a coaching prompt' },
+    { type:'process', text:'Introduce post-investment reviews for all major business cases; track forecast vs actual ROI and share learnings' },
+    { type:'vendor',  text:'Commercial analytics tools: Pigment, Mosaic — for FP&A teams moving from Excel to driver-based commercial modelling' },
+    { type:'vendor',  text:'Business partnering advisory: Deloitte Finance Business Partnering practice, PwC Finance Transformation — for operating model design' },
+  ]},
+];
+
+// ── Value Foundations logic ───────────────────────────────────────────────────
+// Maps each dim's score band to a Technology, People, Process, Data rating
+function deriveFoundations(bands) {
+  // bands is array of 9 values (0-3 or null)
+  // dims: 0=Team, 1=Role, 2=Outsourcing, 3=Systems, 4=Governance, 5=Exit, 6=Cash, 7=Data, 8=BizPartner
+  const get = (i) => (bands[i] == null ? 0 : bands[i]);
+  // Technology: Systems (3) + Data (7) + Governance (4)
+  const tech   = Math.round(get(3)*0.5 + get(7)*0.3 + get(4)*0.2);
+  // People: Role Design (1) + Team Model (0) + Biz Partnering (8)
+  const people = Math.round(get(1)*0.4 + get(0)*0.35 + get(8)*0.25);
+  // Process: Outsourcing (2) + Governance (4) + Cash (6) + Team Model (0)
+  const proc   = Math.round(get(2)*0.3 + get(4)*0.3 + get(6)*0.25 + get(0)*0.15);
+  // Data: Data Quality (7) + Systems (3) + Biz Partnering (8)
+  const data   = Math.round(get(7)*0.5 + get(3)*0.3 + get(8)*0.2);
+  return { tech, people, proc, data };
+}
+
+const FOUND_LABELS = {
+  tech:  ['Manual & spreadsheet-heavy','ERP in place, Excel still dominant','Integrated ERP + FP&A + BI stack','AI-enabled; fully automated; real-time'],
+  people:['Decentralised; roles unclear','In-house team; limited specialist depth','Right roles; some succession planning','Structured talent pipeline; exit-ready'],
+  proc:  ['Non-standardised; fragmented','Key processes defined; inconsistently applied','Leading practices applied widely; close calendar','End-to-end digitised; continuous improvement'],
+  data:  ['Siloed; no single source of truth','System-level aggregation; manual reconciliation','Harmonised data; self-service dashboards','Analytics-driven; real-time; exit DD-ready'],
+};
+
+// ── State ─────────────────────────────────────────────────────────────────────
+let mode = 'participant';
+let currentScreen = 0;
+let myScores = Array(9).fill(null); // 0-3 band values
+let myCapabilities = {}; // capability id -> 'monthly'/'adhoc'/'no'
+let submitted = false;
+let nsData = null;
+const TOTAL_SCREENS = 9 + 2; // 9 dims + intro + results = 11 steps
+
+// ── Storage ───────────────────────────────────────────────────────────────────
+// ── Supabase configuration ────────────────────────────────────────────────────
+var SUPABASE_URL = 'YOUR_SUPABASE_URL';   // e.g. https://xyzxyz.supabase.co
+var SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+var SUPABASE_TABLE = 'responses';
+
+function supabaseHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_KEY,
+    'Prefer': 'return=minimal'
+  };
+}
+
+// Save a response to Supabase (async)
+function saveResponse(scores, caps) {
+  var payload = {
+    data: {
+      id: Date.now(),
+      ts: Date.now(),
+      scores: scores.slice(),
+      capabilities: Object.assign({}, caps)
+    }
+  };
+  fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE, {
+    method: 'POST',
+    headers: supabaseHeaders(),
+    body: JSON.stringify(payload)
+  }).then(function(r) {
+    if (!r.ok) {
+      r.text().then(function(t){ console.error('Supabase save error:', t); });
+    }
+  }).catch(function(e) {
+    console.error('Supabase unreachable, saving locally:', e);
+    // Fallback to localStorage
+    try {
+      var all = JSON.parse(localStorage.getItem(RESP_KEY)||'[]');
+      all.push(payload.data);
+      localStorage.setItem(RESP_KEY, JSON.stringify(all));
+    } catch(ex) {}
+  });
+}
+
+// Load all responses from Supabase (returns a Promise)
+function loadResponses() {
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+    // Not yet configured — use localStorage
+    try { return Promise.resolve(JSON.parse(localStorage.getItem(RESP_KEY)||'[]')); }
+    catch(e) { return Promise.resolve([]); }
+  }
+  return fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE + '?select=data&order=id.asc', {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY
+    }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(rows) {
+    // Each row has a .data field containing the response object
+    return rows.map(function(row, i) {
+      var d = row.data;
+      d.id = i + 1; // re-number for display
+      return d;
+    });
+  })
+  .catch(function(e) {
+    console.error('Supabase load failed, falling back to localStorage:', e);
+    try { return JSON.parse(localStorage.getItem(RESP_KEY)||'[]'); }
+    catch(ex) { return []; }
+  });
+}
+
+// Clear all responses from Supabase
+function clearResponses() {
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+    localStorage.removeItem(RESP_KEY);
+    return Promise.resolve();
+  }
+  return fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE + '?id=gte.0', {
+    method: 'DELETE',
+    headers: supabaseHeaders()
+  }).catch(function(e) {
+    console.error('Supabase clear failed:', e);
+  });
+}
+function loadNS() { try { const r=localStorage.getItem(NS_KEY); if(r) return JSON.parse(r); } catch(e){} return JSON.parse(JSON.stringify(DEFAULT_NS)); }
+function saveNS() { localStorage.setItem(NS_KEY,JSON.stringify(nsData)); }
+function resetNS() { nsData=JSON.parse(JSON.stringify(DEFAULT_NS)); saveNS(); }
+
+function getItems(dimLabel, bandIdx) { const e=nsData.find(e=>e.dim===dimLabel&&e.band===bandIdx); return e?e.items:[]; }
+function scoreToBand(b) { // b is 0,1,2,3 — maps to NS band (0=Lag/Em, 1=Eff, 2=BIC)
+  if(b<=1) return 0; if(b===2) return 1; return 2;
+}
+
+// ── Mode ──────────────────────────────────────────────────────────────────────
+function setMode(m) {
+  if (m === 'facilitator' || m === 'editor') {
+    var pwd = prompt('Enter password to access ' + (m==='facilitator'?'Facilitator Dashboard':'Edit Content') + ':');
+    if (pwd !== 'CF0_26!') {
+      alert('Incorrect password.');
+      return;
+    }
+  }
+  mode=m;
+  document.getElementById('btn-participant').className='mode-btn'+(m==='participant'?' active':'');
+  document.getElementById('btn-facilitator').className='mode-btn'+(m==='facilitator'?' active':'');
+  document.getElementById('btn-editor').className='mode-btn'+(m==='editor'?' edit-active':'');
+  document.getElementById('progress-wrap').style.display=m==='participant'?'':'none';
+  if(m==='participant') go(currentScreen);
+  else if(m==='facilitator') renderFacilitator();
+  else renderEditor();
+}
+
+// ── Progress ──────────────────────────────────────────────────────────────────
+function buildProgress() {
+  const labels=['Introduction',...DIMS.map(d=>d.label),'Your Results'];
+  document.getElementById('prog-label').textContent=labels[Math.min(currentScreen,10)];
+  const pb=document.getElementById('prog'); pb.innerHTML='';
+  for(let i=0;i<11;i++){const d=document.createElement('div');d.className='prog-step'+(i<currentScreen?' done':i===currentScreen?' active':'');pb.appendChild(d);}
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function go(n){currentScreen=n;buildProgress();const sh=document.getElementById('shell');if(n===0)sh.innerHTML=renderIntro();else if(n>=1&&n<=9)sh.innerHTML=renderDim(n-1);else sh.innerHTML=renderResults();window.scrollTo(0,0);}
+function selectScore(dim,val){myScores[dim]=val;go(dim+1);}
+
+// ── Radar SVG ─────────────────────────────────────────────────────────────────
+function drawRadar(vals, size, stroke) { // vals are 0-3 band values, normalise to 0-1
+  const norm=vals.map(v=>v==null?0:(v+1)/4);
+  const cx=size/2,cy=size/2,r=size*0.35,n=9;
+  const ang=Array.from({length:n},(_,i)=>-Math.PI/2+(2*Math.PI/n)*i);
+  const pt=(v,i)=>{const m=r*v;return[cx+m*Math.cos(ang[i]),cy+m*Math.sin(ang[i])];};
+  const poly=pts=>pts.map(p=>p.join(',')).join(' ');
+  const grids=[0.25,0.5,0.75,1].map(g=>{const gp=DIMS.map((_,i)=>[cx+r*g*Math.cos(ang[i]),cy+r*g*Math.sin(ang[i])]);return`<polygon points="${poly(gp)}" fill="none" stroke="#E4DEE0" stroke-width="1.2"/>`;}).join('');
+  const axes=ang.map(a=>`<line x1="${cx}" y1="${cy}" x2="${cx+r*Math.cos(a)}" y2="${cy+r*Math.sin(a)}" stroke="#E4DEE0" stroke-width="1.2"/>`).join('');
+  const sp=norm.map((v,i)=>pt(v,i));
+  const shape=`<polygon points="${poly(sp)}" fill="${stroke}" fill-opacity=".15" stroke="${stroke}" stroke-width="2.5"/>`;
+  const dots=sp.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="${stroke}" stroke="#fff" stroke-width="2"/>`).join('');
+  const ls=size<220?8:10,ld=r+size*0.1;
+  const lbls=Array.from({length:n},(_,i)=>{const d=DIMS[i]||{short:''};const lx=cx+ld*Math.cos(ang[i]),ly=cy+ld*Math.sin(ang[i]);const a=Math.abs(Math.cos(ang[i]))<0.15?'middle':Math.cos(ang[i])>0?'start':'end';return`<text x="${lx}" y="${ly}" text-anchor="${a}" dominant-baseline="middle" font-size="${ls}" fill="#465576" font-family="Arial,sans-serif">${d.short}</text>`;}).join('');
+  return`<svg viewBox="0 0 ${size} ${size}" preserveAspectRatio="xMidYMid meet" style="width:100%;height:auto;overflow:visible">${grids}${axes}${shape}${dots}${lbls}</svg>`;
+}
+
+// ── Next steps ─────────────────────────────────────────────────────────────────
+function renderNSPanel(dimLabel, band, showTitle) {
+  const nsIdx=scoreToBand(band);
+  const items=getItems(dimLabel,nsIdx);
+  if(!items.length) return '';
+  const title=showTitle?`${dimLabel} <span style="font-size:10px;font-weight:400;color:var(--slate);text-transform:none">— ${BAND_NAMES[band]}</span>`:'Suggested next steps';
+  return`<div class="ns-panel"><div class="ns-title"><div class="ns-pip"></div>${title}</div>${items.map(item=>`<div class="ns-item"><span class="ns-badge ${item.type}">${item.type==='vendor'?'Vendor':'Process'}</span><span class="ns-text">${item.text}</span></div>`).join('')}</div>`;
+}
+
+// ── Phased roadmap ─────────────────────────────────────────────────────────────
+function renderRoadmap(dimLabel) {
+  const rm=ROADMAP.find(r=>r.dim===dimLabel);
+  if(!rm) return '';
+  return`<div style="margin-top:12px">
+    <div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px">Phased action plan</div>
+    <div class="roadmap-grid">
+      ${rm.phases.map(p=>`<div class="roadmap-col">
+        <div class="roadmap-header" style="background:${p.color};color:#fff">${p.label}</div>
+        <div class="roadmap-body">${p.items.map(item=>`<div class="roadmap-item"><div class="roadmap-dot" style="background:${p.color}"></div><span>${item}</span></div>`).join('')}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ── Value Foundations ──────────────────────────────────────────────────────────
+function renderFoundations(bands) {
+  const f=deriveFoundations(bands);
+  const foundations=[
+    {key:'tech',  label:'Technology', val:f.tech},
+    {key:'people',label:'People',     val:f.people},
+    {key:'proc',  label:'Process',    val:f.proc},
+    {key:'data',  label:'Data & Analytics', val:f.data},
+  ];
+  return`<div style="margin-top:14px">
+    <div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Value foundations assessment</div>
+    <div style="font-size:11.5px;color:var(--slate);margin-bottom:10px">Derived from your scores — how mature are the four foundations that underpin finance performance?</div>
+    <div class="foundations-grid">
+      ${foundations.map(f=>`<div class="foundation-card">
+        <div class="foundation-label">${f.label}</div>
+        <div class="foundation-bar-wrap"><div class="foundation-bar" style="width:${(f.val+1)/4*100}%;background:${BAND_COLORS[f.val]}"></div></div>
+        <div class="foundation-level" style="color:${BAND_COLORS[f.val]}">${BAND_NAMES[f.val]}</div>
+        <div class="foundation-desc">${FOUND_LABELS[f.key][f.val]}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PARTICIPANT SCREENS
+// ═══════════════════════════════════════════════════════════════════════════════
+function renderIntro() {
+  return`<div class="card">
+    <div class="section-title">Welcome to the self-assessment</div>
+    <div class="section-rule"></div>
+    <div class="intro-card"><h3>How it works</h3><p>Rate your finance function across six dimensions using a four-band scale: Lagging, Emerging, Effective and Best-in-Class. Each band maps to an established PE finance maturity framework used by leading PE houses. Your scores generate a personal radar chart, a Value Foundations overlay, and a phased action plan.</p></div>
+    <div class="intro-card"><h3>The four bands</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
+        ${BAND_NAMES.map((n,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:2px;background:${BAND_COLORS[i]}12;border:1px solid ${BAND_COLORS[i]}30">
+          <div style="width:8px;height:8px;border-radius:50%;background:${BAND_COLORS[i]};flex-shrink:0"></div>
+          <span style="font-size:12px;font-weight:700;color:${BAND_COLORS[i]}">${n}</span>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="intro-card"><h3>Be honest</h3><p>There are no right answers. The richest insight comes from candour, not flattery. Lagging is not a failing — it is a starting point.</p></div>
+    <div class="intro-card">
+      <h3>Calibrate to your hold stage</h3>
+      <div class="hold-grid">
+        <div class="hold-card"><div class="hold-stage">100-Day Plan</div><div class="hold-target">Emerging+ on control dims; baseline others</div></div>
+        <div class="hold-card"><div class="hold-stage">Year 1–2</div><div class="hold-target">Effective on all six core dimensions</div></div>
+        <div class="hold-card"><div class="hold-stage">Year 3–4</div><div class="hold-target">Effective–BIC; exit readiness active</div></div>
+        <div class="hold-card"><div class="hold-stage">Pre-Exit</div><div class="hold-target">BIC on exit, cash, data and governance</div></div>
+      </div>
+    </div>
+    <div class="intro-card">
+      <h3>The nine dimensions</h3>
+      <div class="dim-dots">${DIMS.map((d,i)=>`<span class="dim-dot">${i+1}. ${d.label} <span style="font-size:9px;opacity:.7">(${d.compass})</span></span>`).join('')}</div>
+    </div>
+    <div class="nav-row">
+      <button class="btn" onclick="showQR()" style="font-size:12px;color:var(--teal);border-color:var(--teal)">📱 Share QR</button>
+      <button class="btn btn-primary" onclick="go(1)">Start assessment &rarr;</button>
+    </div>
+  </div>`;
+}
+
+function renderDim(i) {
+  // Initialise all capabilities for this dimension to false if not yet set
+  // This ensures unticked boxes are recorded as false (not undefined) on submit
+  capsByDim(i).forEach(function(cap) {
+    if (myCapabilities[cap.id] === undefined) {
+      myCapabilities[cap.id] = 'no';
+    }
+  });
+  var d = DIMS[i];
+  var options = '';
+  RUB[i].forEach(function(t, j) {
+    options += '<div class="score-option' + (myScores[i]===j ? ' selected' : '') + '" onclick="selectScore(' + i + ',' + j + ')">'
+             + '<div class="score-num" style="background:' + BAND_COLORS[j] + '">'
+             + '<span class="score-num-val">' + (j+1) + '</span>'
+             + '<span style="font-size:9px;letter-spacing:0.3px">' + BAND_SHORT[j] + '</span>'
+             + '</div>'
+             + '<div class="score-text">' + t + '</div>'
+             + '</div>';
+  });
+  var nextDisabled = myScores[i] === null ? ' disabled' : '';
+  return '<div class="card">'
+       + '<div class="dim-header">'
+       + '<div class="dim-badge">' + (i+1) + '</div>'
+       + '<div>'
+       + '<div class="dim-title">' + d.label + '</div>'
+       + '<div class="dim-sub">' + d.q + ' &nbsp;<span style="font-size:10px;color:var(--teal);font-weight:700">' + d.compass + '</span></div>'
+       + '</div>'
+       + '</div>'
+       + '<div style="font-size:12px;color:#9192AB;margin-bottom:12px;font-style:italic">Select the band that most honestly describes your current state</div>'
+       + options
+       + renderCapChecklist(i)
+       + '<div class="nav-row">'
+       + '<button class="btn" onclick="go(' + i + ')">&#8592; Back</button>'
+       + '<span class="step-label">Dimension ' + (i+1) + ' of 9</span>'
+       + '<button class="btn btn-primary" onclick="go(' + (i+2) + ')"' + nextDisabled + '>Next &#8594;</button>'
+       + '</div>'
+       + '</div>';
+}
+
+function renderCapChecklist(dimIdx) {
+  var caps = capsByDim(dimIdx);
+  if (!caps.length) return '';
+  var subtitles = {
+    4:'For each output, select how regularly your finance team produces it.',
+    5:'For each exit-readiness output, select how regularly it is produced.',
+    6:'For each cash and working capital output, select how regularly it is produced.',
+    7:'For each analytical output, select how regularly your team produces it.',
+    8:'For each commercial finance output, select how regularly it is produced.',
+  };
+  var sub = subtitles[dimIdx] || 'For each output, select how regularly your finance team produces it.';
+  var items = '';
+  caps.forEach(function(cap) {
+    var val = myCapabilities[cap.id]; // 'monthly', 'adhoc', 'no', or undefined
+    var stateClass = val ? ' state-' + val : '';
+    items += '<div class="cap-item' + stateClass + '">'
+           + '<div class="cap-item-header">'
+           + '<div class="cap-item-label">' + cap.label + '</div>'
+           + '<div class="cap-item-help">' + cap.help + '</div>'
+           + '</div>'
+           + '<div class="cap-item-btns">'
+           + '<button class="cap-btn' + (val==='monthly'?' sel-monthly':'') + '" onclick="setCapAndRender(\'' + cap.id + '\',\'monthly\',' + dimIdx + ')">✓ Present<br>Monthly</button>'
+           + '<button class="cap-btn' + (val==='adhoc'?' sel-adhoc':'') + '" onclick="setCapAndRender(\'' + cap.id + '\',\'adhoc\',' + dimIdx + ')">~ Produce<br>Ad-Hoc</button>'
+           + '<button class="cap-btn' + (val==='no'?' sel-no':'') + '" onclick="setCapAndRender(\'' + cap.id + '\',\'no\',' + dimIdx + ')">✗ Don&#39;t / Can&#39;t<br>Produce</button>'
+           + '</div>'
+           + '</div>';
+  });
+  return '<div class="cap-section">'
+       + '<div class="cap-section-title">Capability check</div>'
+       + '<div class="cap-section-sub">' + sub + '</div>'
+       + items
+       + '</div>';
+}
+
+function setCapAndRender(id, val, dimIdx) {
+  // Toggle off if already selected, otherwise set new value
+  myCapabilities[id] = myCapabilities[id] === val ? 'no' : val;
+  var capSection = document.querySelector('.cap-section');
+  if (capSection) {
+    var tmp = document.createElement('div');
+    tmp.innerHTML = renderCapChecklist(dimIdx);
+    capSection.parentNode.replaceChild(tmp.firstChild, capSection);
+  }
+}
+
+function renderResults() {
+  const avg=(myScores.reduce((a,b)=>a+(b===null?0:b),0)/6);
+  const avgBand=Math.round(avg);
+  const insight=avg>=2.5?'Strong foundation — focus on sustaining excellence and exit readiness.':avg>=1.5?'Solid baseline — targeted investment in the weakest dimensions will drive meaningful improvement.':'Significant gaps identified — prioritise Lagging dimensions urgently before exit pressures mount.';
+  const sorted=myScores.map((s,i)=>({i,v:s===null?0:s})).sort((a,b)=>a.v-b.v);
+  const top=sorted.slice(0,3).filter(x=>x.v<3);
+  const banner=submitted?`<div class="sub-banner">✓ Scores submitted to the group view.</div>`:`<div class="nav-row" style="margin-bottom:12px"><span style="font-size:12.5px;color:var(--slate)">Share your scores anonymously with the group?</span><button class="btn btn-teal" onclick="submitToGroup()">Submit to group →</button></div>`;
+
+  const nsHtml=top.length?`<div class="sep"></div>
+    <div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Suggested next steps by dimension</div>
+    ${top.map(x=>renderNSPanel(DIMS[x.i].label,x.v,true)).join('')}
+    ${top.length>0?renderRoadmap(DIMS[top[0].i].label):''}`:'' ;
+
+  return`<div class="card">
+    <div class="section-title">Your results</div>
+    <div class="section-rule"></div>
+    ${banner}
+    <div class="radar-wrap" style="max-width:320px;margin:0.5rem auto 1.3rem">${drawRadar(myScores,280,'#006C80')}</div>
+    <div class="score-summary">
+      ${DIMS.map((d,i)=>{const v=myScores[i];const pct=v===null?0:(v+1)/4*100;return`<div class="sum-card">
+        <div class="sum-label">${d.short}</div>
+        <div class="sum-val" style="color:${bandColor(v)}">${v===null?'—':BAND_NAMES[v]}</div>
+        <div class="sum-bar-wrap"><div class="sum-bar" style="width:${pct}%;background:${bandColor(v)}"></div></div>
+      </div>`;}).join('')}
+    </div>
+    <div class="avg-card">
+      <div>
+        <div class="avg-num" style="color:${BAND_COLORS[avgBand]}">${BAND_NAMES[avgBand]}</div>
+        <div style="font-size:10px;color:#9192AB;margin-top:3px;text-transform:uppercase;letter-spacing:.5px">Overall band</div>
+      </div>
+      <div class="avg-text">${insight}</div>
+    </div>
+    ${renderFoundations(myScores)}
+    ${renderParticipantHeatmap()}
+    ${nsHtml}
+    <div class="sep"></div>
+    <div style="margin-bottom:1.4rem">
+      <div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:.5px;margin-bottom:9px">Reflection questions</div>
+      <ul class="reflect-list">
+        <li>What is the single biggest risk to your finance function if nothing changes in the next 12 months?</li>
+        <li>Looking across all nine dimensions — which one gap would a buyer most likely identify first in a DD process?</li>
+        <li>Which of your scores surprised you most — and why?</li>
+        <li>Is your current CFO profile the right one for the next stage of the hold?</li>
+        <li>If a buyer ran DD on your finance function today, what would they find?</li>
+        <li>What resource or support do you need from your PE investor to make your top priority happen?</li>
+        <li>How would you rate your exit readiness compared to where you need to be in 18 months?</li>
+      </ul>
+    </div>
+    <div class="nav-row">
+      <button class="btn" onclick="go(6)">← Back</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="print-btn" onclick="window.print()">🖨 Print</button>
+        <button class="btn btn-primary" onclick="resetParticipant()">Start again</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleCap(id,checked){myCapabilities[id]=checked;}
+
+function capScore(val) {
+  if (val === 'monthly') return 2;
+  if (val === 'adhoc')   return 1;
+  return 0;
+}
+
+function capCell(val) {
+  if (val === 'monthly') return '<td class="hm-monthly">Monthly</td>';
+  if (val === 'adhoc')   return '<td class="hm-adhoc">Ad-Hoc</td>';
+  if (val === 'no')      return '<td class="hm-no">No</td>';
+  return '<td style="text-align:center;color:#ccc;font-size:10px">\u2014</td>';
+}
+
+function renderParticipantHeatmap() {
+  var hasCaps = CAPABILITIES.some(function(c){ return myCapabilities[c.id] !== undefined; });
+  if (!hasCaps) return '';
+
+  var dimOrder = [7, 8, 4, 6, 5];
+  var dimLabels = { 7:'Data & Analytics', 8:'Business Partnering', 4:'Governance & Reporting', 6:'Cash & Working Capital', 5:'Exit Readiness' };
+
+  var rows = '';
+  dimOrder.forEach(function(dimIdx) {
+    var caps = CAPABILITIES.filter(function(c){ return c.dim === dimIdx; });
+    if (!caps.length) return;
+    rows += '<tr><td colspan="2" class="hm-dim-header"><span class="hm-dim-label">' + dimLabels[dimIdx] + '</span></td></tr>';
+    caps.forEach(function(cap) {
+      var val = myCapabilities[cap.id];
+      rows += '<tr><td class="hm-label" title="' + cap.label + '">' + cap.label + '</td>' + capCell(val) + '</tr>';
+    });
+  });
+
+  var answered = CAPABILITIES.filter(function(c){ return myCapabilities[c.id] !== undefined; });
+  var totalScore = answered.reduce(function(a,c){ return a + capScore(myCapabilities[c.id]); }, 0);
+  var maxScore = answered.length * 2;
+  var pct = maxScore > 0 ? Math.round(totalScore/maxScore*100) : 0;
+  var monthly = answered.filter(function(c){ return myCapabilities[c.id]==='monthly'; }).length;
+  var adhoc   = answered.filter(function(c){ return myCapabilities[c.id]==='adhoc'; }).length;
+  var no      = answered.filter(function(c){ return myCapabilities[c.id]==='no'; }).length;
+  var color = pct >= 70 ? '#118B80' : pct >= 40 ? '#8B7495' : '#C0392B';
+  var label = pct >= 70 ? 'Strong analytical foundation.' : pct >= 40 ? 'Developing — focus on moving Ad-Hoc outputs to Monthly.' : 'Significant gaps — these will surface in buyer DD.';
+
+  return '<div class="sep"></div>'
+       + '<div style="font-size:11px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Capability snapshot</div>'
+       + '<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;margin-bottom:10px">'
+       + '<div style="background:var(--ow);border-radius:2px;padding:9px 10px;border:1px solid var(--pearl);text-align:center"><div style="font-size:20px;font-weight:700;color:' + color + '">' + pct + '%</div><div style="font-size:10px;color:var(--slate)">Maturity score</div></div>'
+       + '<div style="background:#118B8010;border-radius:2px;padding:9px 10px;border:1px solid #118B8030;text-align:center"><div style="font-size:20px;font-weight:700;color:#118B80">' + monthly + '</div><div style="font-size:10px;color:var(--slate)">Monthly</div></div>'
+       + '<div style="background:#8B749510;border-radius:2px;padding:9px 10px;border:1px solid #8B749530;text-align:center"><div style="font-size:20px;font-weight:700;color:#8B7495">' + adhoc + '</div><div style="font-size:10px;color:var(--slate)">Ad-Hoc</div></div>'
+       + '<div style="background:#C0392B10;border-radius:2px;padding:9px 10px;border:1px solid #C0392B30;text-align:center"><div style="font-size:20px;font-weight:700;color:#C0392B">' + no + '</div><div style="font-size:10px;color:var(--slate)">Cannot Produce</div></div>'
+       + '</div>'
+       + '<div style="font-size:11.5px;color:var(--slate);margin-bottom:10px;font-style:italic">' + label + '</div>'
+       + '<div class="heatmap-wrap"><table class="heatmap">'
+       + '<thead><tr><th>Capability</th><th style="text-align:center;min-width:80px">Status</th></tr></thead>'
+       + '<tbody>' + rows + '</tbody>'
+       + '</table></div>';
+}
+function submitToGroup(){
+  if(myScores.filter(s=>s!==null).length<9){
+    alert('Please complete all nine dimensions first.');
+    return;
+  }
+  // Show submitting state
+  var btn = document.querySelector('.btn-teal');
+  if(btn){ btn.textContent='Submitting...'; btn.disabled=true; }
+  saveResponse(myScores, myCapabilities);
+  // Small delay to allow the async POST to fire before re-rendering
+  setTimeout(function(){
+    submitted=true;
+    go(10);
+  }, 600);
+}
+function resetParticipant(){myScores=Array(9).fill(null);myCapabilities={};submitted=false;go(0);}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FACILITATOR
+// ═══════════════════════════════════════════════════════════════════════════════
+function exportToExcel() {
+  loadResponses().then(function(responses) {
+  if (!responses.length) { alert('No responses to export yet.'); return; }
+
+  var wb = XLSX.utils.book_new();
+
+  // ── Sheet 1: Summary scores ───────────────────────────────────────────
+  var summaryData = [];
+  // Header row
+  var hdr = ['Participant', 'Submitted'];
+  DIMS.forEach(function(d) { hdr.push(d.label); });
+  hdr.push('Overall Band');
+  summaryData.push(hdr);
+
+  // Data rows
+  responses.forEach(function(r) {
+    var row = ['Participant ' + r.id, new Date(r.ts).toLocaleString('en-GB')];
+    var total = 0; var count = 0;
+    DIMS.forEach(function(d, i) {
+      var v = r.scores[i];
+      row.push(v !== null && v !== undefined ? BAND_NAMES[v] : '—');
+      if (v !== null && v !== undefined) { total += v; count++; }
+    });
+    var avg = count > 0 ? Math.round(total/count) : 0;
+    row.push(BAND_NAMES[avg]);
+    summaryData.push(row);
+  });
+
+  // Group averages row
+  var avgRow = ['GROUP AVERAGE', ''];
+  DIMS.forEach(function(d, i) {
+    var vals = responses.map(function(r){ return r.scores[i]; }).filter(function(v){ return v !== null && v !== undefined; });
+    if (vals.length) {
+      var avg = Math.round(vals.reduce(function(a,b){return a+b;},0)/vals.length);
+      avgRow.push(BAND_NAMES[avg]);
+    } else { avgRow.push('—'); }
+  });
+  var allVals = [];
+  responses.forEach(function(r){ r.scores.forEach(function(v){ if(v!==null&&v!==undefined) allVals.push(v); }); });
+  avgRow.push(allVals.length ? BAND_NAMES[Math.round(allVals.reduce(function(a,b){return a+b;},0)/allVals.length)] : '—');
+  summaryData.push([]);
+  summaryData.push(avgRow);
+
+  var wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+  // Column widths
+  wsSummary['!cols'] = [18,18].concat(DIMS.map(function(){ return {wch:24}; })).concat([{wch:18}]);
+  XLSX.utils.book_append_sheet(wb, wsSummary, 'Score Summary');
+
+  // ── Sheet 2: Score distributions ─────────────────────────────────────
+  var distData = [['Dimension', 'Compass', 'Lagging', 'Emerging', 'Effective', 'Best-in-Class', 'Modal Band', 'Responses']];
+  DIMS.forEach(function(d, i) {
+    var counts = [0,0,0,0];
+    responses.forEach(function(r){ var v=r.scores[i]; if(v!==null&&v!==undefined) counts[v]++; });
+    var total = counts.reduce(function(a,b){return a+b;},0);
+    var modal = counts.indexOf(Math.max.apply(null, counts));
+    distData.push([d.label, d.compass, counts[0], counts[1], counts[2], counts[3], BAND_NAMES[modal], total]);
+  });
+  var wsDist = XLSX.utils.aoa_to_sheet(distData);
+  wsDist['!cols'] = [{wch:28},{wch:20},{wch:12},{wch:12},{wch:12},{wch:16},{wch:18},{wch:12}];
+  XLSX.utils.book_append_sheet(wb, wsDist, 'Distributions');
+
+  // ── Sheet 3: Capability heat map ──────────────────────────────────────
+  var hasCaps = responses.some(function(r){ return r.capabilities && Object.keys(r.capabilities).length > 0; });
+  if (hasCaps) {
+    var capData = [];
+    var capHdr = ['Capability', 'Dimension'];
+    responses.forEach(function(r){ capHdr.push('P' + r.id); });
+    capHdr.push('Can produce (count)', 'Can produce (%)');
+    capData.push(capHdr);
+
+    var dimLabels = {4:'Governance & Reporting',5:'Exit Readiness',6:'Cash & Working Capital',7:'Data & Analytics',8:'Business Partnering'};
+    var dimOrder = [7,8,4,6,5];
+    dimOrder.forEach(function(dimIdx) {
+      var caps = CAPABILITIES.filter(function(c){ return c.dim === dimIdx; });
+      if (!caps.length) return;
+      // Section header row
+      capData.push([dimLabels[dimIdx]].concat(Array(responses.length+3).fill('')));
+      caps.forEach(function(cap) {
+        var row = [cap.label, dimLabels[dimIdx]];
+        var yesCount = 0; var attempted = 0;
+        responses.forEach(function(r) {
+          var caps_data = r.capabilities || {};
+          var val = caps_data[cap.id];
+          if (val === undefined) { row.push('—'); }
+          else {
+            var label = val==='monthly'?'Monthly':val==='adhoc'?'Ad-Hoc':'No';
+            row.push(label);
+            yesCount += (val==='monthly'?2:val==='adhoc'?1:0);
+            attempted++;
+          }
+        });
+        // Convert to % of max possible score
+        var capPct = attempted > 0 ? Math.round(yesCount/(attempted*2)*100) + '%' : '—';
+        row.push(yesCount + '/' + (attempted*2) + ' pts');
+        row.push(capPct);
+        capData.push(row);
+      });
+    });
+
+    var wsCaps = XLSX.utils.aoa_to_sheet(capData);
+    wsCaps['!cols'] = [{wch:45},{wch:25}].concat(responses.map(function(){ return {wch:8}; })).concat([{wch:20},{wch:18}]);
+    XLSX.utils.book_append_sheet(wb, wsCaps, 'Capability Heatmap');
+  }
+
+  // ── Sheet 4: Individual profiles ─────────────────────────────────────
+  var profileData = [['Participant', 'Submitted'].concat(DIMS.map(function(d){ return d.label; })).concat(['Overall Band', 'Capabilities confirmed', 'Capabilities attempted', 'Capability %'])];
+  responses.forEach(function(r) {
+    var row = ['Participant ' + r.id, new Date(r.ts).toLocaleString('en-GB')];
+    var total=0; var count=0;
+    DIMS.forEach(function(d,i){
+      var v=r.scores[i];
+      row.push(v!==null&&v!==undefined?BAND_NAMES[v]:'—');
+      if(v!==null&&v!==undefined){total+=v;count++;}
+    });
+    var avg = count>0?Math.round(total/count):0;
+    row.push(BAND_NAMES[avg]);
+    var caps_data = r.capabilities || {};
+    var capKeys = Object.keys(caps_data);
+    var capYes = capKeys.filter(function(k){ return caps_data[k]===true; }).length;
+    row.push(capYes, capKeys.length, capKeys.length>0?Math.round(capYes/capKeys.length*100)+'%':'—');
+    profileData.push(row);
+  });
+  var wsProfiles = XLSX.utils.aoa_to_sheet(profileData);
+  wsProfiles['!cols'] = [{wch:18},{wch:20}].concat(DIMS.map(function(){ return {wch:24}; })).concat([{wch:16},{wch:22},{wch:22},{wch:16}]);
+  XLSX.utils.book_append_sheet(wb, wsProfiles, 'Individual Profiles');
+
+  // ── Sheet 5: KPI Benchmarks ───────────────────────────────────────────
+  var kpiData = [['Dimension', 'KPI', 'Effective (target)', 'Best-in-Class (target)', 'Note']];
+  BENCHMARKS_KPI.forEach(function(b) {
+    b.kpis.forEach(function(k, i) {
+      kpiData.push([i===0?b.dim:'', k.kpi, k.eff, k.bic, k.note]);
+    });
+    kpiData.push(['','','','','']); // blank row between dims
+  });
+  var wsKpi = XLSX.utils.aoa_to_sheet(kpiData);
+  wsKpi['!cols'] = [{wch:28},{wch:45},{wch:22},{wch:22},{wch:50}];
+  XLSX.utils.book_append_sheet(wb, wsKpi, 'KPI Benchmarks');
+
+  // ── Download ──────────────────────────────────────────────────────────
+  var date = new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, 'Bowmark_CFO_Workshop_' + date + '.xlsx');
+  }); // end loadResponses().then
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FACILITATOR ENRICHMENT DATA
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ── What good looks like: rubric reference cards per dimension ────────────────
+const RUBRIC_CARDS = [
+  { dim:0, title:'Team Model & Structure',
+    bands:[
+      { band:'Lagging', points:['CFO acting as FC, FP&A lead and business partner simultaneously — no bandwidth for strategy','Finance structured around individuals rather than functions; no clear handoff between control and commercial','Single point of failure on reporting; close collapses when CFO is absent','No separation between transactional processing and management accounting'] },
+      { band:'Emerging', points:['CFO and FC in place but team is visibly straining at volume or on M&A activity','FP&A exists but is one person deep — any absence disrupts the forecasting cycle','Stewardship and commercial finance nominally separate but FC still covers both in practice','Team structure copied from a previous business rather than designed for PE ownership'] },
+      { band:'Effective', points:['Distinct stewardship layer (FC, management accountants) fully separate from FP&A and business partnering','CFO operating as a strategic partner to the CEO — not in the weeds of close or reporting','Lean in-house core with managed services for transactional work; PE firm resources leveraged','Finance org chart would survive DD scrutiny without restructuring'] },
+      { band:'Best-in-Class', points:['Finance operating model optimised by process domain with global process owners','Shared service or CoE delivers transactional work; business-facing finance focused on value creation','Finance roles fully mapped to the value chain; every role has explicit accountability and performance metrics','CFO co-owns the value creation plan with the deal team; finance KPIs mirror sponsor expectations'] },
+    ]},
+  { dim:1, title:'Role Design & Seniority Mix',
+    bands:[
+      { band:'Lagging', points:['CFO hired for brand name rather than PE fit — previously Director of Finance in a large corporate','FC role vacant or filled by a management accountant acting up; creates systemic reporting risk','Two senior hires doing similar work with unclear ownership; tension absorbs CFO time','No JDs or levelling framework; roles have drifted from original scope'] },
+      { band:'Emerging', points:['Right roles broadly in place but seniority mix slightly off — one too many senior hires, thin on execution','CFO capable but spends 60%+ of time on reporting rather than value creation or M&A','FC is strong technically but not yet a credible business partner to operational leadership','Succession risk at FC level — CFO would struggle to backfill quickly'] },
+      { band:'Effective', points:['Clear JDs, right levels; stewardship and commercial finance genuinely distinct; RACI embedded','FC is capable and business-partnering effectively; CFO focused on strategy and investor relations','Defined succession plans for CFO and FC; potential successors identified and tracked','Finance operating model documented and reviewed annually'] },
+      { band:'Best-in-Class', points:['CFO profile deliberately matched to hold stage: operator at entry, strategist at exit','FC is exit-ready — could step up to CFO or lead a DD process independently','Benchmark-quality role design; succession plans embedded in VCP governance','Distinct career pathways for controllership, FP&A and business partnering'] },
+    ]},
+  { dim:2, title:'Outsourcing & Co-sourcing',
+    bands:[
+      { band:'Lagging', points:['AP, AR, payroll and expenses all processed in-house by qualified finance staff — high cost, low leverage','CFO personally approves invoices and expenses; no segregation of duties','Previous outsourcing attempt failed; team reverted to doing everything in-house','Tax compliance prepared internally by FC — specialist knowledge thin, risk of error high'] },
+      { band:'Emerging', points:['Payroll outsourced but AP/AR still in-house; team stretched on month-end','Outsource provider in place but SLAs not reviewed since go-live; quality has drifted','Internal audit either absent or done informally — not credible to a sophisticated buyer','Tax outsourced but reactive rather than embedded; no structured co-source model'] },
+      { band:'Effective', points:['AP/AR/payroll/expenses all on managed service; in-house team focused entirely on value-add work','Co-sourced IA programme running to a formal annual plan; findings reported to audit committee','Tax adviser embedded quarterly; transfer pricing and group structure reviewed proactively','Outsource decisions reviewed annually against cost, quality and strategic fit'] },
+      { band:'Best-in-Class', points:['Tiered outsourcing model (strategic/tactical/transactional) optimised across all finance processes','Supplier portals with self-service, PO visibility and SLA dashboards','Co-sourced IA, tax and treasury aligned to PE exit timeline','Outsource ROI tracked to EBITDA and cash savings; continuous improvement embedded'] },
+    ]},
+  { dim:3, title:'Systems & Automation',
+    bands:[
+      { band:'Lagging', points:['Finance runs on spreadsheets; no single source of truth; close takes 10+ days','Multiple finance systems from bolt-on deals, none integrated; no single group P&L view','Budget model is a 40-tab Excel file owned by one person','Board pack assembled manually in PowerPoint from multiple spreadsheet sources each month'] },
+      { band:'Emerging', points:['Basic ERP in place but configured at acquisition and not updated for current complexity','ERP handles AP/AR and GL but FP&A still runs in Excel; two versions of the truth','Some close automation but commentary and pack assembly still manual','Self-service reporting attempted but not adopted — budget holders still email finance for numbers'] },
+      { band:'Effective', points:['Single ERP instance across all entities; close runs in 5-7 working days with automated consolidation','FP&A tool (Pigment, Mosaic or similar) connected to ERP; budget holders own their forecasts directly','Board pack auto-populated from live data; CFO reviews narrative, not numbers','Self-serve dashboards (Power BI/Tableau) available to budget holders; KPI definitions consistent'] },
+      { band:'Best-in-Class', points:['Unified finance tech stack: ERP + CRM + HR + BI + banking fully integrated with real-time data flow','AI/automation driving efficiency: straight-through processing across AP, AR, close and treasury','Close in 4 working days; real-time KPI dashboard accessible to PE board without finance involvement','Predictive analytics standard: automated forecasting and root-cause prediction'] },
+    ]},
+  { dim:4, title:'Governance & Reporting',
+    bands:[
+      { band:'Lagging', points:['Reporting late, inconsistent or disputed; investor reporting often revised post-submission','No agreed template with the PE investor — format changes based on who asked last','Close calendar exists as a concept but is not enforced; same bottlenecks recur every month','Flash P&L not produced; PE board first sees financials 3-4 weeks after month end'] },
+      { band:'Emerging', points:['Close runs in 7-8 working days; board pack out by day 12-15 — functional but not investor-grade','Template agreed with PE board but commentary is backward-looking; little forward guidance included','Finance business partners in place but still reactive — answering questions rather than anticipating them','Annual budget produced but no rolling forecast; in-year surprises land without warning'] },
+      { band:'Effective', points:['5-day close; board pack with full commentary out by day 8 — PE board have financials before the monthly call','Board pack template co-designed with PE investor; narrative is forward-looking with 3-month outlook','Rolling 12-month reforecast updated monthly; CFO can articulate the full-year landing with confidence','Finance drives the operational rhythm — budget holders forecast and own variances'] },
+      { band:'Best-in-Class', points:['Finance operates as a core enabler of the value creation plan; every KPI mapped to a value-driver tree','Near-real-time board dashboards integrating financial and operational data; automated variance explanations','Continuous forecasting capability; rolling 12-15 month outlook; forecast accuracy within ±3% EBITDA','Reporting cycle under 5 working days; live dashboards support CFO, Board and PE sponsor simultaneously'] },
+    ]},
+  { dim:5, title:'Exit Readiness',
+    bands:[
+      { band:'Lagging', points:['No defined exit route; buyers considered only when process is imminent','Equity story absent or focused only on historical performance; no clear "why us" narrative','Financial and operational data fragmented; KPIs inconsistent; limited forecast integrity','Management team not aligned on exit requirements; finance seen as a compliance function only'] },
+      { band:'Emerging', points:['High-level understanding of likely buyer groups but limited insight into their specific priorities','Draft equity case exists but lacks cohesion, data and tailored proof points for buyers','Basic diligence pack assembled reactively; financials audit-ready but not insight-rich','Early engagement plan in place but exit readiness not yet formalised'] },
+      { band:'Effective', points:['Exit readiness review completed 12-24 months ahead of process; buyer mapping linked to strategic positioning','Clear and credible equity case supported by data, KPIs and growth evidence; linked to VCP','Reliable 3-year historicals, forecast model aligned with KPIs and revenue/cost bridges reconciled','Clear management roles and responsibilities across workstreams; resourcing scaled for exit'] },
+      { band:'Best-in-Class', points:['CFO positioned as the face of the exit process; buyer engagement rehearsed and data-driven','Fully investor-grade equity story with tailored versions per buyer type; anticipates buyer pushback','Fully diligence-ready "one version of truth" spanning financial, operational and ESG data','Mock diligence completed; shadow data room maintained live; "no surprises" ethos embedded'] },
+    ]},
+  { dim:6, title:'Cash & Working Capital',
+    bands:[
+      { band:'Lagging', points:['No visibility of cash conversion drivers; DSO/DPO/DIO not tracked; cash forecast produced ad hoc','AR, AP and inventory managed in silos with no formal targets or accountability','Finance and operations work in silos on working capital; improvement efforts reactive and uncoordinated','Frequent cash surprises; covenant compliance uncertain until close to test date'] },
+      { band:'Emerging', points:['Rolling 13-week cash forecast in place but spreadsheet-based and reliant on manual inputs','DSO/DPO/DIO targets exist but ownership is unclear; manual tracking; limited cross-functional accountability','Basic cash review meetings happen but are finance-only with limited commercial ownership of assumptions','Working capital recognised as important but improvement initiatives are piecemeal'] },
+      { band:'Effective', points:['Rolling forecast integrated with ERP; accuracy tracked monthly; forecast-to-actual variance under 10%','Defined ownership for receivables, payables and inventory; weekly reviews with clear improvement actions','Cash mindset embedded beyond finance — budget holders accountable for working capital KPIs','Structured root-cause analysis by BU/customer/supplier; issues logged and resolved with accountability'] },
+      { band:'Best-in-Class', points:['Cash treated as a core strategic KPI; end-to-end working capital model links to liquidity and IRR','Predictive analytics on receivables, payables and inventory; dynamic scenario modelling','Integrated cash excellence programme; DSO under 35 days; optimisation embedded in commercial policy','CFO and sponsor track cash conversion as a primary value lever; forecast accuracy within ±5%'] },
+    ]},
+  { dim:7, title:'Data Quality & Analytics',
+    bands:[
+      { band:'Lagging', points:['KPIs defined differently across functions; analysts spend most of their time reconciling, not analysing','Multiple versions of the truth; reports built in Excel from multiple disconnected sources','Analytics done ad hoc by finance on request; management makes decisions on intuition rather than data','No data governance; COA inconsistent across entities; master data ungoverned'] },
+      { band:'Emerging', points:['Core KPIs broadly agreed but calculation methodology varies; basic dashboards exist but rely on manual uploads','Data often late or incomplete; finance spends time fixing errors rather than providing insight','Some self-service reporting attempted but not adopted; budget holders still email finance for numbers','COA partially standardised; master data manually controlled; errors fixed retrospectively'] },
+      { band:'Effective', points:['Group-wide KPI dictionary with definitions, calculation logic and data source; owners accountable','Self-serve dashboards (Power BI/Tableau) with automated refresh; reconciled to GL; drill-down available','KPI review rhythm embedded into monthly performance meetings; decisions routinely challenged with data','Group-wide COA and master data governance in place; finance owns data standards; change control exists'] },
+      { band:'Best-in-Class', points:['Enterprise data model with golden records for customers, vendors, SKUs and cost centres','KPI taxonomy embedded in ERP/BI tools; fully automated; each KPI linked to value driver tree','Data is the default decision language; business self-serves; finance controls the logic and narrative','AI-driven insight standard; predictive analytics for revenue, cost and cash; exit DD-ready infrastructure'] },
+    ]},
+  { dim:8, title:'Business Partnering',
+    bands:[
+      { band:'Lagging', points:['Finance operates as a back-office function; meetings focus on budget vs actual only; no commercial challenge','No defined business partner roles; pricing, customer and investment decisions made without finance','Finance seen as a gatekeeper rather than a strategic partner; relationships with ops teams adversarial','Business case development ad hoc; post-investment reviews absent; ROI on major decisions not tracked'] },
+      { band:'Emerging', points:['Some individuals provide commentary to the business but roles are unclear; controller and partner blurred','Finance attends reviews but mainly reports numbers; challenge is limited to cost control','Limited data access for business partners; insights are backward-looking and descriptive','Finance supports business case preparation but primarily validates costs; ROI analysis variable'] },
+      { band:'Effective', points:['Defined finance business partner roles distinct from controllers; monthly performance reviews with insight','Finance challenges revenue, margin, pricing and investment assumptions; partners respected as trusted advisors','Self-serve data access in place; business partners provide forward-looking commercial insight','Standardised business case framework with finance challenge; post-mortems conducted'] },
+      { band:'Best-in-Class', points:['Finance is a core strategic arm; proactive insight on pricing, customer economics and ROI','Business cases owned end-to-end: assumptions, sensitivities, payback and post-investment tracking','Commercial challenge embedded: deals won/lost, customer churn, pricing power and margin leakage in scope','Finance operating model aligned with VCP; skills mix reflects exit-readiness and business partnering depth'] },
+    ]},
+];
+
+// ── Common failure patterns by dimension ──────────────────────────────────────
+const FAILURE_PATTERNS = [
+  { dim:0, patterns:{
+    lag:'The most common root cause at Lagging is a CFO who was hired for a previous stage of the business — often a technically strong FC promoted into the role, or a large-corporate hire who has never worked in a PE-backed environment. The second most common is a finance team that was never deliberately designed: it grew organically from the founding team and has not been restructured post-deal. The immediate question to ask the room: does the CFO have enough unblocked time to think?',
+    emg:'Emerging finance functions typically have the right titles but wrong accountabilities. The FC is technically sound but doing CFO-level work because the CFO is stretched. FP&A exists but is one person deep. The team is functioning but fragile — it would not survive one senior departure. The conversation to have: what is the single hire or restructure that would unlock the most capacity?',
+    eff:'Effective teams have cracked the structural problem but often have a people risk: the FC is strong enough to be CFO-ready, which creates succession tension. Or the CFO is operating well but has not yet built a story around the finance function for the exit — buyers will ask about team quality and stability. The question: is the team built for the hold period you have left, or the one that just ended?',
+    bic:'Best-in-Class finance functions are rare in mid-market PE. If the group is here, the conversation should be about sustaining it through a transaction: key-person risk, retention incentives and whether the team has the depth to survive a process without distraction to the core business.',
+  }},
+  { dim:1, patterns:{
+    lag:'At Lagging, the most common failure is a seniority mismatch: either a CFO who is overqualified for the current stage and bored, or one who is underqualified and overwhelmed. The second most common is ghost roles — titles that exist on paper but where the actual work is done by someone else, usually the CFO. The diagnostic question: ask each finance team member what they spend 80% of their time doing. The answer is usually illuminating.',
+    emg:'Emerging role design usually means the right people in slightly wrong roles: a strong management accountant acting as FC, or a CFO doing FP&A work because no one else can. The quick fix is almost never a hire — it is a clear re-definition of accountabilities. What decisions can only the CFO make? Everything else should be pushed down.',
+    eff:'Effective role design starts to break down when the business grows faster than the team. A role design that was right at entry may be wrong 18 months later. The prompt: when did you last review the finance org chart against the current complexity of the business, not where it was when you last hired?',
+    bic:'At Best-in-Class, the risk is complacency — a team that is well-designed for today but has not been pressure-tested for exit. Mock interviews and dry-run presentations help. The question: could every member of the finance team articulate the equity story clearly in a buyer meeting?',
+  }},
+  { dim:2, patterns:{
+    lag:'Lagging outsourcing is almost always a trust problem, not a cost problem. Either a previous outsourcing attempt went badly and the team reverted to doing everything in-house, or the CFO believes in-house is "safer" without having tested the alternative. The diagnostic: calculate the fully loaded cost per transaction of in-house AP/AR processing vs a managed service. The number is usually twice as high as expected.',
+    emg:'Emerging outsourcing means one or two processes have moved (usually payroll) but the strategic co-source model has not been designed. Tax and IA are the two most commonly under-utilised co-source opportunities in mid-market PE. The question: who is responsible for internal audit, and when did they last produce a report that went to the board?',
+    eff:'Effective outsourcing typically fails on governance rather than capability. The provider is good but the SLA has not been reviewed since go-live, or the relationship is managed by someone who was not involved in the original procurement. Annual reviews and a named relationship owner on both sides are the fix.',
+    bic:'Best-in-Class outsourcing is aligned to the exit timeline. Tax co-source is producing transfer pricing documentation and a vendor DD-ready tax report. IA has covered the key risk areas that a buyer will scrutinise. The conversation: what would an acquirer find in a tax or controls review that you have not already found yourself?',
+  }},
+  { dim:3, patterns:{
+    lag:'Lagging systems is the most common dimension failure across the portfolio. The root cause is almost never budget — it is prioritisation. Finance transformation was in the 100-day plan but got deprioritised by operational demands. The risk is that by year 2-3, a manual finance function has become a genuine constraint on growth. The question: how many hours per week does the finance team spend reconciling data vs analysing it?',
+    emg:'Emerging systems typically means a decent ERP implemented at acquisition but FP&A still running in Excel. The ERP is the right foundation; the gap is a purpose-built FP&A layer on top. The tools (Pigment, Mosaic, Adaptive) have come down significantly in cost and implementation time. The diagnostic: could the CFO reforecast in under 48 hours if asked to by the board?',
+    eff:'Effective systems often have an integration gap — the ERP works, the FP&A tool works, but they do not talk to each other automatically. Month-end still involves manual data exports and imports. The last mile of automation is usually the most valuable and the most neglected. The question: what is the last manual step in your month-end process, and why has it not been automated?',
+    bic:'Best-in-Class systems creates a new risk: data dependency. If the real-time dashboard goes down, can the team produce a manual report? And is the data architecture exit DD-ready — can a buyer re-run the analysis themselves from the underlying data? Diligence teams increasingly want to run their own queries, not just receive outputs.',
+  }},
+  { dim:4, patterns:{
+    lag:'Lagging governance almost always traces back to two things: no agreed close calendar with named owners, and no fixed board pack template agreed with the PE investor. These are both fixable within 30 days at zero cost. The close calendar failure is a management problem, not a systems problem — the same tasks are being done every month but without a day-by-day sequence. The question: on what day of the month does the finance team know they are going to miss the deadline?',
+    emg:'Emerging governance means the close happens but the board pack is assembled under pressure and reflects the past rather than the future. The single highest-value change is to shift the executive summary from a variance explanation ("revenue was down because...") to a forward statement ("we expect to land at £X for the full year because..."). This change requires no systems investment — only a different question being asked in the monthly review.',
+    eff:'Effective governance starts to create its own problem: the CFO is producing great reporting but the business is not acting on it. The issue is often that KPIs are tracked but not owned — there is no one accountable for moving the number. The conversation: for each KPI in the board pack, who is the named person who will be held accountable if it does not improve?',
+    bic:'Best-in-Class governance is investor-grade: a buyer could read 12 months of board packs and understand the business without asking a single question. The diagnostic is to give the last 3 board packs to someone who has not seen them and ask if the equity story is clear. If they cannot articulate it, the reporting is not yet exit-ready.',
+  }},
+  { dim:5, patterns:{
+    lag:'Lagging exit readiness does not mean exit is far away — it means exit has not been treated as a project. The most common failure pattern is a CFO who knows intellectually that exit readiness matters but has not started because the exit feels distant or uncertain. The data room is empty. The equity story has never been written down. The management team has never been rehearsed. The diagnostic: ask the CFO to articulate the equity story in 90 seconds. Most cannot.',
+    emg:'Emerging exit readiness means some work has started but it is fragmented: the PE sponsor has done buyer mapping, the CFO has a rough equity story, the data room has some documents. The gap is a programme — a structured workplan with owners, deadlines and a mock diligence date. The question: who owns exit readiness as a project, and what is their deadline for being ready?',
+    eff:'Effective exit readiness means the infrastructure is in place but has not been stress-tested. The data room is populated but no one has tried to answer a buyer question from it. The equity story has been written but not rehearsed against a sceptical audience. The most valuable next step is a mock DD session with an external adviser who will push hard on the numbers.',
+    bic:'Best-in-Class exit readiness is a mindset, not just a document set. The CFO talks about the business the way a buyer would — in terms of recurring revenue, net revenue retention, margin expansion opportunity and multiple arbitrage. Every management meeting includes a "how does this affect our exit story" lens. The question: could the CFO run a full management presentation tomorrow with 24 hours notice?',
+  }},
+  { dim:6, patterns:{
+    lag:'Lagging cash management typically means working capital is not being managed — it is being reported. The DSO number exists in the board pack but nobody is accountable for improving it. The most common structural gap is that AR is owned by finance but the inputs (customer payment terms, dispute resolution) are owned by sales — and the two functions do not have a joined-up process. The diagnostic: who in the business is incentivised on cash conversion, and what is their current target?',
+    emg:'Emerging cash management usually means the 13-week forecast exists but is not trusted. The forecast is produced in a spreadsheet, relies on assumptions that are not challenged, and the variance analysis is not used to improve accuracy. The fix is a weekly cash call with named owners for each assumption — not a finance exercise but a commercial one.',
+    eff:'Effective cash management often misses the working capital optimisation opportunity. DSO and DPO are tracked but payment terms have not been strategically renegotiated with key suppliers or customers. A targeted review of the top 10 debtors and top 10 creditors usually uncovers 15-30 days of working capital improvement that goes straight to cash. The question: when did you last renegotiate payment terms with your largest suppliers?',
+    bic:'Best-in-Class cash management is integrated into the VCP and tracked by the PE sponsor as a primary lever. The CFO can model the cash and leverage impact of any operational decision in real time. Covenant headroom is continuously monitored and stress-tested. The conversation: what is your current covenant headroom, and what is the scenario that puts it at risk?',
+  }},
+  { dim:7, patterns:{
+    lag:'Lagging data quality is the hidden tax on every other dimension. A finance team that does not trust its own numbers cannot do FP&A properly, cannot business partner credibly, and cannot produce an exit-ready data room. The most common symptom is that every month-end involves a debate about which number is right before anyone can analyse what it means. The diagnostic: in your last board meeting, how many minutes were spent debating the numbers vs discussing what to do about them?',
+    emg:'Emerging data quality means the numbers are broadly right but the definitions are wrong — different functions calculate the same metric differently. The KPI dictionary does not exist or is not enforced. This becomes a serious exit risk when a buyer asks for a revenue bridge and gets three different versions from three different systems. The fix is a governance exercise, not a systems project: one owner, one definition, one source for each metric.',
+    eff:'Effective data quality starts to hit a ceiling when the data infrastructure cannot support the analytical questions being asked. The dashboards are good but they cannot drill below entity level to customer, product or geography. This is almost always a data model problem — the chart of accounts was not designed to support the level of segmentation the business now needs. The question: what analytical question can your CFO not currently answer from the data they have?',
+    bic:'Best-in-Class data is a competitive advantage in a sale process. A buyer who can re-run your analysis from your own data, and gets the same answer, has much higher confidence in the business. The diagnostic: is your data architecture documented well enough that a new analyst could understand it in one day? Could a buyer? If not, it is a risk.',
+  }},
+  { dim:8, patterns:{
+    lag:'Lagging business partnering means finance is a service function, not a strategic one. The CFO attends operational meetings but talks about last month numbers rather than next month decisions. The most common root cause is that finance does not have access to the data it needs to be forward-looking — the CRM, the ops system and the finance system are not connected. The question: can the CFO tell you today what revenue will land this month, and with what confidence?',
+    emg:'Emerging business partnering means one or two individuals are doing it well, but it is personality-driven rather than structural. When that person leaves, the capability disappears. The fix is to embed the behaviour in a process: a standard template for business reviews that requires a forward-looking section, and a requirement that finance signs off on all investment decisions above a threshold. The question: which business decisions in the last 3 months did finance not have input into?',
+    eff:'Effective business partnering often stalls because finance has the right conversations but does not have commercial credibility. Operational leaders respect the numbers but do not feel finance understands their business well enough to challenge assumptions. The fix is rotations or embeds — a finance team member spending time in a BU — rather than more dashboards. The question: could your finance business partners explain how the business makes money to a new joiner?',
+    bic:'Best-in-Class business partnering is where finance actively shapes strategy rather than just reporting on it. The CFO is in the room when customer contracts are negotiated, pricing decisions are made and M&A targets are screened. The diagnostic: in the last 12 months, name one commercial decision that was materially different because of finance input. If the answer is not immediate, the partnership is not yet strategic.',
+  }},
+];
+
+// ── Priority action consolidation logic ───────────────────────────────────────
+// Maps dim index to the single most important process action by band
+const TOP_ACTIONS = [
+  { dim:0,
+    lag:'Map your current team against a standard PE finance org chart — identify single points of failure and the single restructure that would most unlock CFO capacity.',
+    emg:'Define what good looks like for each finance role before any hire or restructure — document scope, accountabilities and success metrics for CFO, FC and FP&A lead.',
+    eff:'Stress-test the team for exit: can every member articulate the equity story? Build a finance talent plan aligned to the hold-period horizon.',
+    bic:'Run a mock DD session focused on the finance team — a buyer will assess management quality, not just numbers.' },
+  { dim:1,
+    lag:'Conduct a time-allocation audit with the CFO — map how they actually spend each week, not how they intend to. Anything that is not CFO-level work should be re-assigned or outsourced.',
+    emg:'Write JDs for every finance role and hold a role clarity session — where accountabilities overlap, resolve them explicitly. Do not assume clarity exists.',
+    eff:'Build explicit succession plans for CFO and FC; identify internal candidates and create a development path before the exit process creates pressure.',
+    bic:'Align CFO profile to exit stage — ensure the CFO has the M&A, investor relations and equity story skills a sale process will demand.' },
+  { dim:2,
+    lag:'Calculate the fully loaded cost per invoice, payroll run and expense report processed in-house. Issue a single RFP for transactional outsourcing — even a pilot on one process builds confidence.',
+    emg:'Commission a co-sourced internal audit programme aligned to the key risk areas a buyer will scrutinise; ensure findings go directly to the audit committee.',
+    eff:'Conduct an annual SLA review with every outsource provider — most relationships drift without formal governance. Add a named relationship owner on both sides.',
+    bic:'Align the co-source model to the exit timeline: tax should be producing VDD-ready documentation; IA should have covered all material risk areas.' },
+  { dim:3,
+    lag:'Commission a finance technology review — not a procurement exercise, but a diagnostic of where manual processes are creating risk and constraint. Freeze any new spreadsheet-based tools in the meantime.',
+    emg:'Evaluate and implement a dedicated FP&A tool on top of your existing ERP — the goal is to enable reforecasting in under 48 hours without manual data assembly.',
+    eff:'Automate the last manual step in your month-end process — close management tools (FloQast, BlackLine) eliminate the most common source of delay and error.',
+    bic:'Validate that your data architecture is exit DD-ready — a buyer should be able to re-run your analysis from underlying data and get the same answer.' },
+  { dim:4,
+    lag:'Publish a day-by-day close calendar with named task owners within 30 days. Agree a fixed board pack template with your PE investor. These two changes cost nothing and deliver immediate improvement.',
+    emg:'Rewrite the executive summary of your board pack — shift from variance explanation to forward guidance. Ask: what will we land at for the full year, and why?',
+    eff:'Assign a named owner to every KPI in the board pack — someone who will be held accountable for the trajectory, not just report on it.',
+    bic:'Run a readability test on your last 3 board packs — give them to someone external and ask if they can articulate the equity story. If they cannot, the reporting is not yet exit-ready.' },
+  { dim:5,
+    lag:'Start an exit readiness programme immediately regardless of timeline — assign a named owner and set a date for a mock diligence session within 6 months.',
+    emg:'Commission a structured exit readiness diagnostic with an adviser; translate findings into a workplan with owners, deadlines and a data room target date.',
+    eff:'Run a mock DD session with external advisers who will push hard on the numbers — stress-test the equity story and the data room against the questions a real buyer will ask.',
+    bic:'Rehearse the management presentation with the full team; ensure every member can articulate the equity story clearly and handle pushback on the assumptions.' },
+  { dim:6,
+    lag:'Build a rolling 13-week cash forecast connected to ERP actuals, establish a weekly cash review rhythm, and assign named owners for receivables, payables and inventory within 90 days.',
+    emg:'Move the cash forecast from a finance exercise to a commercial one — budget holders should own the assumptions and be present at the weekly cash review.',
+    eff:'Conduct a targeted review of payment terms with your top 10 debtors and top 10 creditors — most mid-market businesses have 15-30 days of untapped working capital improvement available.',
+    bic:'Model covenant headroom under your base, upside and downside cases and present it monthly to the board — covenant risk is the most common source of lender friction in a sale process.' },
+  { dim:7,
+    lag:'Audit KPI definitions across finance and the business — map every discrepancy and assign a single owner to resolve each one. This is a governance exercise, not a systems project.',
+    emg:'Publish a group-wide KPI dictionary: one definition, one calculation, one data source, one owner per metric. Enforce it by using it as the basis for the board pack.',
+    eff:'Map the analytical questions your CFO cannot currently answer from existing data — these are your data model gaps. Prioritise the ones that a buyer will ask.',
+    bic:'Validate that your data infrastructure is exit-ready: document your data architecture so a buyer analyst could understand it in one day and re-run your analysis from source.' },
+  { dim:8,
+    lag:'Formally separate business partner roles from controller roles — document scope and accountabilities. Attend three business team meetings in the next month and shift the agenda from reporting to insight.',
+    emg:'Introduce a standard business case template with a mandatory finance sign-off for all investments above a threshold — this is the single fastest way to embed commercial partnering.',
+    eff:'Embed a finance team member in one BU for one quarter — the credibility that comes from understanding the operational reality is more valuable than better dashboards.',
+    bic:'Track the commercial decisions where finance input materially changed the outcome — this is the evidence base for demonstrating finance partnership quality to a buyer.' },
+];
+
+// ── Reference cards render ────────────────────────────────────────────────────
+function renderReferenceCards() {
+  var cards = '';
+  RUBRIC_CARDS.forEach(function(rc) {
+    var bandColors = ['#C0392B','#88395A','#006C80','#118B80'];
+    var bandBgs    = ['#C0392B08','#88395A08','#006C8008','#118B8008'];
+    var bandsHtml  = rc.bands.map(function(b, bi) {
+      var pts = b.points.map(function(p){ return '<li>' + p + '</li>'; }).join('');
+      return '<div class="ref-band" style="border-color:' + bandColors[bi] + '28;background:' + bandBgs[bi] + '">'
+           + '<div class="ref-band-label" style="color:' + bandColors[bi] + '">' + b.band + '</div>'
+           + '<ul class="ref-band-points" style="color:' + bandColors[bi] + 'dd">' + pts + '</ul>'
+           + '</div>';
+    }).join('');
+    var id = 'ref-' + rc.dim;
+    cards += '<div class="ref-card-wrap">'
+           + '<div class="ref-card-header" onclick="toggleRefCard(\' + id + \')">'
+           + '<span class="ref-card-dim">' + DIMS[rc.dim].label + ' <span style="font-size:10px;font-weight:400;color:var(--slate)">' + DIMS[rc.dim].compass + '</span></span>'
+           + '<span class="ref-card-chevron" id="chev-' + id + '">&#9660;</span>'
+           + '</div>'
+           + '<div class="ref-card-body" id="' + id + '">'
+           + '<div class="ref-bands-grid">' + bandsHtml + '</div>'
+           + '</div>'
+           + '</div>';
+  });
+  return '<div class="enrich-section">'
+       + '<div class="enrich-title">What each band looks like — dimension reference cards</div>'
+       + '<div class="enrich-sub">Expand any dimension to show the four-band rubric side by side. Use during discussion to help the group calibrate their scores.</div>'
+       + cards
+       + '</div>';
+}
+
+function toggleRefCard(id) {
+  var body = document.getElementById(id);
+  var chev = document.getElementById('chev-' + id);
+  if (!body) return;
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open');
+  if (chev) chev.innerHTML = isOpen ? '&#9660;' : '&#9650;';
+}
+
+// ── Failure patterns render ───────────────────────────────────────────────────
+function renderFailurePatterns(dimAvgBand) {
+  var cards = '';
+  FAILURE_PATTERNS.forEach(function(fp) {
+    var modal = Math.round(dimAvgBand[fp.dim]);
+    var bandKeys = ['lag','emg','eff','bic'];
+    var tabColors = ['lag','emg','eff','bic'];
+    var tabLabels = ['Lagging','Emerging','Effective','Best-in-Class'];
+    var id = 'pat-' + fp.dim;
+
+    var tabs = bandKeys.map(function(bk, bi) {
+      var activeClass = bi === modal ? ' active-' + tabColors[bi] : '';
+      return '<button class="pattern-tab' + activeClass + '" '
+           + 'onclick="showPattern(\' + id + \',' + bi + ')">'
+           + tabLabels[bi] + '</button>';
+    }).join('');
+
+    var bodies = bandKeys.map(function(bk, bi) {
+      return '<div class="pattern-body' + (bi===modal?' open':'') + '" id="' + id + '-' + bi + '">'
+           + fp.patterns[bk]
+           + '</div>';
+    }).join('');
+
+    cards += '<div class="pattern-card">'
+           + '<div class="pattern-header">'
+           + '<span class="pattern-dim">' + DIMS[fp.dim].label + '</span>'
+           + '<span style="font-size:11px;color:var(--slate)">Group modal: <strong style="color:' + BAND_COLORS[modal] + '">' + BAND_NAMES[modal] + '</strong></span>'
+           + '</div>'
+           + '<div class="pattern-band-tabs">' + tabs + '</div>'
+           + bodies
+           + '</div>';
+  });
+
+  return '<div class="enrich-section">'
+       + '<div class="enrich-title">Common failure patterns by dimension</div>'
+       + '<div class="enrich-sub">Each tab shows the typical root causes and diagnostic questions for that band. The group modal band is shown by default — click to explore others.</div>'
+       + cards
+       + '</div>';
+}
+
+function showPattern(id, bandIdx) {
+  var tabColors = ['lag','emg','eff','bic'];
+  for (var bi = 0; bi < 4; bi++) {
+    var body = document.getElementById(id + '-' + bi);
+    if (body) body.classList.toggle('open', bi === bandIdx);
+  }
+  var first = document.getElementById(id + '-0');
+  if (first && first.parentElement) {
+    var allTabs = first.parentElement.querySelectorAll('.pattern-tab');
+    allTabs.forEach(function(tab, bi) {
+      tab.className = 'pattern-tab' + (bi === bandIdx ? ' active-' + tabColors[bi] : '');
+    });
+  }
+}
+
+function toggleRefCard(id) {
+  var body = document.getElementById(id);
+  var chev = document.getElementById('chev-' + id);
+  if (!body) return;
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open');
+  if (chev) chev.innerHTML = isOpen ? '&#9660;' : '&#9650;';
+}
+
+function renderConsolidatedNextSteps(responses, dimAvgBand) {
+  var dimOrder = DIMS.map(function(d, i){ return i; })
+    .sort(function(a,b){ return dimAvgBand[a] - dimAvgBand[b]; });
+
+  var weakDims  = dimOrder.filter(function(i){ return dimAvgBand[i] < 2; });
+  var midDims   = dimOrder.filter(function(i){ return dimAvgBand[i] >= 2 && dimAvgBand[i] < 3; });
+  var strongDims = dimOrder.filter(function(i){ return dimAvgBand[i] >= 3; });
+
+  function actionItem(dimIdx, urgency) {
+    var avg = dimAvgBand[dimIdx];
+    var bandKey = avg < 1 ? 'lag' : avg < 2 ? 'emg' : avg < 2.7 ? 'eff' : 'bic';
+    var ta = TOP_ACTIONS.find(function(a){ return a.dim === dimIdx; });
+    if (!ta) return '';
+    return '<div class="action-item urgency-' + urgency + '">'
+         + '<div class="action-dim-label">' + DIMS[dimIdx].short + '</div>'
+         + '<div class="action-text">' + ta[bandKey] + '</div>'
+         + '</div>';
+  }
+
+  var capCounts = {};
+  CAPABILITIES.forEach(function(cap) {
+    var noCount = responses.filter(function(r){
+      return r.capabilities && r.capabilities[cap.id] === 'no';
+    }).length;
+    capCounts[cap.id] = noCount;
+  });
+  var missedCaps = CAPABILITIES
+    .filter(function(c){ return capCounts[c.id] > 0; })
+    .sort(function(a,b){ return capCounts[b.id] - capCounts[a.id]; })
+    .slice(0,3);
+
+  var urgentHtml = weakDims.length
+    ? weakDims.map(function(i){ return actionItem(i,'high'); }).join('')
+    : '<div style="font-size:12.5px;color:var(--slate);padding:8px">No dimensions in Lagging or Emerging across the group.</div>';
+
+  var developHtml = midDims.length
+    ? midDims.map(function(i){ return actionItem(i,'mid'); }).join('')
+    : '';
+
+  var strongHtml = strongDims.length
+    ? strongDims.map(function(i){ return actionItem(i,''); }).join('')
+    : '';
+
+  var capHtml = '';
+  if (missedCaps.length && responses.length > 0) {
+    capHtml = '<div class="action-group">'
+            + '<div class="action-group-title"><span style="color:#C0392B">&#9888;</span> Capability gaps — most commonly not produced</div>'
+            + missedCaps.map(function(cap) {
+                var n = capCounts[cap.id];
+                var pct = Math.round(n/responses.length*100);
+                var dimLabel = DIMS[cap.dim] ? DIMS[cap.dim].short : '';
+                return '<div class="action-item urgency-high">'
+                     + '<div class="action-dim-label">' + dimLabel + '</div>'
+                     + '<div class="action-text"><strong>' + cap.label + '</strong>'
+                     + ' — ' + n + ' of ' + responses.length + ' participants (' + pct + '%) cannot produce this. '
+                     + 'This is a likely DD risk area: buyers routinely request this output and gaps create renegotiation risk.</div>'
+                     + '</div>';
+              }).join('')
+            + '</div>';
+  }
+
+  return '<div class="enrich-section">'
+       + '<div class="enrich-title">Consolidated group action plan</div>'
+       + '<div class="enrich-sub">Priority actions derived from group scores, ranked by urgency. Red = Lagging or Emerging; purple = Effective but room to improve; teal = sustaining strength. Capability gaps flagged separately.</div>'
+       + (weakDims.length ? '<div class="action-group"><div class="action-group-title"><span style="color:#C0392B">&#9650;</span> Urgent — address within 90 days</div>' + urgentHtml + '</div>' : '')
+       + (midDims.length  ? '<div class="action-group"><div class="action-group-title"><span style="color:#8B7495">&#9654;</span> Develop — address within 6 months</div>' + developHtml + '</div>' : '')
+       + (strongDims.length ? '<div class="action-group"><div class="action-group-title"><span style="color:var(--teal)">&#10003;</span> Sustain — maintain and prepare for exit</div>' + strongHtml + '</div>' : '')
+       + capHtml
+       + '</div>';
+}
+
+function renderGroupHeatmap(responses) {
+  // Check if any response has capability data
+  const hasCaps = responses.some(r => r.capabilities && Object.keys(r.capabilities).length > 0);
+  if (!hasCaps) {
+    return `<div style="background:var(--ow);border:1px solid var(--pearl);border-radius:2px;padding:14px;font-size:12.5px;color:var(--slate);text-align:center">No capability data submitted yet — participants need to complete the checklist questions on dimensions 5, 6, 7, 8 and 9.</div>`;
+  }
+
+  const dimOrder = [7, 8, 4, 6, 5];
+  const dimLabels = { 7:'Data & Analytics', 8:'Business Partnering', 4:'Governance & Reporting', 6:'Cash & Working Capital', 5:'Exit Readiness' };
+  const n = responses.length;
+
+  // Build header row - one col per participant
+  const pHeaders = responses.map((_,i) => `<th class="rotate"><span>P${i+1}</span></th>`).join('');
+  var groupHeader = '<th style="text-align:center;min-width:70px;font-size:10px">Group<br><span style=\"font-weight:400;font-size:9px\">M=Monthly A=Ad-Hoc N=No</span></th>';
+
+  let rows = '';
+  dimOrder.forEach(dimIdx => {
+    const caps = CAPABILITIES.filter(c => c.dim === dimIdx);
+    if (!caps.length) return;
+    const colspan = n + 2;
+    rows += `<tr><td colspan="${colspan}" class="hm-dim-header"><span class="hm-dim-label">${dimLabels[dimIdx]}</span></td></tr>`;
+    caps.forEach(cap => {
+      var cells = responses.map(function(r) {
+        var caps_data = r.capabilities || {};
+        var val = caps_data[cap.id];
+        if (val === 'monthly') return '<td class="hm-monthly">M</td>';
+        if (val === 'adhoc')   return '<td class="hm-adhoc">A</td>';
+        if (val === 'no')      return '<td class="hm-no">No</td>';
+        return '<td style="text-align:center;color:#ccc;font-size:10px">\u2014</td>';
+      }).join('');
+
+      // Group summary — weighted score: monthly=2, adhoc=1, no=0
+      var attempted = responses.filter(function(r){ return r.capabilities && r.capabilities[cap.id] !== undefined; });
+      var totalScore = attempted.reduce(function(a,r){
+        var v = r.capabilities[cap.id];
+        return a + (v==='monthly'?2:v==='adhoc'?1:0);
+      }, 0);
+      var maxScore = attempted.length * 2;
+      var pct = maxScore > 0 ? Math.round(totalScore/maxScore*100) : null;
+      var mCount = attempted.filter(function(r){ return r.capabilities[cap.id]==='monthly'; }).length;
+      var aCount = attempted.filter(function(r){ return r.capabilities[cap.id]==='adhoc'; }).length;
+      var nCount = attempted.filter(function(r){ return r.capabilities[cap.id]==='no'; }).length;
+      var grpBg = pct === null ? '' : pct>=70?'background:#118B8015':pct>=40?'background:#8B749515':'background:#C0392B15';
+      var grpColor = pct === null ? '' : pct>=70?'color:#118B80':pct>=40?'color:#8B7495':'color:#C0392B';
+      var grpCell = pct === null
+        ? '<td style="text-align:center;color:#ccc">\u2014</td>'
+        : '<td style="text-align:center;' + grpBg + '">'
+          + '<div class="hm-grp-score" style="' + grpColor + '">' + pct + '%</div>'
+          + '<div class="hm-grp-pct">' + mCount + 'M / ' + aCount + 'A / ' + nCount + 'N</div>'
+          + '</td>';
+
+      rows += `<tr><td class="hm-label" title="${cap.label}">${cap.label}</td>${cells}${grpCell}</tr>`;
+    });
+  });
+
+  return `<div class="heatmap-wrap">
+    <table class="heatmap">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          ${pHeaders}
+          ${groupHeader}
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  </div>`;
+}
+
+function renderFacilitator() {
+  var sh=document.getElementById('shell');
+  // Show loading state while fetching
+  sh.innerHTML='<div class="card"><div style="text-align:center;padding:2rem;color:var(--slate)"><div style="font-size:24px;margin-bottom:10px">&#8635;</div>Loading responses...</div></div>';
+  loadResponses().then(function(responses) {
+    renderFacilitatorWithData(sh, responses);
+  }).catch(function(e) {
+    sh.innerHTML='<div class="card"><div style="color:#C0392B;padding:1rem">Error loading responses: '+e.message+'</div></div>';
+  });
+}
+
+function renderFacilitatorWithData(sh, responses) {
+  const n=responses.length;
+  if(!n){sh.innerHTML=`<div class="card"><div class="section-title">Facilitator Dashboard</div><div class="section-rule"></div><div class="empty-state"><div style="font-size:32px;margin-bottom:10px">📊</div><div>No responses yet.</div><div style="font-size:12px;margin-top:6px">Ask participants to complete the assessment and click "Submit to group".</div></div><div style="margin-top:14px;text-align:center"><button class="btn" onclick="renderFacilitator()" style="font-size:12px">↺ Refresh</button></div></div>`;return;}
+
+  // Compute modal band (most frequent) and average for each dim
+  const dimModes=DIMS.map((_,d)=>{const counts=[0,0,0,0];responses.forEach(r=>{if(r.scores[d]!=null)counts[r.scores[d]]++;});const max=Math.max(...counts);return counts.indexOf(max);});
+  const dimAvgBand=DIMS.map((_,d)=>{const vs=responses.map(r=>r.scores[d]).filter(v=>v!=null);return vs.length?(vs.reduce((a,b)=>a+b,0)/vs.length):0;});
+  const overallAvg=(dimAvgBand.reduce((a,b)=>a+b,0)/6);
+  const overallBand=Math.round(overallAvg);
+
+  const dists=DIMS.map((_,d)=>{const c=[0,0,0,0];responses.forEach(r=>{if(r.scores[d]!=null)c[r.scores[d]]++;});return c;});
+  const weakIdx=dimAvgBand.indexOf(Math.min(...dimAvgBand));
+  const strongIdx=dimAvgBand.indexOf(Math.max(...dimAvgBand));
+  const spread=dists[weakIdx].filter(c=>c>0).length>2;
+  const lagCount=dists[weakIdx][0]+dists[weakIdx][1];
+
+  // Chart builder with summary panel
+  const distHtml=DIMS.map((d,di)=>{
+    const counts=dists[di];
+    const rawMax=Math.max(...counts,0);
+    const yMax=rawMax+1;
+    const chartH=100,leftPad=30,topPad=14,bottomPad=28;
+    const vbBarW=52,vbGap=20;
+    const chartInnerW=4*(vbBarW+vbGap)-vbGap; // 4 bars for 4 bands
+    const totalVbW=leftPad+chartInnerW+10;
+    const totalVbH=topPad+chartH+bottomPad;
+    const ticks=Array.from({length:yMax+1},(_,i)=>i);
+    const gridLines=ticks.map(val=>{const y=topPad+chartH-Math.round((val/yMax)*chartH);return`<line x1="${leftPad-6}" y1="${y}" x2="${leftPad+chartInnerW+6}" y2="${y}" stroke="#E4DEE0" stroke-width="1"/><text x="${leftPad-9}" y="${y+4}" text-anchor="end" font-size="10" fill="#9192AB" font-family="Arial,sans-serif">${val}</text>`;}).join('');
+    const svgBars=counts.map((c,j)=>{const barH=c>0?Math.max(4,Math.round((c/yMax)*chartH)):0;const x=leftPad+j*(vbBarW+vbGap);const y=topPad+chartH-barH;return`${barH>0?`<rect x="${x}" y="${y}" width="${vbBarW}" height="${barH}" rx="2" fill="${BAND_COLORS[j]}"/>`:''}${c>0?`<text x="${x+vbBarW/2}" y="${y-6}" text-anchor="middle" font-size="12" font-weight="700" fill="#0B0C44" font-family="Arial,sans-serif">${c}</text>`:''}<text x="${x+vbBarW/2}" y="${topPad+chartH+18}" text-anchor="middle" font-size="10" fill="#9192AB" font-family="Arial,sans-serif">${BAND_SHORT[j]}</text>`;}).join('');
+    const ac=BAND_COLORS[Math.round(dimAvgBand[di])];
+    const total=counts.reduce((a,b)=>a+b,0);
+    const pct=v=>total>0?Math.round(v/total*100):0;
+    const lagEm=counts[0]+counts[1],eff=counts[2],bic=counts[3];
+    const interp=dimAvgBand[di]>=2.5?'Group broadly at PE-standard on this dimension.':dimAvgBand[di]>=1.5?'Functional but investment needed to reach Effective.':'Significant gaps — this dimension needs urgent prioritisation.';
+    const summaryPanel=`<div style="background:var(--ow);border:1px solid var(--pearl);border-radius:2px;padding:13px 14px;display:flex;flex-direction:column;gap:9px;justify-content:center;">
+      <div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px">Group snapshot</div>
+      <div style="display:flex;align-items:baseline;gap:6px;padding-bottom:8px;border-bottom:1px solid var(--pearl)">
+        <div style="font-size:22px;font-weight:700;color:${ac};line-height:1">${BAND_NAMES[Math.round(dimAvgBand[di])]}</div>
+        <div style="font-size:11px;color:var(--slate)">modal · ${total} resp.</div>
+      </div>
+      ${[{label:'Lagging–Emerging',count:lagEm,color:BAND_COLORS[0]},{label:'Effective',count:eff,color:BAND_COLORS[2]},{label:'Best-in-Class',count:bic,color:BAND_COLORS[3]}].map(b=>`<div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+          <div style="font-size:11px;color:var(--steel)">${b.label}</div>
+          <div style="font-size:11px;font-weight:700;color:${b.color}">${b.count} <span style="font-weight:400;color:var(--slate)">(${pct(b.count)}%)</span></div>
+        </div>
+        <div style="height:4px;background:var(--pearl);border-radius:2px;overflow:hidden"><div style="height:100%;width:${pct(b.count)}%;background:${b.color};border-radius:2px"></div></div>
+      </div>`).join('')}
+      <div style="font-size:11.5px;color:var(--steel);line-height:1.45;padding-top:4px;border-top:1px solid var(--pearl);font-style:italic">${interp}</div>
+    </div>`;
+
+    // KPI benchmarks for this dimension
+    const kpiData=BENCHMARKS_KPI.find(b=>b.dim===d.label);
+    const kpiHtml=kpiData?`<div style="margin-top:10px">
+      <div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:5px">KPI benchmarks</div>
+      <table class="benchmark-table">
+        <thead><tr><th>KPI</th><th>Effective</th><th>Best-in-Class</th><th>Note</th></tr></thead>
+        <tbody>${kpiData.kpis.map(k=>`<tr><td class="bm-kpi">${k.kpi}</td><td class="bm-eff">${k.eff}</td><td class="bm-bic">${k.bic}</td><td>${k.note}</td></tr>`).join('')}</tbody>
+      </table>
+    </div>`:'';
+
+    // Benchmark text examples
+    const bm=BENCHMARKS[di];
+    const bmHtml=`<div style="margin-top:12px">
+      <div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">What each band looks like in practice</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:7px">
+        ${[bm.low,bm.mid,bm.high,bm.bic].map((b,bi)=>`<div style="border:1px solid ${BAND_COLORS[bi]}28;border-left:3px solid ${BAND_COLORS[bi]};border-radius:2px;padding:9px 11px;background:${BAND_COLORS[bi]}06">
+          <div style="font-size:9px;font-weight:700;color:${BAND_COLORS[bi]};text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">${b.label}</div>
+          ${b.points.map(p=>`<div style="display:flex;gap:5px;align-items:flex-start;margin-bottom:4px"><div style="width:4px;height:4px;border-radius:50%;background:${BAND_COLORS[bi]};flex-shrink:0;margin-top:4px"></div><div style="font-size:11px;color:#465576;line-height:1.4">${p}</div></div>`).join('')}
+        </div>`).join('')}
+      </div>
+    </div>`;
+
+    // Org charts for dim 0 only
+    const orgHtml = di===0 ? renderOrgCharts() : '';
+
+    return`<div class="dim-section">
+      <div class="dim-section-title">${d.label}
+        <span class="dim-avg-pill" style="color:${ac};border-color:${ac}22;background:${ac}10">${BAND_NAMES[Math.round(dimAvgBand[di])]}</span>
+        <span style="font-size:10px;font-weight:400;color:var(--slate)">${d.compass}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 220px;gap:14px;align-items:start;margin-bottom:14px">
+        <div style="width:100%">
+          <svg viewBox="0 0 ${totalVbW} ${totalVbH}" preserveAspectRatio="xMidYMid meet" style="display:block;width:100%;height:auto">
+            ${gridLines}
+            <line x1="${leftPad-6}" y1="${topPad}" x2="${leftPad-6}" y2="${topPad+chartH}" stroke="#E4DEE0" stroke-width="1"/>
+            <line x1="${leftPad-6}" y1="${topPad+chartH}" x2="${leftPad+chartInnerW+6}" y2="${topPad+chartH}" stroke="#E4DEE0" stroke-width="1"/>
+            ${svgBars}
+          </svg>
+        </div>
+        ${summaryPanel}
+      </div>
+      ${kpiHtml}
+      ${bmHtml}
+      ${orgHtml}
+    </div>`;
+  }).join('');
+
+  // Group foundations
+  const groupBands=DIMS.map((_,d)=>{const vs=responses.map(r=>r.scores[d]).filter(v=>v!=null);return vs.length?Math.round(vs.reduce((a,b)=>a+b,0)/vs.length):null;});
+  const groupFoundations=renderFoundations(groupBands);
+
+  // Profile cards
+  const profileHtml=responses.map((r,i)=>{
+    const vs=r.scores;
+    const avgB=Math.round(vs.filter(v=>v!=null).reduce((a,b)=>a+b,0)/vs.filter(v=>v!=null).length||0);
+    return`<div class="profile-card"><div class="profile-id">Participant ${r.id}</div>${DIMS.map((d,di)=>{const v=vs[di];return`<div class="profile-row"><div class="profile-dim" title="${d.label}">${d.short}</div><div class="profile-bar-track"><div class="profile-bar-fill" style="width:${v==null?0:(v+1)/4*100}%;background:${bandColor(v)}"></div></div><div class="profile-band" style="color:${bandColor(v)}">${v==null?'—':BAND_SHORT[v]}</div></div>`;}).join('')}<div class="profile-avg" style="color:${BAND_COLORS[avgB]}">${BAND_NAMES[avgB]}</div></div>`;
+  }).join('');
+
+  // Discussion prompts
+  const prompts=[
+    `<strong>${DIMS[weakIdx].label}</strong> is the group's weakest dimension — ${lagCount>0?`${lagCount} participant${lagCount>1?'s':''} rated themselves Lagging or Emerging. `:''}What is the single biggest structural barrier holding this area back?`,
+    spread?`There is a wide spread of bands on <strong>${DIMS[weakIdx].label}</strong>. What explains the gap between those at Effective/BIC and those at Lagging/Emerging?`:`<strong>${DIMS[strongIdx].label}</strong> is the group's strongest area. Is that strength sustainable through a buy-and-build or pre-exit period?`,
+    `Looking at Cash & Working Capital — how many of you are running cash as a genuine strategic lever vs. just reporting it? What would it take to change that?`,
+    `On Business Partnering — is finance in the room when commercial decisions get made, or does it find out afterwards? What is the single change that would shift that dynamic?`,
+    `On Data Quality — how many of you have a KPI that means something different in finance vs. in the business? That gap is also an exit risk: buyers will find the inconsistency.`,
+    `If you had to move one dimension from Lagging/Emerging to Effective in the next 90 days, which would it be — and what is the single first action?`,
+    `Looking at the Value Foundations overlay — is the weakness structural (People, Process) or operational (Technology, Data)? How does that change your prioritisation?`,
+  ];
+
+  sh.innerHTML=`<div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px">
+      <div class="section-title">Facilitator Dashboard</div>
+      ${configBanner}
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn" onclick="renderFacilitator()" style="font-size:11px;padding:6px 12px">↺ Refresh</button>
+        <span id="live-indicator" style="font-size:10px;color:var(--teal);font-weight:700;padding:4px 8px;background:#e6f4f1;border-radius:2px;border:1px solid var(--teal)">● Live</span>
+        <button class="btn" onclick="showQR()" style="font-size:11px;padding:6px 12px;background:var(--teal);color:#fff;border-color:var(--teal)">QR Code</button>
+        <button class="btn" onclick="if(confirm('Clear all responses?')){clearResponses().then(function(){renderFacilitator();});}" style="font-size:11px;padding:6px 12px;color:#C0392B;border-color:#C0392B">Clear all</button>
+      </div>
+    </div>
+    <div class="section-rule"></div>
+    <div class="dash-grid">
+      <div class="dash-stat"><div class="dash-stat-label">Participants</div><div class="dash-stat-val">${n}</div><div class="dash-stat-sub">responses submitted</div></div>
+      <div class="dash-stat"><div class="dash-stat-label">Group rating</div><div class="dash-stat-val" style="font-size:16px;padding-top:4px;color:${BAND_COLORS[overallBand]}">${BAND_NAMES[overallBand]}</div><div class="dash-stat-sub">overall modal band</div></div>
+      <div class="dash-stat"><div class="dash-stat-label">Biggest gap</div><div class="dash-stat-val" style="font-size:14px;padding-top:4px">${DIMS[weakIdx].short}</div><div class="dash-stat-sub">${BAND_NAMES[Math.round(dimAvgBand[weakIdx])]} avg</div></div>
+    </div>
+    <div class="sep"></div>
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:14px">Score distributions by dimension</div>
+    ${distHtml}
+    <div class="sep"></div>
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px">Group average radar</div>
+    <div class="radar-wrap" style="max-width:320px;margin:0 auto 1.3rem">${drawRadar(groupBands,280,'#006C80')}</div>
+    <div class="sep"></div>
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px">Group value foundations</div>
+    <div style="font-size:12px;color:var(--slate);margin-bottom:10px">Derived from group average scores — where are the structural gaps?</div>
+    ${groupFoundations}
+    <div class="sep"></div>
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px">Group capability heat map</div>
+    <div style="font-size:12px;color:var(--slate);margin-bottom:10px">Ticks show which capabilities each participant confirmed they can produce. Gaps highlighted in red are likely DD risk areas.</div>
+    ${renderGroupHeatmap(responses)}
+    <div class="sep"></div>
+    ${renderConsolidatedNextSteps(responses, dimAvgBand)}
+    <div class="sep"></div>
+    ${renderReferenceCards()}
+    <div class="sep"></div>
+    ${renderFailurePatterns(dimAvgBand)}
+    <div class="sep"></div>
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px">Individual profiles <span style="font-size:11px;font-weight:400;color:var(--slate)">(anonymised)</span></div>
+    <div class="profiles-grid" style="margin-bottom:1.2rem">${profileHtml}</div>
+    <div class="sep"></div>
+    <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px">Discussion prompts</div>
+    ${prompts.map((p,i)=>`<div class="prompt-row"><div class="prompt-num">${i+1}</div><div class="prompt-text">${p}</div></div>`).join('')}
+    <div style="margin-top:1.2rem;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="print-btn" onclick="window.print()">🖨 Print dashboard</button>
+      <button class="print-btn" onclick="exportToExcel()" style="background:var(--emerald);color:#fff;border-color:var(--emerald)">⬇ Export to Excel</button>
+    </div>
+  </div>`;
+}
+
+// ── Org charts (Team Model dim 0 only) ───────────────────────────────────────
+function renderOrgCharts() {
+  function node(x,y,w,h,label,sub,fill,tc,bc){const ls=label.split('\n');const lh=13,th=ls.length*lh+(sub?14:0);const ty=y+(h-th)/2+lh*.75;const te=ls.map((l,i)=>`<text x="${x+w/2}" y="${ty+i*lh}" text-anchor="middle" font-size="9.5" font-weight="700" fill="${tc}" font-family="Arial,sans-serif">${l}</text>`).join('');const se=sub?`<text x="${x+w/2}" y="${ty+ls.length*lh+2}" text-anchor="middle" font-size="8" fill="${tc}" opacity=".75" font-family="Arial,sans-serif">${sub}</text>`:'';return`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${fill}" stroke="${bc}" stroke-width="1.5"/>${te}${se}`;}
+  function arr(x1,y1,x2,y2,col){return`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="1.2" marker-end="url(#arr-${col.replace('#','')})"/>`;}
+  function pill(x,y,w,lbl,fill,tc){return`<rect x="${x}" y="${y}" width="${w}" height="15" rx="7" fill="${fill}"/><text x="${x+w/2}" y="${y+10.5}" text-anchor="middle" font-size="8" font-weight="700" fill="${tc}" font-family="Arial,sans-serif">${lbl}</text>`;}
+  function defs(cols){return`<defs>${cols.map(c=>`<marker id="arr-${c.replace('#','')}" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="${c}"/></marker>`).join('')}</defs>`;}
+  const NV='#0B0C44',TL='#006C80',EM='#118B80',SP='#8B7495',RD='#C0392B',OW='#F1EFF0',PL='#E4DEE0';
+
+  const c1=`<svg viewBox="0 0 480 290" style="width:100%;height:auto;display:block">
+    ${defs([RD,'#999','#ccc'])}
+    <rect width="480" height="290" rx="4" fill="${OW}" stroke="${PL}" stroke-width="1"/>
+    <text x="10" y="16" font-size="9" font-weight="700" fill="${RD}" font-family="Arial,sans-serif">LAGGING — Overloaded CFO model</text>
+    ${node(175,26,130,36,'CFO','Reporting·FP&A·Control·Tax',RD,'#fff',RD)}
+    ${arr(240,62,90,110,RD)}${arr(240,62,240,110,RD)}${arr(240,62,390,110,RD)}
+    ${node(30,110,120,30,'Acting FC / Mgmt Acct','Covering FC duties','#88395A','#fff','#88395A')}
+    ${node(180,110,120,30,'Bookkeeper / AP','Transactions only','#888','#fff','#888')}
+    ${node(330,110,120,30,'No FP&A resource','CFO covers ad hoc','#aaa','#fff','#aaa')}
+    <text x="10" y="162" font-size="8" font-weight="700" fill="#9192AB" font-family="Arial,sans-serif">SYSTEMS (FRAGMENTED)</text>
+    ${pill(10,169,72,'Sage/Xero',PL,'#465576')}${pill(90,169,72,'Excel budget',PL,'#465576')}${pill(170,169,80,'Excel board pack',PL,'#465576')}${pill(258,169,68,'Payroll sw.',PL,'#465576')}${pill(334,169,68,'CRM unused',PL,'#465576')}
+    <text x="10" y="207" font-size="8" font-weight="700" fill="#9192AB" font-family="Arial,sans-serif">EXTERNAL — Late board packs; no business partnering; reactive auditors</text>
+    <text x="10" y="225" font-size="8" fill="${RD}" font-family="Arial,sans-serif">PE Board: late, revised packs &nbsp;|&nbsp; Ops: requests direct to CFO &nbsp;|&nbsp; Auditor: reactive; year-end surprises common</text>
+    <text x="10" y="245" font-size="8" font-weight="700" fill="#9192AB" font-family="Arial,sans-serif">DATA: Siloed · no single version of truth · reconciliation manual and error-prone</text>
+  </svg>`;
+
+  const c2=`<svg viewBox="0 0 480 310" style="width:100%;height:auto;display:block">
+    ${defs([SP,TL,'#ccc'])}
+    <rect width="480" height="310" rx="4" fill="${OW}" stroke="${PL}" stroke-width="1"/>
+    <text x="10" y="16" font-size="9" font-weight="700" fill="${SP}" font-family="Arial,sans-serif">EMERGING — Functional structure, stretched capacity</text>
+    ${node(175,26,130,30,'CFO',null,SP,'#fff',SP)}
+    ${node(50,88,110,30,'Financial Controller','Close · statutory · control',SP,'#fff',SP)}
+    ${node(320,88,110,30,'FP&A Manager (×1)','Budget · forecast',SP,'#fff',SP)}
+    ${arr(240,56,105,88,SP)}${arr(240,56,375,88,SP)}
+    ${node(20,148,85,26,'Mgmt Acct','Journals·recon',SP,'#fff',SP)}
+    ${node(112,148,70,26,'AP/AR clerk','Transactions',SP,'#fff',SP)}
+    ${arr(105,118,62,148,SP)}${arr(105,118,147,148,SP)}
+    ${node(310,148,100,26,'No FP&A support','Single pt of failure','#aaa','#fff','#aaa')}
+    <text x="10" y="195" font-size="8" font-weight="700" fill="#9192AB" font-family="Arial,sans-serif">SYSTEMS</text>
+    ${pill(10,202,90,'NetSuite/BC (ERP)',TL+'20',TL)}${pill(108,202,80,'Excel (FP&A)',PL,'#465576')}${pill(196,202,75,'PPT packs',PL,'#465576')}${pill(279,202,75,'Salesforce CRM',PL,'#465576')}${pill(362,202,80,'Payroll (out)',TL+'20',TL)}
+    <text x="10" y="238" font-size="8" font-weight="700" fill="#9192AB" font-family="Arial,sans-serif">EXTERNAL</text>
+    <text x="10" y="252" font-size="8" fill="${SP}" font-family="Arial,sans-serif">PE Board: day 12–15 pack; backward commentary &nbsp;|&nbsp; Ops: reactive FP&A &nbsp;|&nbsp; Tax: external, not embedded</text>
+    <text x="10" y="268" font-size="8" font-weight="700" fill="#9192AB" font-family="Arial,sans-serif">DATA: ERP aggregated but FP&A in Excel; two versions of truth; no live CRM-to-finance link</text>
+  </svg>`;
+
+  const c3=`<svg viewBox="0 0 480 330" style="width:100%;height:auto;display:block">
+    ${defs([TL,EM,'#ccc'])}
+    <rect width="480" height="330" rx="4" fill="${OW}" stroke="${PL}" stroke-width="1"/>
+    <text x="10" y="16" font-size="9" font-weight="700" fill="${TL}" font-family="Arial,sans-serif">EFFECTIVE / BEST-IN-CLASS — PE-standard operating model</text>
+    ${node(175,24,130,30,'CFO','Value creation · M&A · PE interface',TL,'#fff',TL)}
+    ${node(30,80,120,30,'Financial Controller','Stewardship & control',TL,'#fff',TL)}
+    ${node(330,80,120,30,'Head of FP&A','Commercial finance',EM,'#fff',EM)}
+    ${arr(240,54,90,80,TL)}${arr(240,54,390,80,EM)}
+    ${node(5,136,80,24,'Mgmt Acct ×2','Close·recon',TL+'50','#006C80',TL)}
+    ${node(92,136,72,24,'AP/AR','Outsourced MSP',TL+'30','#006C80',TL)}
+    ${arr(90,110,45,136,TL)}${arr(90,110,128,136,TL)}
+    ${node(300,136,90,24,'FP&A Analyst ×2','Forecast·variance',EM+'50','#118B80',EM)}
+    ${node(398,136,74,24,'Biz Partner ×1','Ops partnering',EM+'50','#118B80',EM)}
+    ${arr(390,110,345,136,EM)}${arr(390,110,435,136,EM)}
+    ${node(175,136,110,24,'Payroll / Tax / IA','Co-sourced',PL,'#465576',PL)}
+    <text x="10" y="180" font-size="8" font-weight="700" fill="#9192AB" font-family="Arial,sans-serif">INTEGRATED SYSTEMS STACK</text>
+    ${pill(10,187,100,'ERP (NetSuite/BC)',TL+'22',TL)}${pill(118,187,90,'FP&A (Pigment/Mosaic)',EM+'22',EM)}${pill(216,187,78,'CRM (Salesforce)',TL+'22',TL)}${pill(302,187,80,'Data warehouse/BI',NV+'15',NV)}${pill(390,187,80,'Close (FloQast)',TL+'22',TL)}
+    <text x="240" y="213" text-anchor="middle" font-size="7.5" fill="${TL}" font-family="Arial,sans-serif">Single source of truth — automated consolidation · live dashboards · real-time KPI visibility</text>
+    <text x="10" y="233" font-size="8" font-weight="700" fill="#9192AB" font-family="Arial,sans-serif">EXTERNAL RELATIONSHIPS</text>
+    <text x="10" y="247" font-size="8" fill="${TL}" font-family="Arial,sans-serif">PE Board: board pack day 8; forward narrative; CFO presents KPIs live from dashboard</text>
+    <text x="10" y="262" font-size="8" fill="${TL}" font-family="Arial,sans-serif">Ops teams: biz partner embedded in commercial meetings; budget holders own forecasts in FP&A tool</text>
+    <text x="10" y="277" font-size="8" fill="${TL}" font-family="Arial,sans-serif">Tax/Audit: co-sourced IA to annual plan; tax adviser quarterly; transfer pricing reviewed pre-exit</text>
+    <text x="10" y="292" font-size="8" fill="${TL}" font-family="Arial,sans-serif">CRM/Data: live CRM-to-ERP feed; revenue recognised automatically; pipeline visible in finance dashboard</text>
+    <text x="10" y="308" font-size="8" font-weight="700" fill="#9192AB" font-family="Arial,sans-serif">DATA: Enterprise data model; golden records; governed MDM; analytics-driven; exit DD-ready</text>
+  </svg>`;
+
+  return`<div style="margin-top:16px">
+    <div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">Example finance org charts by band</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div><div style="font-size:10px;font-weight:700;color:#C0392B;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">Lagging</div>${c1}</div>
+      <div><div style="font-size:10px;font-weight:700;color:#88395A;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">Emerging</div>${c2}</div>
+      <div><div style="font-size:10px;font-weight:700;color:#006C80;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px">Effective / Best-in-Class</div>${c3}</div>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// EDITOR
+// ═══════════════════════════════════════════════════════════════════════════════
+function renderEditor(){
+  const sh=document.getElementById('shell');
+  let html=`<div class="card"><div class="section-title">Edit next steps content</div><div class="section-rule"></div><div class="ed-info">Changes save automatically. They appear immediately on participant result screens. Use this to tailor vendor recommendations to your portfolio.</div>`;
+  DIMS.forEach((dim,di)=>{
+    html+=`<div class="ed-section"><div class="ed-sec-title">${dim.label}</div>`;
+    BANDS.forEach((band,bi)=>{
+      const items=getItems(dim.label,bi);
+      html+=`<div class="ed-band"><div class="ed-band-label"><span class="ed-pip" style="background:${BAND_COLORS[band[0]]}"></span>${BAND_LABELS_ED[bi]}</div>
+        <div id="ed-items-${di}-${bi}">${items.map((item,ii)=>renderEdItem(di,bi,ii,item)).join('')}</div>
+        <button class="ed-add" onclick="addEdItem(${di},${bi})">+ Add item</button>
+      </div>`;
+    });
+    html+=`</div>`;
+  });
+  html+=`<div class="nav-row"><button class="btn" onclick="if(confirm('Reset all to defaults?')){resetNS();renderEditor();}" style="color:#C0392B;border-color:#C0392B;font-size:12px">Reset to defaults</button><button class="btn btn-primary" onclick="setMode('participant')">Done editing</button></div></div>`;
+  sh.innerHTML=html;
+}
+function renderEdItem(di,bi,ii,item){const safe=(item.text||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');return`<div class="ed-item" id="ed-item-${di}-${bi}-${ii}"><select class="ed-type" onchange="updateEdItem(${di},${bi},${ii},'type',this.value)"><option value="process"${item.type==='process'?' selected':''}>Process</option><option value="vendor"${item.type==='vendor'?' selected':''}>Vendor</option></select><input class="ed-input" value="${safe}" oninput="updateEdItem(${di},${bi},${ii},'text',this.value)" placeholder="Enter recommendation..."><button class="ed-del" onclick="removeEdItem(${di},${bi},${ii})">×</button></div>`;}
+function getOrCreateEntry(dimLabel,bandIdx){let e=nsData.find(e=>e.dim===dimLabel&&e.band===bandIdx);if(!e){e={dim:dimLabel,band:bandIdx,items:[]};nsData.push(e);}return e;}
+function updateEdItem(di,bi,ii,field,val){const e=getOrCreateEntry(DIMS[di].label,bi);if(e.items[ii]){e.items[ii][field]=val;saveNS();}}
+function removeEdItem(di,bi,ii){const e=getOrCreateEntry(DIMS[di].label,bi);e.items.splice(ii,1);saveNS();renderEditor();}
+function addEdItem(di,bi){const e=getOrCreateEntry(DIMS[di].label,bi);e.items.push({type:'process',text:''});saveNS();renderEditor();setTimeout(()=>{const c=document.getElementById(`ed-items-${di}-${bi}`);if(c){const inp=c.querySelectorAll('.ed-input');if(inp.length)inp[inp.length-1].focus();}},50);}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+nsData=loadNS();
+go(0);
+
+// ── Auto-refresh facilitator view every 15 seconds when active ────────────
+var autoRefreshTimer = null;
+function startAutoRefresh() {
+  stopAutoRefresh();
+  autoRefreshTimer = setInterval(function() {
+    if (mode === 'facilitator') renderFacilitator();
+  }, 15000);
+}
+function stopAutoRefresh() {
+  if (autoRefreshTimer) { clearInterval(autoRefreshTimer); autoRefreshTimer = null; }
+}
+startAutoRefresh();
+
+// ── QR Code ───────────────────────────────────────────────────────────────
+function showQR() {
+  var modal = document.getElementById('qr-modal');
+  var qrDiv = document.getElementById('qr-code');
+  var urlDiv = document.getElementById('qr-url');
+  var url = window.location.href;
+  
+  // Clear previous QR
+  qrDiv.innerHTML = '';
+  urlDiv.textContent = url;
+  
+  modal.style.display = 'flex';
+  
+  // Generate QR — use a small size that renders clearly on screen
+  try {
+    new QRCode(qrDiv, {
+      text: url,
+      width: 200,
+      height: 200,
+      colorDark: '#0B0C44',
+      colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  } catch(e) {
+    // Fallback to Google Charts API if QRCode lib not available
+    var img = document.createElement('img');
+    img.src = 'https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=' + encodeURIComponent(url) + '&choe=UTF-8';
+    img.alt = 'QR Code';
+    img.style.width = '200px';
+    img.style.height = '200px';
+    qrDiv.appendChild(img);
+  }
+}
+
+function closeQR() {
+  document.getElementById('qr-modal').style.display = 'none';
+}
+
+// Close modal on backdrop click
+document.getElementById('qr-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeQR();
+});
+</script>
+<div id="qr-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:6px;padding:1.8rem;max-width:320px;width:90%;text-align:center;position:relative;">
+    <button onclick="closeQR()" style="position:absolute;top:10px;right:12px;background:none;border:none;font-size:20px;cursor:pointer;color:#9192AB;">×</button>
+    <div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Share with participants</div>
+    <div id="qr-code" style="display:flex;justify-content:center;margin:12px 0;"></div>
+    <div id="qr-url" style="font-size:10px;color:var(--slate);word-break:break-all;line-height:1.4;margin-top:8px;"></div>
+    <div style="font-size:11px;color:var(--slate);margin-top:10px;padding-top:10px;border-top:1px solid var(--pearl);">Participants scan this to open the assessment on their phone. Scores submit to this browser's group view.</div>
+    <button onclick="closeQR()" style="margin-top:14px;padding:9px 24px;background:var(--navy);color:var(--aqua);border:none;border-radius:2px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Close</button>
+  </div>
+</div>
+</body>
+</html>
