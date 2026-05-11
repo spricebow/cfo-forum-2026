@@ -1868,6 +1868,336 @@ function renderFacilitator() {
   });
 }
 
+// ── Dimension enrichment data ─────────────────────────────────────────────────
+
+// B. Diagnostic questions per dimension
+const DIAG_QUESTIONS = [
+  { dim:0, questions:[
+    'Ask every finance team member what they spend 80% of their time doing. Does the answer match their job title?',
+    'If the CFO was unavailable for two weeks, what would break — and who would fix it?',
+    'How much of the CFO time last month was spent on work that required a CFO? Be honest.',
+    'Could the finance org chart survive a due diligence process without restructuring?',
+  ]},
+  { dim:1, questions:[
+    'When did you last review whether the seniority mix still fits the complexity of the business — not where it was at acquisition?',
+    'Who is the named successor to the CFO? Is that person actually ready, or is it aspirational?',
+    'Does the CFO profile match where the business is going, or where it has been?',
+    'If your FC left tomorrow, how long would it take to replace them — and what would break in the meantime?',
+  ]},
+  { dim:2, questions:[
+    'Calculate the fully loaded cost per invoice processed in-house. Compare it to a managed service quote. Is in-house actually cheaper?',
+    'When did you last review the SLAs with your outsource providers? Who owns that relationship?',
+    'Who is responsible for internal audit? When did they last produce a report that went to the board?',
+    'Is your tax adviser embedded in your business decisions, or do they only appear at year-end?',
+  ]},
+  { dim:3, questions:[
+    'How many hours per week does the finance team spend reconciling data vs analysing it?',
+    'Could the CFO produce a reforecast in under 48 hours if the board asked for one today?',
+    'What is the last manual step in your month-end process — and why has it not been automated?',
+    'Can a budget holder access their own performance data without emailing someone in finance?',
+  ]},
+  { dim:4, questions:[
+    'On what day of the month does the finance team know they are going to miss the close deadline?',
+    'Read the executive summary of your last board pack aloud. Does it tell investors what will happen next, or explain what happened last month?',
+    'For each KPI in the board pack, who is the named person accountable for moving the number?',
+    'Give your last three board packs to someone external. Can they articulate the equity story without asking a question?',
+  ]},
+  { dim:5, questions:[
+    'Ask the CFO to articulate the equity story in 90 seconds. Is it compelling? Is it data-backed? Could they do it in a buyer meeting?',
+    'How long would it take to populate a data room from scratch today — days, weeks or months?',
+    'What are the three questions a buyer will ask that you are least comfortable answering? Have you prepared for them?',
+    'Has the management team done a mock presentation to a simulated buyer audience? What happened?',
+  ]},
+  { dim:6, questions:[
+    'Who in the business is incentivised on cash conversion — not just the CFO?',
+    'When did you last renegotiate payment terms with your three largest suppliers?',
+    'What is your current DSO? How does it compare to 12 months ago? What drove the change?',
+    'If the board asked for covenant headroom today under a downside scenario, how long would it take to produce the answer?',
+  ]},
+  { dim:7, questions:[
+    'In your last board meeting, how many minutes were spent debating whether the numbers were right vs what to do about them?',
+    'Name one analytical question the CFO cannot currently answer from existing data. Why not?',
+    'Ask your finance business partners to define your top three KPIs. Do the definitions match across the team?',
+    'Could a buyer analyst re-run your revenue bridge from your underlying data and get the same answer? In one day?',
+  ]},
+  { dim:8, questions:[
+    'Name one commercial decision in the last three months that was materially different because finance was in the room.',
+    'Which business decisions happen without finance input? Is that by design or by accident?',
+    'Ask an operational leader to rate the finance business partner on a scale of 1-10 for commercial value. What would they say?',
+    'Can your finance business partners explain how the business makes money to a new joiner — without using a spreadsheet?',
+  ]},
+];
+
+// C. Benchmark call-outs per dimension (single striking stat for projection)
+const BENCHMARK_CALLOUTS = [
+  { dim:0, stat:'Finance cost', eff:'1.2–1.6% of revenue', bic:'0.8–1.2% of revenue',
+    insight:'Most PE-backed businesses in years 1–2 run at 1.8–2.2%. Every 0.5% saved on a £50m revenue business is £250k — reinvestable in analytics and FP&A.' },
+  { dim:1, stat:'CFO time on strategic work', eff:'40–50%', bic:'60%+',
+    insight:'In most Lagging/Emerging businesses, the CFO spends less than 20% of their time on work that requires a CFO. The rest is FC-level reporting and fire-fighting.' },
+  { dim:2, stat:'Invoice processing cost (in-house)', eff:'£2–4 per invoice', bic:'£1–2 per invoice',
+    insight:'Most in-house AP functions cost £8–15 per invoice when fully loaded. A managed service typically delivers the same for £2–4. The ROI case is almost always clear.' },
+  { dim:3, stat:'Days to close (monthly)', eff:'5–7 working days', bic:'2–4 working days',
+    insight:'The PE-backed average is 6 days. Top-quartile large-cap businesses close in 3–4. Every day saved is a day earlier the board can act on the numbers.' },
+  { dim:4, stat:'Board pack timeliness', eff:'Day 8–10', bic:'Day 4–6',
+    insight:'If the board pack arrives after the monthly call, investors are reviewing it after the fact. The goal is for the numbers to land before the conversation, not during it.' },
+  { dim:5, stat:'Exit preparation lead time', eff:'12–18 months', bic:'24+ months',
+    insight:'Businesses that begin exit preparation 24+ months out achieve materially higher valuations. The data room, equity story and management rehearsal cannot be done in a 6-month sprint.' },
+  { dim:6, stat:'Cash conversion (EBITDA to OCF)', eff:'80–90%', bic:'90%+',
+    insight:'A business converting 70% of EBITDA to cash is leaving 20–30% on the table vs best-in-class. On a £10m EBITDA business that is £2–3m of annual cash leakage.' },
+  { dim:7, stat:'KPI pack timeliness', eff:'5–7 working days', bic:'Real-time',
+    insight:'In a best-in-class business, the board can access live KPIs without asking finance. In a lagging business, the same data takes a week to compile manually.' },
+  { dim:8, stat:'Finance input on major decisions', eff:'70–80% of decisions', bic:'95%+',
+    insight:'In most Lagging businesses, finance finds out about major commercial decisions after the fact. At BIC, no significant pricing, investment or customer decision happens without finance in the room.' },
+];
+
+// D. Red flag indicators per dimension
+const RED_FLAGS = [
+  { dim:0, flags:[
+    'The CFO cannot name their own successor — or there is no credible internal candidate.',
+    'The close collapses or reporting degrades when one person is on holiday.',
+    'The CFO is still approving invoices, signing off expenses or posting journals.',
+    'The finance team is structured the same way it was at acquisition, without deliberate redesign.',
+  ]},
+  { dim:1, flags:[
+    'The CFO describes their FC as "not quite ready" but has no plan to develop or replace them.',
+    'Multiple senior hires are doing overlapping work and no one has resolved the duplication.',
+    'The finance team could not articulate their own JDs if asked — roles have drifted from original scope.',
+    'There is a seniority inversion: expensive people doing junior work because junior roles are unfilled.',
+  ]},
+  { dim:2, flags:[
+    'Finance staff are manually processing invoices, running payroll or doing bank reconciliations that could be outsourced.',
+    'The outsource provider has not been reviewed against their SLA in over 12 months.',
+    'Internal audit either does not exist or is performed informally by the FC — not credible to a buyer.',
+    'Tax is reactive: the adviser only appears when there is a problem, not embedded in planning.',
+  ]},
+  { dim:3, flags:[
+    'The budget model is a multi-tab Excel file owned by one person — inaccessible when they are absent.',
+    'The board pack is assembled by copying and pasting from multiple spreadsheets into PowerPoint.',
+    'Finance has been "evaluating" a new system for more than 12 months without deciding.',
+    'Budget holders cannot access their own data — they email finance and wait.',
+  ]},
+  { dim:4, flags:[
+    'The board pack format changes based on who asked last — there is no agreed template with the PE investor.',
+    'The executive summary describes what happened rather than what will happen.',
+    'The same close bottlenecks occur every month — they are managed, not solved.',
+    'The finance team produces a rolling forecast but no one challenges the assumptions.',
+  ]},
+  { dim:5, flags:[
+    'The CFO cannot articulate the equity story in 90 seconds without reference to a slide.',
+    'The data room has not been started — or was started but not maintained.',
+    'No mock diligence session has been run with external advisers.',
+    'The management team has not aligned on which narrative a buyer will hear.',
+  ]},
+  { dim:6, flags:[
+    'Cash forecasting is a finance exercise — operational teams do not own or input to assumptions.',
+    'DSO has been the same for two years — it is tracked but no one is accountable for improving it.',
+    'Covenant compliance is reviewed reactively, not modelled forward 12–18 months.',
+    'Working capital targets are not in the budget — they exist only as aspirations.',
+  ]},
+  { dim:7, flags:[
+    'The same KPI is calculated differently by finance and by the business — and both versions circulate.',
+    'Analysts spend more than 50% of their time cleaning and reconciling data rather than analysing it.',
+    'The data room would require a significant data preparation project before it could be shared with a buyer.',
+    'There is no data dictionary — definitions live in individuals heads and change when people leave.',
+  ]},
+  { dim:8, flags:[
+    'Finance attends operational reviews but speaks only when asked — and only about historical numbers.',
+    'The last major pricing decision did not involve finance until after the fact.',
+    'Business partners cannot access transaction-level data without involving IT.',
+    'Post-investment reviews do not exist — business cases are approved and never revisited.',
+  ]},
+];
+
+// E. Vendor/tool landscape per relevant dimension
+const VENDOR_LANDSCAPE = [
+  { dim:2, categories:[
+    { label:'Transactional outsourcing (AP/AR/Payroll)', vendors:['ADP','Capita','Genpact','Auxis'] },
+    { label:'Co-sourced internal audit', vendors:['KPMG','Deloitte','BDO','Grant Thornton'] },
+    { label:'Co-sourced tax', vendors:['Grant Thornton','RSM','BDO','Forvis Mazars'] },
+    { label:'Co-sourced treasury', vendors:['Deloitte','PwC','Lloyds Bank Treasury Advisory'] },
+  ]},
+  { dim:3, categories:[
+    { label:'ERP (mid-market)', vendors:['Sage Intacct','NetSuite','Microsoft Business Central','SAP Business One'] },
+    { label:'FP&A / planning tools', vendors:['Pigment','Mosaic','Adaptive Planning','Jedox','Vena'] },
+    { label:'Close management', vendors:['FloQast','BlackLine','Trintech'] },
+    { label:'BI / dashboards', vendors:['Power BI','Tableau','Qlik','Lightdash'] },
+    { label:'PE implementation partners', vendors:['Bluerock','Clarus','Fynapse','Mint Group'] },
+  ]},
+  { dim:8, categories:[
+    { label:'Commercial analytics / FP&A', vendors:['Pigment','Mosaic','Cube'] },
+    { label:'CRM-to-finance integration', vendors:['Salesforce + Fivetran','HubSpot + dbt'] },
+    { label:'Business partnering training', vendors:['CIMA','FP&A Advisory','The FP&A Guy'] },
+  ]},
+];
+
+// F. Hold-stage calibration per dimension (target band by stage)
+const HOLD_STAGE = [
+  { dim:0, stages:[{s:'100-Day',t:'Emerging',n:'Structural gaps identified; CFO/FC in place'},{s:'Yr 1-2',t:'Effective',n:'Deliberate team design; FP&A separated'},{s:'Yr 3-4',t:'Effective',n:'Team stable; succession planned'},{s:'Pre-Exit',t:'BIC',n:'Exit-ready team; CFO can lead a process'}] },
+  { dim:1, stages:[{s:'100-Day',t:'Emerging',n:'Right titles in place; JDs drafted'},{s:'Yr 1-2',t:'Effective',n:'Right seniority mix; RACI defined'},{s:'Yr 3-4',t:'Effective',n:'Succession plans live; CFO profile reviewed'},{s:'Pre-Exit',t:'BIC',n:'Team can withstand process without distraction'}] },
+  { dim:2, stages:[{s:'100-Day',t:'Emerging',n:'Payroll outsourced; IA scoped'},{s:'Yr 1-2',t:'Effective',n:'AP/AR on managed service; IA running'},{s:'Yr 3-4',t:'Effective',n:'Full co-source model; SLAs reviewed annually'},{s:'Pre-Exit',t:'BIC',n:'VDD-ready tax; IA covers all key risk areas'}] },
+  { dim:3, stages:[{s:'100-Day',t:'Emerging',n:'ERP assessed; Excel freeze committed'},{s:'Yr 1-2',t:'Effective',n:'ERP stable; FP&A tool deployed'},{s:'Yr 3-4',t:'Effective',n:'Close in 5 days; self-serve dashboards live'},{s:'Pre-Exit',t:'BIC',n:'Data architecture exit DD-ready; close in 3-4 days'}] },
+  { dim:4, stages:[{s:'100-Day',t:'Emerging',n:'Close calendar published; board pack template agreed'},{s:'Yr 1-2',t:'Effective',n:'5-day close; forward-looking commentary'},{s:'Yr 3-4',t:'Effective',n:'Rolling forecast; KPIs owned by business'},{s:'Pre-Exit',t:'BIC',n:'Board pack is investor-grade; equity story embedded'}] },
+  { dim:5, stages:[{s:'100-Day',t:'Lag/Em',n:'Exit not yet on agenda — focus on foundations'},{s:'Yr 1-2',t:'Emerging',n:'Exit readiness on radar; basic buyer mapping done'},{s:'Yr 3-4',t:'Effective',n:'Exit programme active; data room being built'},{s:'Pre-Exit',t:'BIC',n:'Fully diligence-ready; mock DD completed'}] },
+  { dim:6, stages:[{s:'100-Day',t:'Emerging',n:'13-week forecast in place; cash review weekly'},{s:'Yr 1-2',t:'Effective',n:'WC targets in budget; DSO/DPO owned by business'},{s:'Yr 3-4',t:'Effective',n:'Cash excellence programme; terms renegotiated'},{s:'Pre-Exit',t:'BIC',n:'CCC as strategic KPI; covenant modelled forward 18 months'}] },
+  { dim:7, stages:[{s:'100-Day',t:'Emerging',n:'KPI definitions audited; COA standardised'},{s:'Yr 1-2',t:'Effective',n:'KPI dictionary published; dashboards live'},{s:'Yr 3-4',t:'Effective',n:'Self-serve analytics adopted; data model governed'},{s:'Pre-Exit',t:'BIC',n:'Exit DD-ready data; buyer can re-run analysis from source'}] },
+  { dim:8, stages:[{s:'100-Day',t:'Emerging',n:'BP roles defined; attending commercial reviews'},{s:'Yr 1-2',t:'Effective',n:'Monthly insight packs; business case template live'},{s:'Yr 3-4',t:'Effective',n:'Finance in all major decisions; ROI tracking active'},{s:'Pre-Exit',t:'BIC',n:'Finance shapes strategy; BP quality evidenced to buyer'}] },
+];
+
+function renderDimEnrichment(di, modal, responses) {
+  var out = '';
+  var bandColors4 = ['#C0392B','#88395A','#006C80','#118B80'];
+
+  // G. Capability heat map excerpt (dims with caps: 4,5,6,7,8)
+  var caps = capsByDim(di);
+  if (caps.length && responses.length) {
+    var hasCaps = responses.some(function(r){ return r.capabilities && Object.keys(r.capabilities).length > 0; });
+    if (hasCaps) {
+      var pHeaders = responses.map(function(r){ return '<th style="text-align:center;font-size:9px;padding:4px 3px;background:var(--navy);color:#fff;white-space:nowrap">P'+r.id+'</th>'; }).join('');
+      var rows = caps.map(function(cap) {
+        var cells = responses.map(function(r) {
+          var v = r.capabilities && r.capabilities[cap.id];
+          if (v==='monthly') return '<td class="hm-monthly">M</td>';
+          if (v==='adhoc')   return '<td class="hm-adhoc">A</td>';
+          if (v==='no')      return '<td class="hm-no">No</td>';
+          return '<td style="text-align:center;color:#ccc;font-size:9px">—</td>';
+        }).join('');
+        var att = responses.filter(function(r){ return r.capabilities && r.capabilities[cap.id]; });
+        var score = att.reduce(function(a,r){ var v=r.capabilities[cap.id]; return a+(v==='monthly'?2:v==='adhoc'?1:0); },0);
+        var pct = att.length ? Math.round(score/(att.length*2)*100) : null;
+        var pc = pct===null?'#ccc':pct>=70?'#118B80':pct>=40?'#8B7495':'#C0392B';
+        return '<tr><td class="hm-label">'+cap.label+'</td>'+cells+'<td style="text-align:center;font-weight:700;font-size:10px;color:'+pc+'">'+(pct===null?'—':pct+'%')+'</td></tr>';
+      }).join('');
+      out += '<div class="slide-section-label">Capability snapshot — this dimension</div>'
+        + '<div class="heatmap-wrap"><table class="heatmap"><thead><tr>'
+        + '<th style="background:var(--navy);color:#fff;font-size:10px;padding:5px 8px">Capability</th>'
+        + pHeaders
+        + '<th style="text-align:center;background:var(--teal);color:#fff;font-size:9px;padding:4px 6px;white-space:nowrap">Score</th>'
+        + '</tr></thead><tbody>'+rows+'</tbody></table></div>';
+    }
+  }
+
+  // F. Hold-stage calibration
+  var hs = HOLD_STAGE.find(function(h){ return h.dim===di; });
+  if (hs) {
+    var stageColors = {'Lag/Em':'#C0392B','Emerging':'#88395A','Effective':'#006C80','BIC':'#118B80'};
+    out += '<div class="slide-section-label">Target band by hold stage</div>'
+      + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">'
+      + hs.stages.map(function(st){
+          var c = stageColors[st.t]||'#465576';
+          return '<div style="border-radius:2px;padding:8px 10px;background:'+c+'10;border:1px solid '+c+'30">'
+            + '<div style="font-size:9px;font-weight:700;color:var(--slate);text-transform:uppercase;margin-bottom:3px">'+st.s+'</div>'
+            + '<div style="font-size:11px;font-weight:700;color:'+c+';margin-bottom:3px">'+st.t+'</div>'
+            + '<div style="font-size:10px;color:var(--steel);line-height:1.35">'+st.n+'</div>'
+            + '</div>';
+        }).join('')
+      + '</div>';
+  }
+
+  // C. Benchmark call-out
+  var bc = BENCHMARK_CALLOUTS.find(function(b){ return b.dim===di; });
+  if (bc) {
+    out += '<div class="slide-section-label">Benchmark spotlight</div>'
+      + '<div style="background:var(--navy);border-radius:2px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start">'
+      + '<div style="text-align:center;padding:8px 14px;background:rgba(255,255,255,0.08);border-radius:2px;min-width:100px">'
+      + '<div style="font-size:10px;color:#9192AB;margin-bottom:4px;text-transform:uppercase;letter-spacing:0.4px">'+bc.stat+'</div>'
+      + '<div style="font-size:11px;font-weight:700;color:var(--teal);margin-bottom:2px">EFF: '+bc.eff+'</div>'
+      + '<div style="font-size:11px;font-weight:700;color:var(--aqua)">BIC: '+bc.bic+'</div>'
+      + '</div>'
+      + '<div style="font-size:12px;color:#C8CAD8;line-height:1.55">'+bc.insight+'</div>'
+      + '</div>';
+  }
+
+  // D. Red flags
+  var rf = RED_FLAGS.find(function(r){ return r.dim===di; });
+  if (rf) {
+    out += '<div class="slide-section-label">Red flags — signs of over-scoring</div>'
+      + '<div style="background:#C0392B08;border:1px solid #C0392B28;border-radius:2px;padding:10px 12px">'
+      + rf.flags.map(function(f){
+          return '<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:6px">'
+            + '<div style="color:#C0392B;font-size:12px;flex-shrink:0;margin-top:1px">⚠</div>'
+            + '<div style="font-size:11.5px;color:var(--steel);line-height:1.45">'+f+'</div>'
+            + '</div>';
+        }).join('')
+      + '</div>';
+  }
+
+  // B. Diagnostic questions
+  var dq = DIAG_QUESTIONS.find(function(d){ return d.dim===di; });
+  if (dq) {
+    out += '<div class="slide-section-label">Diagnostic questions for the room</div>'
+      + '<div style="display:flex;flex-direction:column;gap:6px">'
+      + dq.questions.map(function(q,qi){
+          return '<div style="display:flex;gap:9px;align-items:flex-start;padding:9px 11px;background:var(--ow);border:1px solid var(--pearl);border-radius:2px">'
+            + '<div style="width:20px;height:20px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--aqua);flex-shrink:0">'+(qi+1)+'</div>'
+            + '<div style="font-size:12px;color:var(--steel);line-height:1.5">'+q+'</div>'
+            + '</div>';
+        }).join('')
+      + '</div>';
+  }
+
+  // E. Vendor landscape (selected dims only)
+  var vl = VENDOR_LANDSCAPE.find(function(v){ return v.dim===di; });
+  if (vl) {
+    out += '<div class="slide-section-label">Tool & vendor landscape</div>'
+      + '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px">'
+      + vl.categories.map(function(cat){
+          return '<div style="background:var(--ow);border:1px solid var(--pearl);border-radius:2px;padding:9px 11px">'
+            + '<div style="font-size:10px;font-weight:700;color:var(--navy);margin-bottom:6px">'+cat.label+'</div>'
+            + cat.vendors.map(function(v){
+                return '<div style="font-size:11px;color:var(--steel);padding:2px 0;border-bottom:1px solid var(--pearl)">• '+v+'</div>';
+              }).join('')
+            + '</div>';
+        }).join('')
+      + '</div>';
+  }
+
+  return out;
+}
+
+// Org chart SVG data (dims 0 and 3)
+function renderOrgChartForDim(di) {
+  if (di === 0) return renderOrgCharts();
+  if (di === 3) return renderTechStack();
+  return '';
+}
+
+function renderTechStack() {
+  var NV='#0B0C44',TL='#006C80',EM='#118B80',SP='#8B7495',PL='#E4DEE0',OW='#F1EFF0';
+  var layers = [
+    { label:'ERP — single source of truth', color:NV, tools:['NetSuite','Sage Intacct','Microsoft Business Central','SAP B1'] },
+    { label:'FP&A — planning & forecasting', color:TL, tools:['Pigment','Mosaic','Adaptive Planning','Jedox'] },
+    { label:'Close management', color:SP, tools:['FloQast','BlackLine','Trintech'] },
+    { label:'BI & dashboards', color:EM, tools:['Power BI','Tableau','Qlik','Lightdash'] },
+    { label:'Integration layer', color:'#465576', tools:['Fivetran','dbt','Azure Data Factory','Zapier'] },
+  ];
+  var colW = 110, colGap = 8, rowH = 56, rowGap = 6, leftW = 160, leftGap = 10;
+  var maxTools = Math.max.apply(null, layers.map(function(l){return l.tools.length;}));
+  var totalW = leftW + leftGap + maxTools*(colW+colGap) - colGap + 20;
+  var totalH = layers.length*(rowH+rowGap) - rowGap + 20;
+
+  var svg = '<svg viewBox="0 0 '+totalW+' '+totalH+'" style="width:100%;height:auto;display:block;font-family:Arial,sans-serif">';
+  layers.forEach(function(layer, li) {
+    var y = 10 + li*(rowH+rowGap);
+    // Layer label
+    svg += '<rect x="0" y="'+y+'" width="'+leftW+'" height="'+rowH+'" rx="3" fill="'+layer.color+'"/>';
+    var words = layer.label.split(' '), line1='', line2='';
+    words.forEach(function(w){ if((line1+' '+w).trim().length<=20) line1=(line1+' '+w).trim(); else line2=(line2+' '+w).trim(); });
+    svg += '<text x="'+leftW/2+'" y="'+(y+rowH/2-(line2?7:0))+'" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">'+line1+'</text>';
+    if(line2) svg += '<text x="'+leftW/2+'" y="'+(y+rowH/2+9)+'" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">'+line2+'</text>';
+    // Tool chips
+    layer.tools.forEach(function(tool, ti) {
+      var x = leftW + leftGap + ti*(colW+colGap);
+      svg += '<rect x="'+x+'" y="'+y+'" width="'+colW+'" height="'+rowH+'" rx="3" fill="'+layer.color+'18" stroke="'+layer.color+'40" stroke-width="1.5"/>';
+      svg += '<text x="'+(x+colW/2)+'" y="'+(y+rowH/2+4)+'" text-anchor="middle" font-size="10.5" font-weight="600" fill="'+layer.color+'">'+tool+'</text>';
+    });
+  });
+  svg += '</svg>';
+
+  return '<div class="slide-section-label">PE finance tech stack — layers</div>'
+    + '<div style="margin-bottom:8px;font-size:11.5px;color:var(--slate)">Best-in-class is a fully integrated stack. Each layer feeds the one above it. Most Lagging businesses have ERP but nothing above it.</div>'
+    + svg;
+}
+
 function renderFacilitatorWithData(sh, responses) {
   var n = responses.length;
 
@@ -2036,6 +2366,9 @@ function renderFacilitatorWithData(sh, responses) {
       + '<div style="font-size:12.5px;color:var(--steel);line-height:1.5">'+ta[bkey]+'</div>'
       + '</div>' : '';
 
+    var enrichHtml = renderDimEnrichment(di, modal, responses);
+    var orgHtml = renderOrgChartForDim(di);
+
     var slideHtml = '<div class="card slide-shell">' + toolbar + navBar
       + '<div class="slide-title-bar">'
       + '<div class="slide-dim-badge">'+(di+1)+'</div>'
@@ -2049,6 +2382,8 @@ function renderFacilitatorWithData(sh, responses) {
       + kpiHtml
       + fpHtml
       + actionHtml
+      + enrichHtml
+      + orgHtml
       + '</div>';
 
     sh.innerHTML = slideHtml;
