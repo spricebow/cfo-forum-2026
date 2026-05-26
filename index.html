@@ -9,37 +9,62 @@
 <title>CFO Forum 2026 — Self Assessment | Bowmark Capital</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --navy:#0B0C44; --steel:#465576; --ow:#F1EFF0; --slate:#9192AB;
-  --pearl:#E4DEE0; --teal:#006C80; --aqua:#12C6A3; --emerald:#118B80;
-  --sp:#8B7495; --coral:#FF6661;
-}
-body { font-family:'Arial Nova',Arial,sans-serif; background:var(--ow); color:var(--navy); min-height:100vh; }
+/* Bowmark brand fonts */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap');
 
-.top-bar { background:var(--navy); padding:0.85rem 1.5rem; }
-.top-bar-inner { max-width:860px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
-.top-left { display:flex; align-items:center; gap:12px; }
-.top-pip { width:5px; height:32px; background:var(--teal); border-radius:1px; flex-shrink:0; }
-.top-title { font-size:14px; font-weight:700; color:#fff; }
-.top-sub { font-size:11px; color:var(--slate); margin-top:1px; }
+:root {
+  /* Bowmark brand tokens */
+  --bm-blue:      #0B0C44;
+  --bm-offwhite:  #F0EEF0;
+  --bm-coral:     #FF6661;
+  --bm-bluegrey:  #465576;
+  --bm-lilacgrey: #9192AB;
+  --bm-warmgrey:  #E4DEE0;
+  --bm-white:     #FFFFFF;
+
+  /* Aliases used throughout the tool */
+  --navy:   #0B0C44;
+  --steel:  #465576;
+  --ow:     #F0EEF0;
+  --slate:  #9192AB;
+  --pearl:  #E4DEE0;
+  --teal:   #006C80;
+  --aqua:   #12C6A3;
+  --emerald:#118B80;
+  --sp:     #8B7495;
+  --coral:  #FF6661;
+
+  /* Typography — Larsseit approximated with DM Sans (closest freely available) */
+  --font-heading: 'DM Sans', 'Arial Nova', Arial, sans-serif;
+  --font-body:    'DM Sans', 'Arial Nova', Arial, sans-serif;
+}
+body { font-family:var(--font-body); background:var(--bm-offwhite); color:var(--bm-blue); min-height:100vh; }
+
+.top-bar { background:var(--bm-blue); padding:0; height:56px; border-bottom:3px solid var(--bm-coral); }
+.top-bar-inner { max-width:1280px; margin:0 auto; height:56px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:nowrap; padding:0 24px; }
+.top-left { display:flex; align-items:center; gap:16px; }
+.top-pip { display:none; }
+.top-logo { height:26px; width:auto; display:block; }
+.top-title { font-size:12px; font-weight:400; color:var(--bm-white); letter-spacing:0.02em; font-family:var(--font-heading); }
+.top-sub { font-size:9px; color:var(--bm-lilacgrey); margin-top:2px; letter-spacing:0.1em; text-transform:uppercase; }
 .mode-toggle { display:flex; gap:4px; flex-wrap:wrap; }
-.mode-btn { padding:6px 13px; border-radius:2px; border:1px solid rgba(145,146,171,0.4); background:transparent; font-size:11px; font-weight:700; color:var(--slate); cursor:pointer; font-family:inherit; transition:all .15s; }
-.mode-btn.active { background:var(--teal); color:#fff; border-color:var(--teal); }
-.mode-btn.edit-active { background:var(--sp); color:#fff; border-color:var(--sp); }
-.mode-btn:hover:not(.active):not(.edit-active) { color:#fff; border-color:rgba(255,255,255,0.4); }
+.mode-btn { padding:6px 14px; border-radius:2px; border:1px solid rgba(240,238,240,0.25); background:transparent; font-size:11px; font-weight:500; color:var(--bm-lilacgrey); cursor:pointer; font-family:var(--font-body); transition:all .15s; letter-spacing:0.03em; }
+.mode-btn.active { background:var(--bm-white); color:var(--bm-blue); border-color:var(--bm-white); font-weight:700; }
+.mode-btn.edit-active { background:var(--bm-coral); color:var(--bm-white); border-color:var(--bm-coral); }
+.mode-btn:hover:not(.active):not(.edit-active) { color:var(--bm-white); border-color:rgba(240,238,240,0.5); }
 
 .progress-wrap { background:#fff; border-bottom:1px solid var(--pearl); padding:0.65rem 1.5rem; position:sticky; top:0; z-index:10; }
-.progress-inner { max-width:860px; margin:0 auto; }
+.progress-inner { max-width:1280px; margin:0 auto; }
 .progress-label { font-size:11px; color:var(--slate); margin-bottom:5px; }
 .progress-bar { display:flex; gap:4px; }
 .prog-step { flex:1; height:3px; border-radius:1px; background:var(--pearl); transition:background .3s; }
 .prog-step.done { background:var(--teal); }
 .prog-step.active { background:var(--navy); }
 
-.shell { max-width:860px; margin:0 auto; padding:1.75rem 1.5rem 4rem; }
-.card { background:#fff; border-radius:2px; padding:1.6rem; margin-bottom:1.1rem; border:1px solid var(--pearl); }
-.section-title { font-size:20px; font-weight:700; color:var(--navy); margin-bottom:4px; }
-.section-rule { height:3px; background:var(--teal); width:36px; margin-bottom:1.2rem; }
+.shell { max-width:1280px; margin:0 auto; padding:1.75rem 1.5rem 4rem; }
+.card { background:var(--bm-white); border-radius:2px; padding:1.6rem; margin-bottom:1.1rem; border:1px solid var(--bm-warmgrey); box-shadow:0 1px 3px rgba(11,12,68,0.05); }
+.section-title { font-size:20px; font-weight:300; color:var(--bm-blue); margin-bottom:4px; font-family:var(--font-heading); letter-spacing:-0.02em; }
+.section-rule { height:3px; background:var(--bm-coral); width:36px; margin-bottom:1.2rem; }
 .sep { height:1px; background:var(--pearl); margin:1.2rem 0; }
 
 .intro-card { background:var(--ow); border-radius:2px; padding:0.9rem 1.1rem; margin-bottom:0.85rem; border-left:3px solid var(--teal); }
@@ -67,11 +92,20 @@ body { font-family:'Arial Nova',Arial,sans-serif; background:var(--ow); color:va
 .score-text { padding:11px 14px; font-size:12.5px; color:var(--steel); line-height:1.5; display:flex; align-items:center; }
 .score-option.selected .score-text { color:var(--navy); font-weight:600; }
 
+/* Behavioural selectors */
+.behav-option { display:flex; align-items:center; gap:12px; padding:13px 14px; border:1.5px solid var(--pearl); border-radius:2px; cursor:pointer; margin-bottom:8px; transition:border-color .15s, background .15s; background:#fff; }
+.behav-option:hover { border-color:var(--slate); background:var(--ow); }
+.behav-option.behav-selected { border-color:var(--bm-blue); border-width:2px; background:var(--bm-offwhite); }
+.behav-indicator { width:5px; min-width:5px; height:40px; border-radius:3px; flex-shrink:0; transition:background .15s; }
+.behav-text { flex:1; font-size:13px; color:var(--steel); line-height:1.55; }
+.behav-option.behav-selected .behav-text { color:var(--navy); font-weight:500; }
+.behav-check { width:22px; min-width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+
 .nav-row { display:flex; justify-content:space-between; align-items:center; margin-top:1.4rem; flex-wrap:wrap; gap:8px; }
 .btn { padding:9px 20px; border-radius:2px; border:1px solid var(--pearl); background:#fff; font-size:13px; font-weight:700; cursor:pointer; color:var(--navy); font-family:inherit; transition:background .15s; }
 .btn:hover { background:var(--ow); }
 .btn:disabled { opacity:0.3; cursor:not-allowed; }
-.btn-primary { background:var(--navy); color:var(--aqua); border-color:var(--navy); }
+.btn-primary { background:var(--bm-coral); color:var(--bm-white); border-color:var(--bm-coral); font-weight:500; }
 .btn-primary:hover { background:#14165c; }
 .btn-teal { background:var(--teal); color:#fff; border-color:var(--teal); }
 .btn-teal:hover { background:#005a6b; }
@@ -102,8 +136,9 @@ body { font-family:'Arial Nova',Arial,sans-serif; background:var(--ow); color:va
 .ns-item { display:flex; gap:7px; align-items:flex-start; margin-bottom:6px; }
 .ns-item:last-child { margin-bottom:0; }
 .ns-badge { font-size:9px; font-weight:700; padding:2px 6px; border-radius:2px; flex-shrink:0; margin-top:2px; text-transform:uppercase; letter-spacing:0.4px; }
-.ns-badge.vendor { background:rgba(11,12,68,0.08); color:var(--navy); }
-.ns-badge.process { background:rgba(0,108,128,0.1); color:var(--teal); }
+.ns-badge.process, .ns-badge.technology, .ns-badge.people { background:rgba(11,12,68,0.08); color:var(--bm-blue); }
+.ns-badge.technology { background:rgba(17,139,128,0.12); color:var(--emerald); }
+.ns-badge.people     { background:rgba(139,116,149,0.12); color:var(--sp); }
 .ns-text { font-size:12.5px; color:var(--steel); line-height:1.45; }
 
 /* Phased roadmap */
@@ -168,21 +203,25 @@ body { font-family:'Arial Nova',Arial,sans-serif; background:var(--ow); color:va
 .cap-item-header { padding:9px 12px 7px; }
 .cap-item-label { font-size:12.5px; color:var(--navy); line-height:1.4; font-weight:600; }
 .cap-item-help { font-size:11px; color:var(--slate); margin-top:2px; line-height:1.35; }
-.cap-item-btns { display:grid; grid-template-columns:1fr 1fr 1fr; border-top:1px solid var(--pearl); }
+
 .cap-btn { border:none; background:transparent; padding:9px 4px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; transition:background .12s; border-right:1px solid var(--pearl); text-align:center; line-height:1.3; }
 .cap-btn:last-child { border-right:none; }
 .cap-btn:hover { background:var(--ow); }
 .cap-btn.sel-monthly { background:#118B8015; color:#118B80; }
 .cap-btn.sel-adhoc   { background:#8B749515; color:#8B7495; }
 .cap-btn.sel-no      { background:#C0392B12; color:#C0392B; }
+.cap-btn.sel-na      { background:#46557615; color:#465576; }
 .cap-item.state-monthly { border-color:#118B80; }
 .cap-item.state-adhoc   { border-color:#8B7495; }
 .cap-item.state-no      { border-color:#C0392B; }
+.cap-item.state-na      { border-color:#9192AB; }
+.cap-item.cap-unanswered { border-color:#E4DEE0; border-style:dashed; background:#FAFAFA; }
+.cap-item-btns { display:grid; grid-template-columns:1fr 1fr 1fr 1fr; border-top:1px solid var(--pearl); }
 
 /* Heat map */
 .heatmap-wrap { overflow-x:hidden; margin-top:10px; }
 .heatmap { border-collapse:collapse; font-size:10px; width:100%; }
-.heatmap th { background:var(--navy); color:#fff; padding:6px 8px; font-weight:700; font-size:10px; text-align:left; white-space:nowrap; }
+.heatmap th { background:var(--bm-blue); color:var(--bm-white); padding:6px 8px; font-weight:500; font-size:10px; text-align:left; white-space:nowrap; letter-spacing:0.04em; }
 .heatmap th.rotate { vertical-align:bottom; padding:8px 4px 4px; }
 .heatmap th.rotate span { writing-mode:vertical-rl; transform:rotate(180deg); display:block; max-height:80px; overflow:hidden; font-size:9px; letter-spacing:0.3px; }
 .heatmap td { padding:4px 6px; border:1px solid var(--pearl); vertical-align:middle; }
@@ -198,8 +237,7 @@ body { font-family:'Arial Nova',Arial,sans-serif; background:var(--ow); color:va
 
 /* Facilitator slide deck */
 .slide-shell { position:relative; }
-.slide-nav-bar { display:flex; align-items:center; justify-content:space-between; 
-  background:var(--navy); border-radius:2px; padding:10px 14px; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
+.slide-nav-bar { display:flex; align-items:center; justify-content:space-between; background:var(--bm-blue); border-radius:2px; padding:10px 14px; margin-bottom:12px; flex-wrap:wrap; gap:8px; border-bottom:2px solid var(--bm-coral); }
 .slide-counter { font-size:11px; color:var(--slate); text-align:center; flex:1; }
 .slide-counter strong { color:#fff; font-size:13px; }
 .slide-btn { padding:8px 18px; border-radius:2px; border:1px solid rgba(255,255,255,0.2); 
@@ -207,7 +245,7 @@ body { font-family:'Arial Nova',Arial,sans-serif; background:var(--ow); color:va
   font-family:inherit; transition:background .15s; }
 .slide-btn:hover { background:rgba(255,255,255,0.1); }
 .slide-btn:disabled { opacity:0.3; cursor:not-allowed; }
-.slide-btn.primary { background:var(--teal); border-color:var(--teal); }
+.slide-btn.primary { background:var(--bm-coral); border-color:var(--bm-coral); font-weight:500; }
 .slide-btn.primary:hover { background:#005a6b; }
 .slide-dots { display:flex; gap:5px; justify-content:center; flex-wrap:wrap; }
 .slide-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.2); 
@@ -215,9 +253,7 @@ body { font-family:'Arial Nova',Arial,sans-serif; background:var(--ow); color:va
 .slide-dot.active { background:var(--teal); }
 .slide-dot.done { background:rgba(18,198,163,0.4); }
 .slide-title-bar { display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
-.slide-dim-badge { width:36px; height:36px; border-radius:50%; background:var(--navy); 
-  display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; 
-  color:var(--aqua); flex-shrink:0; }
+.slide-dim-badge { width:36px; height:36px; border-radius:50%; background:var(--bm-blue); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700; color:var(--bm-white); flex-shrink:0; border:2px solid var(--bm-coral); }
 .slide-dim-title { font-size:18px; font-weight:700; color:var(--navy); }
 .slide-dim-compass { font-size:10px; color:var(--teal); font-weight:700; text-transform:uppercase; letter-spacing:0.5px; }
 .slide-two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
@@ -308,8 +344,7 @@ body { font-family:'Arial Nova',Arial,sans-serif; background:var(--ow); color:va
 .ed-info { background:#e6f4f1; border:1px solid var(--teal); border-radius:2px; padding:9px 12px; margin-bottom:14px; font-size:12.5px; color:var(--teal); }
 
 /* Submit banner */
-.submit-banner { background:#e6f4f1; border:1px solid var(--teal); border-radius:2px; 
-  padding:12px 14px; margin-bottom:14px; }
+.submit-banner { background:var(--bm-offwhite); border:1px solid var(--bm-blue); border-radius:2px; padding:12px 14px; margin-bottom:14px; border-left:3px solid var(--bm-coral); }
 
 /* ── Mobile: base adjustments (≤640px) ─────────────────────────────── */
 @media (max-width:640px) {
@@ -412,10 +447,11 @@ body { font-family:'Arial Nova',Arial,sans-serif; background:var(--ow); color:va
 <div class="top-bar">
   <div class="top-bar-inner">
     <div class="top-left">
-      <div class="top-pip"></div>
+      <img class="top-logo" src="data:image/png;base64,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" alt="Bowmark Capital" />
+      <div style="width:1px;height:24px;background:rgba(240,238,240,0.2);margin:0 4px"></div>
       <div>
-        <div class="top-title">Bowmark Capital — CFO Forum 2026 Self Assessment</div>
-        <div class="top-sub">CFO Forum &nbsp;|&nbsp; Self-Assessment Tool &nbsp;|&nbsp; Confidential</div>
+        <div class="top-title">CFO Forum 2026 — Finance Function Self Assessment</div>
+        <div class="top-sub">Self-assessment tool &nbsp;·&nbsp; Confidential</div>
       </div>
     </div>
     <div class="mode-toggle">
@@ -462,51 +498,51 @@ const DIMS = [
 
 // ── Rubric: 4 bands per dimension ─────────────────────────────────────────────
 const RUB = [
-  // Team Model
-  ['Ad-hoc structure, unclear ownership — finance team firefighting constantly with no separation of roles',
-   'Basic in-house team in place but over-reliant on CFO with little specialist depth; structure has not been deliberately designed',
-   'Functional structure with CFO, FC and FP&A — stewardship and commercial finance broadly separated; team works but is stretched',
-   'Investor-ready structure; lean core + smart outsourcing; clear role separation; CFO operating as a strategic partner to CEO'],
-  // Role Design
-  ['Roles undefined or duplicated; wrong seniority mix causing bottlenecks; no JDs or levelling framework',
-   'Roles exist on paper but accountabilities blur; CFO doing FC work; seniority mix slightly off but broadly in place',
-   'Clear JDs and right seniority levels; stewardship and commercial finance genuinely distinct; some succession risk remains',
-   'Benchmark-quality role design; succession evident at every level; CFO profile deliberately matched to hold stage; exit-ready'],
-  // Outsourcing
-  ['Everything done in-house including low-value transactional tasks; high cost, low leverage; no managed services',
-   'Some outsourcing in place (e.g. payroll) but poorly governed; unclear SLAs; in-house team still stretched on specialist areas',
-   'Smart split: AP/AR/payroll outsourced; tax and IA co-sourced; in-house team focused on FP&A and value-add work',
-   'Fully optimised model; outsource/co-source decisions reviewed annually; PE firm resources leveraged; best-in-class providers'],
-  // Systems
-  ['Finance runs on spreadsheets; no single source of truth; consolidation manual; close takes 10+ working days',
-   'Basic ERP in place but FP&A still runs in Excel; two versions of the truth in play; reporting still largely manual',
-   'Integrated ERP + FP&A tooling; automated close and consolidation; dashboards available; close in 5–7 days',
-   'Best-in-class stack fully integrated (ERP/CRM/HR/BI); AI-assisted reporting; real-time KPI visibility; close in ≤4 days'],
-  // Governance
-  ['Reporting late, inconsistent or disputed; no agreed template with PE board; no close calendar; flash P&L absent',
-   'Monthly close happens but takes too long; board packs assembled under pressure; commentary backward-looking only',
-   'Tight close calendar; board pack agreed with investors; commentary includes forward outlook; FP&A partners add real value',
-   'Finance drives the business rhythm; rolling 12-month reforecast; exit-ready reporting; board pack out by day 8'],
+  // Team Model & Structure
+  ['CFO involved on a daily / weekly basis in reporting, FP&A, investor relations and FC work',
+   'CFO and FC have distinct responsibilities but sometimes end up double-hatting',
+   'CFO has sufficient time on a weekly / monthly basis to focus on strategy. Commercial finance relies on CFO for leadership but not execution',
+   'Finance team is right-sized for the business, with clear separation between stewardship and value creation. CFO time is protected for strategy, M&A and investor relations'],
+  // Role Design & Seniority Mix
+  ['Roles exist but overlap significantly — people cover for each other and accountability is informal',
+   'Roles are defined but some are mismatched to the complexity of the business — either over or under-seniored',
+   'Clear JDs and right seniority levels across the team. Stewardship and commercial finance are genuinely distinct roles',
+   'Role design is reviewed annually and aligned to the hold-period horizon. Succession is planned and tested'],
+  // Outsourcing & Co-sourcing
+  ['Most finance activity is done in-house including transactional processing — high cost, limited capacity for value-add work',
+   'One or two processes outsourced opportunistically rather than by design. Tax and compliance managed reactively in-house',
+   'Transactional processing minimised through utilising ERP-native tools. Tax advice is proactive and embedded rather than reactive and year-end only',
+   'In-house finance is focused on insight, forecasting and commercial support. Routine work is handled through managed services or specialist advisers'],
+  // Systems & Automation
+  ['Finance runs primarily on spreadsheets. The close process involves significant manual assembly of data across multiple sources',
+   'ERP in place but FP&A, budgeting and board reporting still run in Excel. Two versions of the truth are possible between teams',
+   'Integrated ERP and FP&A tool. Close is largely automated. Budget holders can access their own data without asking finance',
+   'Fully integrated tech stack. Close in under 5 days. Real-time dashboards accessible to the PE board without finance involvement'],
+  // Governance & Reporting
+  ['Close process takes longer than 10 working days. Board pack is assembled under pressure and often reflects the past rather than the future',
+   'Close happens consistently but later than 8 working days. Board pack commentary is backward-looking. Rolling forecast either absent or not trusted',
+   'Close within 5 working days. Board pack out by working day 15 with forward-looking commentary. Rolling 12-month reforecast updated monthly',
+   'Finance drives the business rhythm. Close in 5 working days, board pack out by working day 10, fit for a PE board and forward-looking. Forecast is trusted and within ±5% of EBITDA'],
   // Exit Readiness
-  ['No defined exit route; equity story absent; data room not considered; finance team not prepared for DD scrutiny',
-   'High-level awareness of exit requirements; some buyer mapping done; MI improving but not diligence-ready; no formal exit plan',
-   'Exit readiness review completed; equity story articulated; KPIs aligned to buyer expectations; data room populated',
-   'Fully diligence-ready; compelling equity story with data-backed proof points; CFO rehearsed for buyer Q&A; no surprises'],
+  ['Exit is not on the agenda. The team has limited visibility of the valuation drivers or KPIs a buyer would focus on. Financial information is not structured with a transaction in mind',
+   'There is a broad understanding of how the business would be valued and what buyers would look for, but limited active preparation. KPIs are tracked but not structured around an exit narrative',
+   'The team knows what a buyer will ask for and has started building it. Equity story drafted, financial history clean, and the key analytical outputs are being produced regularly',
+   'Exit readiness is embedded in how the business is run. The equity story is clear and rehearsed, and the financial and commercial information needed to support a VFDD and VCDD process is already being produced as business as usual'],
   // Cash & Working Capital
-  ['No visibility of cash conversion drivers; DSO/DPO/DIO not tracked; cash forecast produced ad hoc by finance only; working capital seen as a compliance metric',
-   'Basic cash flow forecast in place; DSO/DPO/DIO tracked but improvement efforts are reactive; limited cross-functional accountability for working capital',
-   'Rolling 13-week cash forecast integrated with ERP; working capital targets embedded in budgets; weekly cash reviews; DSO/DPO/DIO owned by business functions',
-   'Cash treated as a strategic value lever; predictive analytics on receivables, payables and inventory; dynamic scenario modelling; cash excellence programme tied to VCP and IRR'],
+  ['Cash is tracked monthly by finance. DSO, DPO and DIO are reported but no one outside finance is accountable for them',
+   'Working capital targets exist but are owned by finance rather than the business. Cash forecasting is spreadsheet-based and manually intensive',
+   'Rolling 13-week cash forecast integrated with ERP. Working capital KPIs owned by budget holders with weekly reviews',
+   'Cash treated as a primary value lever. Predictive analytics on receivables and payables. DSO, DPO and DIO embedded in commercial incentives'],
   // Data Quality & Analytics
-  ['KPIs defined inconsistently across functions; no data dictionary; multiple versions of the truth; analytics done ad hoc by finance on request',
-   'Core KPIs broadly agreed but methodology varies; basic dashboards exist but are manually refreshed; limited drill-down; data trust issues common',
-   'Group-wide KPI dictionary with definitions, calculation logic and data source; self-serve dashboards available; data reconciled to GL; budget holders use data regularly',
-   'Enterprise data model with golden records; KPI taxonomy embedded in ERP/BI tools; AI-driven insight standard; business self-serves; finance controls logic and narrative'],
+  ['KPIs are defined differently across finance and the business. Analysts spend most of their time reconciling data rather than analysing it',
+   'Core metrics broadly agreed but methodology varies. Dashboards exist but rely on manual refreshes and are not fully trusted',
+   'Group-wide KPI dictionary in place. Self-serve dashboards available to budget holders. Data reconciled to the GL',
+   'The business runs on a single version of the truth. KPIs are defined, trusted and consistent across functions — finance sets the standards and the business uses them without needing to ask'],
   // Business Partnering
-  ['Finance operates as a back-office function; no defined business partner roles; meetings backward-looking (budget vs actual only); no commercial challenge',
-   'Some individuals provide commentary to the business but roles are unclear; finance attends reviews but mainly reports numbers rather than insight; challenge limited to cost control',
-   'Defined finance business partner roles distinct from controllers; monthly performance reviews with insight, trends and actions; finance challenges revenue, margin and pricing assumptions',
-   'Finance is a core strategic arm of decision-making; proactive insight on growth, pricing and customer economics; business cases owned end-to-end; partners treated as trusted advisors'],
+  ['Finance attends operational reviews but primarily reports historical numbers. Commercial decisions are made without finance input',
+   'Finance provides commentary and some forward-looking insight but the role is reactive rather than proactive',
+   'Finance business partners attend commercial meetings and challenge assumptions on revenue, margin and pricing. Business cases require finance sign-off',
+   'Finance is a core part of commercial decision-making. Partners own business cases end-to-end and track post-investment ROI'],
 ];
 
 // ── KPI Benchmarks per dimension ──────────────────────────────────────────────
@@ -679,7 +715,7 @@ const CAPABILITIES = [
   { id:'cash_13wk',    dim:6, label:'13-week cash flow forecast (connected to ERP)',                  help:'Is your 13-week cash forecast driven by system data, or built manually in Excel?' },
   { id:'aged_dr_cr',   dim:6, label:'Aged debtor and creditor analysis by BU',                        help:'Can you see aged debtors and creditors split by business unit and customer?' },
   { id:'dso_trend',    dim:6, label:'DSO / DPO / DIO trend by entity (monthly)',                      help:'Do you track working capital metrics monthly by entity with trend analysis?' },
-  { id:'cov_cert',     dim:6, label:'Covenant compliance certificate (on time)',                      help:'Is your covenant certificate produced on time every period with a finance review before submission?' },
+  { id:'cov_cert',     dim:6, label:'Covenant compliance certificate ready at least 5 working days before deadline',  help:'Is your covenant certificate produced at least 5 working days before the submission deadline, with a finance review before submission?' },
   { id:'three_yr_pl',  dim:5, label:'3-year audited P&L, balance sheet and cash flow',               help:'Are your last 3 years of financials audited, clean and immediately available for a buyer?' },
   { id:'ebitda_bridge',dim:5, label:'Normalised / adjusted EBITDA bridge',                           help:'Can you produce a clear EBITDA bridge from statutory to adjusted, with all add-backs documented?' },
   { id:'wc_sched',     dim:5, label:'Working capital movement schedule',                             help:'Do you have a working capital schedule that reconciles to the balance sheet?' },
@@ -693,125 +729,183 @@ function capsByDim(dimIdx) { return CAPABILITIES.filter(c=>c.dim===dimIdx); }
 // ── Next steps / vendor content ───────────────────────────────────────────────
 const BANDS = [[0,1],[2],[3]]; // Lagging/Emerging, Effective, BIC
 const BAND_LABELS_ED = ['Lagging–Emerging','Effective','Best-in-Class'];
-const RESP_KEY = 'bowmark_v4_responses';
-const NS_KEY   = 'bowmark_v4_nextsteps';
+const RESP_KEY    = 'bowmark_v4_responses';
+const NS_KEY      = 'bowmark_v5_nextsteps';
+const SPONSOR_KEY = 'bowmark_v4_sponsor';
 
 const DEFAULT_NS = [
+  // ── Team Model & Structure ──────────────────────────────────────────────
   { dim:'Team Model & Structure', band:0, items:[
-    { type:'process', text:'Map your current team against a standard PE finance org chart — identify single points of failure and coverage gaps immediately' },
-    { type:'process', text:'Separate stewardship and commercial finance into distinct reporting lines within 90 days, even if headcount is thin' },
-    { type:'vendor',  text:'Interim CFO/FD resource: Odgers Interim, Freshminds, Exe-cut — use to bridge structural gaps while permanent hire is secured' },
-    { type:'vendor',  text:'Org design advisory: Korn Ferry, Spencer Stuart — PE-specialist practices for finance function benchmarking' },
+    { type:'people',  text:'Consider skills you want to develop as you move into the next phase of the hold — operator at entry, strategist approaching exit' },
+    { type:'people',  text:'Engage an interim resource to bridge structural gaps while a permanent hire is secured' },
+    { type:'process', text:'Run a time allocation audit with the team — map how the week is actually spent and identify what should be delegated or removed' },
   ]},
   { dim:'Team Model & Structure', band:1, items:[
-    { type:'process', text:'Define the target operating model for the end of the hold period and work backwards — what needs to be built and when?' },
-    { type:'process', text:'Introduce a dedicated FP&A resource (even 0.5 FTE) to separate insight from reporting workload' },
-    { type:'vendor',  text:'Interim FP&A or FC support: Volt, Robert Half — for targeted capability injection without permanent headcount' },
+    { type:'people',  text:'Consider skills you want to develop as you move into the next phase of the hold — operator at entry, strategist approaching exit' },
+    { type:'people',  text:'Engage an interim resource to bridge structural gaps while a permanent hire is secured' },
+    { type:'process', text:'Run a time allocation audit with the team — map how the week is actually spent and identify what should be delegated or removed' },
   ]},
+  { dim:'Team Model & Structure', band:2, items:[
+    { type:'people',  text:'Stress-test the team for the next phase — is the profile right for exit, and does the structure have the depth to support a process without distraction to the business?' },
+    { type:'process', text:'Document the finance operating model formally — a buyer will assess team design and structure as part of management due diligence' },
+  ]},
+  { dim:'Team Model & Structure', band:3, items:[
+    { type:'people',  text:'Stress-test the team for the next phase — is the profile right for exit, and does the structure have the depth to support a process without distraction to the business?' },
+    { type:'process', text:'Document the finance operating model formally — a buyer will assess team design and structure as part of management due diligence' },
+  ]},
+  // ── Role Design & Seniority Mix ─────────────────────────────────────────
   { dim:'Role Design & Seniority Mix', band:0, items:[
-    { type:'process', text:'Conduct a role clarity workshop — define what good looks like for each position before re-hiring or reorganising' },
-    { type:'process', text:'Benchmark salary and seniority against PE portfolio peers; over-paying at the wrong level is a common early-hold mistake' },
-    { type:'vendor',  text:'Executive search: Odgers Berndtson, Korn Ferry, Heidrick & Struggles — for CFO and FC hires with genuine PE experience' },
-    { type:'vendor',  text:'Finance recruitment: Robert Half, Marks Sattin, Brewer Morris — for qualified mid-level finance hires' },
+    { type:'people',  text:'Build a succession plan — identify named internal candidates and create a development path before exit pressure creates urgency' },
+    { type:'people',  text:'Benchmark seniority and compensation against PE portfolio peers to confirm the team is structured and paid at the right level' },
+    { type:'process', text:'Run a role clarity session — define accountabilities explicitly and resolve any overlap between stewardship and commercial finance' },
   ]},
   { dim:'Role Design & Seniority Mix', band:1, items:[
-    { type:'process', text:'Build succession plans for CFO and FC — PE exits are long; key-person dependency at either level is a real risk' },
-    { type:'process', text:'Review whether CFO time allocation matches the hold stage priorities — strategy vs. operations vs. transactions' },
-    { type:'vendor',  text:'Leadership development: Hemming Morse, Teneo — for CFO coaching and PE-readiness development programmes' },
+    { type:'people',  text:'Build a succession plan — identify named internal candidates and create a development path before exit pressure creates urgency' },
+    { type:'people',  text:'Benchmark seniority and compensation against PE portfolio peers to confirm the team is structured and paid at the right level' },
+    { type:'process', text:'Run a role clarity session — define accountabilities explicitly and resolve any overlap between stewardship and commercial finance' },
   ]},
+  { dim:'Role Design & Seniority Mix', band:2, items:[
+    { type:'people',  text:'Confirm succession plans are live and pressure-tested — a buyer will ask who runs finance if the CFO is absorbed by the sale process' },
+    { type:'process', text:'Review whether the current role design still fits the business at its current scale — what was right at entry may need refreshing ahead of exit' },
+  ]},
+  { dim:'Role Design & Seniority Mix', band:3, items:[
+    { type:'people',  text:'Confirm succession plans are live and pressure-tested — a buyer will ask who runs finance if the CFO is absorbed by the sale process' },
+    { type:'process', text:'Review whether the current role design still fits the business at its current scale — what was right at entry may need refreshing ahead of exit' },
+  ]},
+  // ── Outsourcing & Co-sourcing ────────────────────────────────────────────
   { dim:'Outsourcing & Co-sourcing', band:0, items:[
-    { type:'process', text:'Conduct a process mapping exercise across AP, AR, payroll and expenses — quantify in-house cost vs. a managed service' },
-    { type:'process', text:'Issue a simple RFP for transactional outsourcing; even a pilot on one process (e.g. payroll) builds confidence quickly' },
-    { type:'vendor',  text:'Payroll outsourcing: ADP, Sage HR, MHR — established providers with good mid-market PE track records' },
-    { type:'vendor',  text:'Transactional finance outsourcing: Auxis, Genpact, Capita — for AP/AR/expenses managed service' },
+    { type:'technology', text:'Explore payroll and expense management tools to reduce manual processing burden on the finance team' },
+    { type:'technology', text:'Consider AP automation tooling to remove invoice processing from the finance team’s workload' },
+    { type:'process',    text:'Engage a specialist tax adviser on a structured co-source basis rather than reactively at year-end' },
   ]},
   { dim:'Outsourcing & Co-sourcing', band:1, items:[
-    { type:'process', text:'Move tax compliance and internal audit to a co-source model — retain strategic oversight, outsource execution' },
-    { type:'process', text:'Review SLAs with existing outsource providers annually — most PE-backed businesses set and forget' },
-    { type:'vendor',  text:'Co-sourced internal audit: KPMG, Deloitte, BDO — all offer PE-focused co-source IA packages' },
-    { type:'vendor',  text:'Co-sourced tax: Grant Thornton, RSM — strong mid-market PE tax practices with co-source capability' },
+    { type:'technology', text:'Explore payroll and expense management tools to reduce manual processing burden on the finance team' },
+    { type:'technology', text:'Consider AP automation tooling to remove invoice processing from the finance team’s workload' },
+    { type:'process',    text:'Engage a specialist tax adviser on a structured co-source basis rather than reactively at year-end' },
   ]},
+  { dim:'Outsourcing & Co-sourcing', band:2, items:[
+    { type:'process', text:'Ensure your co-source providers are aligned to the exit timeline — tax should be producing documentation that would survive a buyer’s tax review' },
+    { type:'process', text:'Review SLAs with all outsource providers annually — most relationships drift without formal governance' },
+  ]},
+  { dim:'Outsourcing & Co-sourcing', band:3, items:[
+    { type:'process', text:'Ensure your co-source providers are aligned to the exit timeline — tax should be producing documentation that would survive a buyer’s tax review' },
+    { type:'process', text:'Review SLAs with all outsource providers annually — most relationships drift without formal governance' },
+  ]},
+  // ── Systems & Automation ────────────────────────────────────────────────
   { dim:'Systems & Automation', band:0, items:[
-    { type:'process', text:'Prioritise a single source of truth for financial data above all else — even a well-configured mid-tier ERP beats multiple spreadsheets' },
-    { type:'process', text:'Freeze any new spreadsheet-based reporting tools; document all current manual processes ahead of system selection' },
-    { type:'vendor',  text:'Mid-market ERP: Sage Intacct, NetSuite, Microsoft Business Central — all have strong PE portfolio track records at £10–100m revenue' },
-    { type:'vendor',  text:'Implementation partner: Bluerock, Clarus, Fynapse — PE-specialist ERP implementers who understand investor reporting requirements' },
+    { type:'technology', text:'Evaluate a mid-market ERP to create a single source of truth across entities' },
+    { type:'technology', text:'Layer an FP&A tool on top of the ERP to enable driver-based forecasting without Excel dependency' },
+    { type:'technology', text:'Implement a close management tool to enforce the close calendar and reduce pressure on the finance team at month-end' },
   ]},
   { dim:'Systems & Automation', band:1, items:[
-    { type:'process', text:'Layer FP&A tooling on top of your ERP — do not try to run budgeting and scenario planning in the ERP itself' },
-    { type:'process', text:'Automate the month-end close checklist — tools like FloQast or BlackLine pay back in close-time reduction within 3 months' },
-    { type:'vendor',  text:'FP&A platforms: Pigment, Mosaic, Adaptive Planning — evaluate based on model complexity and team size' },
-    { type:'vendor',  text:'Close management: FloQast, BlackLine — both have strong mid-market implementations and fast time-to-value' },
+    { type:'technology', text:'Evaluate a mid-market ERP to create a single source of truth across entities' },
+    { type:'technology', text:'Layer an FP&A tool on top of the ERP to enable driver-based forecasting without Excel dependency' },
+    { type:'technology', text:'Implement a close management tool to enforce the close calendar and reduce pressure on the finance team at month-end' },
   ]},
   { dim:'Systems & Automation', band:2, items:[
-    { type:'process', text:'Explore AI-assisted variance analysis and narrative generation — tools are maturing fast and CFO time is the scarcest resource' },
-    { type:'vendor',  text:'AI finance tools: Workiva, Leapfin — emerging category; pilot before committing to full deployment' },
-    { type:'vendor',  text:'Data visualisation: Power BI, Tableau — for self-service dashboards that reduce ad-hoc finance team requests' },
+    { type:'technology', text:'Validate that your data architecture is exit DD-ready — a buyer should be able to re-run your analysis from source data and get the same answer' },
+    { type:'technology', text:'Explore AI-assisted variance analysis and narrative generation to free further CFO time for exit preparation' },
   ]},
+  { dim:'Systems & Automation', band:3, items:[
+    { type:'technology', text:'Validate that your data architecture is exit DD-ready — a buyer should be able to re-run your analysis from source data and get the same answer' },
+    { type:'technology', text:'Explore AI-assisted variance analysis and narrative generation to free further CFO time for exit preparation' },
+  ]},
+  // ── Governance & Reporting ──────────────────────────────────────────────
   { dim:'Governance & Reporting', band:0, items:[
-    { type:'process', text:'Agree a fixed board pack template with your PE investor in the next 30 days — format disputes after submission are expensive' },
-    { type:'process', text:'Publish a month-end close calendar with named owners for each task; make it visible to the whole finance team' },
-    { type:'process', text:'Aim for a 5-working-day close as a 12-month target — benchmark yourself now and track monthly' },
-    { type:'vendor',  text:'Reporting automation: Vena, Planful — for automating board pack assembly and investor reporting packs' },
+    { type:'process', text:'Agree a fixed board pack template with the PE investor — format, timing and commentary standard — and commit to a 5 working day close target' },
+    { type:'process', text:'Redesign the board pack executive summary to lead with a forward-looking view rather than a backward-looking explanation' },
+    { type:'technology', text:'Explore reporting automation tooling to eliminate manual assembly of the board pack each month' },
   ]},
   { dim:'Governance & Reporting', band:1, items:[
-    { type:'process', text:'Shift board pack commentary from backward-looking to forward-looking — investors want the next 3 months, not last month explained' },
-    { type:'process', text:'Introduce rolling 12-month forecasting alongside the annual budget — PE investors value in-year visibility over year-end surprises' },
-    { type:'vendor',  text:'Integrated reporting: Workiva, Vena — for combining narrative, financials and KPIs in a single investor-grade output' },
-    { type:'vendor',  text:'FP&A advisory: FTI Consulting, Alvarez & Marsal — for building PE-standard planning and forecasting frameworks' },
+    { type:'process', text:'Agree a fixed board pack template with the PE investor — format, timing and commentary standard — and commit to a 5 working day close target' },
+    { type:'process', text:'Redesign the board pack executive summary to lead with a forward-looking view rather than a backward-looking explanation' },
+    { type:'technology', text:'Explore reporting automation tooling to eliminate manual assembly of the board pack each month' },
   ]},
+  { dim:'Governance & Reporting', band:2, items:[
+    { type:'process', text:'Run a readability test on your last three board packs — give them to someone external and ask if they can articulate the equity story without asking a question' },
+    { type:'process', text:'Ensure forecast accuracy is being tracked and improving — a buyer will ask for the last 12 months of forecasts vs actuals' },
+  ]},
+  { dim:'Governance & Reporting', band:3, items:[
+    { type:'process', text:'Run a readability test on your last three board packs — give them to someone external and ask if they can articulate the equity story without asking a question' },
+    { type:'process', text:'Ensure forecast accuracy is being tracked and improving — a buyer will ask for the last 12 months of forecasts vs actuals' },
+  ]},
+  // ── Exit Readiness ──────────────────────────────────────────────────────
   { dim:'Exit Readiness', band:0, items:[
-    { type:'process', text:'Complete an exit readiness diagnostic immediately — identify the top 5 data room gaps and assign owners to each' },
-    { type:'process', text:'Begin buyer mapping with your PE sponsor; define the equity story outline and identify narrative risks early' },
-    { type:'vendor',  text:'Exit readiness advisory: EY-Parthenon, Alvarez & Marsal, FTI Consulting — for structured exit preparation programmes' },
-    { type:'vendor',  text:'Commercial due diligence pre-positioning: LEK, Bain, OC&C — for strengthening the equity story with market evidence' },
+    { type:'process', text:'Commission an exit readiness diagnostic with an adviser to identify gaps in the equity story, financial information and buyer-readiness' },
+    { type:'process', text:'Begin building the equity story now — document the narrative, stress-test it with the PE sponsor, and identify the three questions most likely to be challenged' },
+    { type:'process', text:'Start producing the financial outputs a VFDD and VCDD process would require as business as usual — do not leave this to a pre-process sprint' },
   ]},
   { dim:'Exit Readiness', band:1, items:[
-    { type:'process', text:'Populate a shadow data room now; align historical financials to buyer GAAP; identify any normalisation items upfront' },
-    { type:'process', text:'Complete a mock Q&A session with your advisors; identify the three questions you are least comfortable answering' },
-    { type:'vendor',  text:'Financial due diligence preparation: KPMG, Deloitte, Grant Thornton — for vendor due diligence (VDD) and QoE preparation' },
-    { type:'vendor',  text:'Data room management: Intralinks, Datasite — for shadow data room build and diligence-ready document management' },
+    { type:'process', text:'Commission an exit readiness diagnostic with an adviser to identify gaps in the equity story, financial information and buyer-readiness' },
+    { type:'process', text:'Begin building the equity story now — document the narrative, stress-test it with the PE sponsor, and identify the three questions most likely to be challenged' },
+    { type:'process', text:'Start producing the financial outputs a VFDD and VCDD process would require as business as usual — do not leave this to a pre-process sprint' },
   ]},
+  { dim:'Exit Readiness', band:2, items:[
+    { type:'process', text:'Commission a mock due diligence session with external advisers — stress-test the equity story, the financial information and the management team’s ability to handle challenge' },
+    { type:'people',  text:'Rehearse the management presentation with the full team — every member should be able to articulate the equity story clearly and handle pushback on the assumptions' },
+  ]},
+  { dim:'Exit Readiness', band:3, items:[
+    { type:'process', text:'Commission a mock due diligence session with external advisers — stress-test the equity story, the financial information and the management team’s ability to handle challenge' },
+    { type:'people',  text:'Rehearse the management presentation with the full team — every member should be able to articulate the equity story clearly and handle pushback on the assumptions' },
+  ]},
+  // ── Cash & Working Capital ──────────────────────────────────────────────
   { dim:'Cash & Working Capital', band:0, items:[
-    { type:'process', text:'Build a rolling 13-week cash forecast connected to ERP actuals; measure accuracy from day one' },
-    { type:'process', text:'Baseline DSO, DPO and DIO by entity and BU; run root-cause analysis on the three largest aged debtor items' },
-    { type:'process', text:'Establish a weekly cash review meeting; assign named owners for receivables, payables and inventory' },
-    { type:'vendor',  text:'Cash flow forecasting tools: Cashforce, Kyriba — purpose-built treasury forecasting with ERP integration' },
-    { type:'vendor',  text:'Collections automation: Chaser, YayPay (now Quadient) — for automated dunning and AR acceleration' },
+    { type:'technology', text:'Explore software to link the ERP to a rolling short-term cash flow forecast to reduce manual workload and improve cash visibility' },
+    { type:'process',    text:'Establish a weekly cash review with named owners for receivables, payables and inventory — move accountability out of finance and into the business' },
+    { type:'process',    text:'Run a targeted review of payment terms with the top 10 debtors and creditors — most businesses have 15–30 days of untapped working capital improvement available' },
   ]},
   { dim:'Cash & Working Capital', band:1, items:[
-    { type:'process', text:'Embed DSO/DPO/DIO targets into the annual budget cycle; link working capital KPIs to commercial team incentives' },
-    { type:'process', text:'Review key supplier payment terms strategically; model the EBITDA and cash impact of extending DPO' },
-    { type:'vendor',  text:'Supply chain finance / dynamic discounting: Taulia, C2FO — for optimising payables without damaging supplier relationships' },
-    { type:'vendor',  text:'Working capital advisory: FTI Consulting, Alvarez & Marsal — for structured cash excellence programmes with PE experience' },
+    { type:'technology', text:'Explore software to link the ERP to a rolling short-term cash flow forecast to reduce manual workload and improve cash visibility' },
+    { type:'process',    text:'Establish a weekly cash review with named owners for receivables, payables and inventory — move accountability out of finance and into the business' },
+    { type:'process',    text:'Run a targeted review of payment terms with the top 10 debtors and creditors — most businesses have 15–30 days of untapped working capital improvement available' },
   ]},
+  { dim:'Cash & Working Capital', band:2, items:[
+    { type:'process', text:'Model covenant headroom under base, upside and downside scenarios and present it to the board monthly — covenant risk is the most common source of lender friction in a sale process' },
+    { type:'process', text:'Embed cash conversion as a primary KPI in the management incentive framework — it signals to a buyer that the business is managed for value, not just EBITDA' },
+  ]},
+  { dim:'Cash & Working Capital', band:3, items:[
+    { type:'process', text:'Model covenant headroom under base, upside and downside scenarios and present it to the board monthly — covenant risk is the most common source of lender friction in a sale process' },
+    { type:'process', text:'Embed cash conversion as a primary KPI in the management incentive framework — it signals to a buyer that the business is managed for value, not just EBITDA' },
+  ]},
+  // ── Data Quality & Analytics ────────────────────────────────────────────
   { dim:'Data Quality & Analytics', band:0, items:[
-    { type:'process', text:'Audit KPI definitions across finance and business — map every definition discrepancy and assign a single owner to resolve' },
-    { type:'process', text:'Standardise the chart of accounts across all entities; freeze any ad hoc COA changes pending a governance review' },
-    { type:'vendor',  text:'BI and self-serve analytics: Microsoft Power BI, Tableau — low-cost entry points for dashboard deployment' },
-    { type:'vendor',  text:'Master data management: Stibo Systems, Informatica — for enterprise-grade MDM if data fragmentation is severe' },
+    { type:'process',    text:'Audit KPI definitions across finance and the business — resolve every discrepancy and publish a group-wide dictionary with a named owner per metric' },
+    { type:'technology', text:'Connect the ERP to a BI layer and automate the core dashboard refresh to eliminate manual data pulls' },
+    { type:'process',    text:'Standardise the chart of accounts across all entities and freeze ad hoc changes — this is a prerequisite for meaningful consolidated analytics' },
   ]},
   { dim:'Data Quality & Analytics', band:1, items:[
-    { type:'process', text:'Publish a group-wide KPI dictionary: definition, calculation logic, data source and named owner for every metric' },
-    { type:'process', text:'Connect your ERP to the BI layer; automate the core dashboard refresh and eliminate manual Excel data pulls' },
-    { type:'vendor',  text:'Data warehouse / integration: Azure Data Factory, dbt, Fivetran — for building a governed single source of truth' },
-    { type:'vendor',  text:'AI analytics overlay: Pigment AI, Workiva — for narrative generation and anomaly detection on top of existing data' },
+    { type:'process',    text:'Audit KPI definitions across finance and the business — resolve every discrepancy and publish a group-wide dictionary with a named owner per metric' },
+    { type:'technology', text:'Connect the ERP to a BI layer and automate the core dashboard refresh to eliminate manual data pulls' },
+    { type:'process',    text:'Standardise the chart of accounts across all entities and freeze ad hoc changes — this is a prerequisite for meaningful consolidated analytics' },
   ]},
+  { dim:'Data Quality & Analytics', band:2, items:[
+    { type:'technology', text:'Document your data architecture so a buyer analyst could understand it in one day and re-run your analysis from source — this is increasingly a diligence expectation' },
+    { type:'process',    text:'Validate that KPI definitions are consistent across every document a buyer will see — board packs, management accounts, CIM and VDD should all tell the same story' },
+  ]},
+  { dim:'Data Quality & Analytics', band:3, items:[
+    { type:'technology', text:'Document your data architecture so a buyer analyst could understand it in one day and re-run your analysis from source — this is increasingly a diligence expectation' },
+    { type:'process',    text:'Validate that KPI definitions are consistent across every document a buyer will see — board packs, management accounts, CIM and VDD should all tell the same story' },
+  ]},
+  // ── Business Partnering ─────────────────────────────────────────────────
   { dim:'Business Partnering', band:0, items:[
-    { type:'process', text:'Formally separate business partner roles from controller roles — document scope, accountabilities and success metrics for each' },
-    { type:'process', text:'Attend three business team meetings in the next month; shift the agenda from variance reporting to forward-looking insight' },
-    { type:'process', text:'Introduce a standard business case template; require finance sign-off on all investment decisions above a defined threshold' },
-    { type:'vendor',  text:'Finance business partnering training: CIMA, FP&A Advisory, The FP&A Guy — structured development for finance teams moving from control to insight' },
+    { type:'people',  text:'Formally separate finance business partner roles from controller roles — define accountabilities and success metrics for each so the distinction is real, not just nominal' },
+    { type:'process', text:'Introduce a standard business case template with mandatory finance sign-off above a defined investment threshold' },
+    { type:'process', text:'Implement post-investment reviews on all major decisions — track forecast vs actual ROI and share learnings with the business' },
   ]},
   { dim:'Business Partnering', band:1, items:[
-    { type:'process', text:'Deploy self-serve dashboards for at least one BU; track adoption monthly and use low adoption as a coaching prompt' },
-    { type:'process', text:'Introduce post-investment reviews for all major business cases; track forecast vs actual ROI and share learnings' },
-    { type:'vendor',  text:'Commercial analytics tools: Pigment, Mosaic — for FP&A teams moving from Excel to driver-based commercial modelling' },
-    { type:'vendor',  text:'Business partnering advisory: Deloitte Finance Business Partnering practice, PwC Finance Transformation — for operating model design' },
+    { type:'people',  text:'Formally separate finance business partner roles from controller roles — define accountabilities and success metrics for each so the distinction is real, not just nominal' },
+    { type:'process', text:'Introduce a standard business case template with mandatory finance sign-off above a defined investment threshold' },
+    { type:'process', text:'Implement post-investment reviews on all major decisions — track forecast vs actual ROI and share learnings with the business' },
   ]},
-];
-
-// ── Value Foundations logic ───────────────────────────────────────────────────
+  { dim:'Business Partnering', band:2, items:[
+    { type:'process', text:'Build the evidence base for finance partnership quality — document the commercial decisions where finance input materially changed the outcome, as this will be assessed in management due diligence' },
+    { type:'people',  text:'Consider whether the business partnering capability is deep enough to survive a sale process — key person dependency in FP&A is a common and underappreciated risk' },
+  ]},
+  { dim:'Business Partnering', band:3, items:[
+    { type:'process', text:'Build the evidence base for finance partnership quality — document the commercial decisions where finance input materially changed the outcome, as this will be assessed in management due diligence' },
+    { type:'people',  text:'Consider whether the business partnering capability is deep enough to survive a sale process — key person dependency in FP&A is a common and underappreciated risk' },
+  ]},
+];// ── Value Foundations logic ───────────────────────────────────────────────────
 // Maps each dim's score band to a Technology, People, Process, Data rating
 function deriveFoundations(bands) {
   // bands is array of 9 values (0-3 or null)
@@ -842,6 +936,8 @@ let myScores = Array(9).fill(null); // 0-3 band values
 let myCapabilities = {}; // capability id -> 'monthly'/'adhoc'/'no'
 let submitted = false;
 let nsData = null;
+let sponsorView = Array(9).fill(null); // decimal 0.0-3.0 per dimension, null = not set
+var showSponsor = false; // hidden by default
 const TOTAL_SCREENS = 9 + 2; // 9 dims + intro + results = 11 steps
 
 // ── Storage ───────────────────────────────────────────────────────────────────
@@ -930,13 +1026,57 @@ function clearResponses() {
     console.error('Supabase clear failed:', e);
   });
 }
+// ── Sponsor view persistence ─────────────────────────────────────────────────
+function saveSponsorView(scores) {
+  sponsorView = scores.slice();
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+    localStorage.setItem(SPONSOR_KEY, JSON.stringify(scores));
+    return Promise.resolve();
+  }
+  // Upsert into Supabase responses table with special id
+  return fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE + '?id=eq.sponsor_view', {
+    method: 'DELETE', headers: supabaseHeaders()
+  }).then(function() {
+    return fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE, {
+      method: 'POST',
+      headers: supabaseHeaders(),
+      body: JSON.stringify({ data: { id: 'sponsor_view', scores: scores } })
+    });
+  }).catch(function(e) {
+    localStorage.setItem(SPONSOR_KEY, JSON.stringify(scores));
+  });
+}
+
+function loadSponsorView() {
+  if (SUPABASE_URL === 'YOUR_SUPABASE_URL') {
+    try { var s = JSON.parse(localStorage.getItem(SPONSOR_KEY)); sponsorView = s || Array(9).fill(null); } catch(e) {}
+    return Promise.resolve(sponsorView);
+  }
+  return fetch(SUPABASE_URL + '/rest/v1/' + SUPABASE_TABLE + '?select=data&data->>id=eq.sponsor_view', {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(rows) {
+    if (rows && rows.length && rows[0].data && rows[0].data.scores) {
+      sponsorView = rows[0].data.scores;
+    } else {
+      sponsorView = Array(9).fill(null);
+    }
+    return sponsorView;
+  })
+  .catch(function() {
+    try { var s = JSON.parse(localStorage.getItem(SPONSOR_KEY)); sponsorView = s || Array(9).fill(null); } catch(e) {}
+    return sponsorView;
+  });
+}
+
 function loadNS() { try { const r=localStorage.getItem(NS_KEY); if(r) return JSON.parse(r); } catch(e){} return JSON.parse(JSON.stringify(DEFAULT_NS)); }
 function saveNS() { localStorage.setItem(NS_KEY,JSON.stringify(nsData)); }
 function resetNS() { nsData=JSON.parse(JSON.stringify(DEFAULT_NS)); saveNS(); }
 
 function getItems(dimLabel, bandIdx) { const e=nsData.find(e=>e.dim===dimLabel&&e.band===bandIdx); return e?e.items:[]; }
-function scoreToBand(b) { // b is 0,1,2,3 — maps to NS band (0=Lag/Em, 1=Eff, 2=BIC)
-  if(b<=1) return 0; if(b===2) return 1; return 2;
+function scoreToBand(b) { // b is 0,1,2,3 — maps directly to NS band
+  return b === null ? 0 : b; // 0=Lagging, 1=Emerging, 2=Effective, 3=BIC
 }
 
 // ── Mode ──────────────────────────────────────────────────────────────────────
@@ -993,7 +1133,7 @@ function renderNSPanel(dimLabel, band, showTitle) {
   const items=getItems(dimLabel,nsIdx);
   if(!items.length) return '';
   const title=showTitle?`${dimLabel} <span style="font-size:10px;font-weight:400;color:var(--slate);text-transform:none">— ${BAND_NAMES[band]}</span>`:'Suggested next steps';
-  return`<div class="ns-panel"><div class="ns-title"><div class="ns-pip"></div>${title}</div>${items.map(item=>`<div class="ns-item"><span class="ns-badge ${item.type}">${item.type==='vendor'?'Vendor':'Process'}</span><span class="ns-text">${item.text}</span></div>`).join('')}</div>`;
+  return`<div class="ns-panel"><div class="ns-title"><div class="ns-pip"></div>${title}</div>${items.map(item=>`<div class="ns-item"><span class="ns-badge ${item.type}">${item.type==='technology'?'Technology':item.type==='people'?'People':'Process'}</span><span class="ns-text">${item.text}</span></div>`).join('')}</div>`;
 }
 
 // ── Phased roadmap ─────────────────────────────────────────────────────────────
@@ -1041,25 +1181,10 @@ function renderIntro() {
   return`<div class="card">
     <div class="section-title">Welcome to the self-assessment</div>
     <div class="section-rule"></div>
-    <div class="intro-card"><h3>How it works</h3><p>Rate your finance function across six dimensions using a four-band scale: Lagging, Emerging, Effective and Best-in-Class. Each band maps to an established PE finance maturity framework used by leading PE houses. Your scores generate a personal radar chart, a Value Foundations overlay, and a phased action plan.</p></div>
-    <div class="intro-card"><h3>The four bands</h3>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">
-        ${BAND_NAMES.map((n,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:2px;background:${BAND_COLORS[i]}12;border:1px solid ${BAND_COLORS[i]}30">
-          <div style="width:8px;height:8px;border-radius:50%;background:${BAND_COLORS[i]};flex-shrink:0"></div>
-          <span style="font-size:12px;font-weight:700;color:${BAND_COLORS[i]}">${n}</span>
-        </div>`).join('')}
-      </div>
-    </div>
-    <div class="intro-card"><h3>Be honest</h3><p>There are no right answers. The richest insight comes from candour, not flattery. Lagging is not a failing — it is a starting point.</p></div>
-    <div class="intro-card">
-      <h3>Calibrate to your hold stage</h3>
-      <div class="hold-grid">
-        <div class="hold-card"><div class="hold-stage">100-Day Plan</div><div class="hold-target">Emerging+ on control dims; baseline others</div></div>
-        <div class="hold-card"><div class="hold-stage">Year 1–2</div><div class="hold-target">Effective on all six core dimensions</div></div>
-        <div class="hold-card"><div class="hold-stage">Year 3–4</div><div class="hold-target">Effective–BIC; exit readiness active</div></div>
-        <div class="hold-card"><div class="hold-stage">Pre-Exit</div><div class="hold-target">BIC on exit, cash, data and governance</div></div>
-      </div>
-    </div>
+    <div class="intro-card"><h3>How it works</h3><p>Rate your finance function across nine dimensions based on your own personal views of maturity. Your scores generate a personal radar chart, a Value Foundations overlay, and a phased action plan. We will be discussing these as a group anonymously during the workshop session, and you are able to print your results for future reference.</p></div>
+    <div class="intro-card"><h3>Be honest</h3><p>There are no right answers, and we expect there to be a range of confidence across the cohort. If there are sections you feel particularly confident in we encourage you to share this in the workshop. Likewise, if you feel underweight in areas we hope you are able to learn from others in the debate.
+
+The scores are anonymous — a unique identifier will be all you can see in the aggregated results.</p></div>
     <div class="intro-card">
       <h3>The nine dimensions</h3>
       <div class="dim-dots">${DIMS.map((d,i)=>`<span class="dim-dot">${i+1}. ${d.label} <span style="font-size:9px;opacity:.7">(${d.compass})</span></span>`).join('')}</div>
@@ -1072,22 +1197,14 @@ function renderIntro() {
 }
 
 function renderDim(i) {
-  // Initialise all capabilities for this dimension to false if not yet set
-  // This ensures unticked boxes are recorded as false (not undefined) on submit
-  capsByDim(i).forEach(function(cap) {
-    if (myCapabilities[cap.id] === undefined) {
-      myCapabilities[cap.id] = 'no';
-    }
-  });
   var d = DIMS[i];
   var options = '';
   RUB[i].forEach(function(t, j) {
-    options += '<div class="score-option' + (myScores[i]===j ? ' selected' : '') + '" onclick="selectScore(' + i + ',' + j + ')">'
-             + '<div class="score-num" style="background:' + BAND_COLORS[j] + '">'
-             + '<span class="score-num-val">' + (j+1) + '</span>'
-             + '<span style="font-size:9px;letter-spacing:0.3px">' + BAND_SHORT[j] + '</span>'
-             + '</div>'
-             + '<div class="score-text">' + t + '</div>'
+    var sel = myScores[i] === j;
+    options += '<div class="behav-option' + (sel ? ' behav-selected' : '') + '" onclick="selectScore(' + i + ',' + j + ')">'
+             + '<div class="behav-indicator" style="background:' + (sel ? BAND_COLORS[j] : 'var(--pearl)') + '"></div>'
+             + '<div class="behav-text">' + t + '</div>'
+             + (sel ? '<div class="behav-check" style="color:' + BAND_COLORS[j] + '">&#10003;</div>' : '<div class="behav-check"></div>')
              + '</div>';
   });
   var nextDisabled = myScores[i] === null ? ' disabled' : '';
@@ -1099,7 +1216,7 @@ function renderDim(i) {
        + '<div class="dim-sub">' + d.q + ' &nbsp;<span style="font-size:10px;color:var(--teal);font-weight:700">' + d.compass + '</span></div>'
        + '</div>'
        + '</div>'
-       + '<div style="font-size:12px;color:#9192AB;margin-bottom:12px;font-style:italic">Select the band that most honestly describes your current state</div>'
+       + '<div style="font-size:12px;color:#9192AB;margin-bottom:14px;font-style:italic">Select the description that best fits your finance function today</div>'
        + options
        + renderCapChecklist(i)
        + '<div class="nav-row">'
@@ -1110,30 +1227,33 @@ function renderDim(i) {
        + '</div>';
 }
 
+
 function renderCapChecklist(dimIdx) {
   var caps = capsByDim(dimIdx);
   if (!caps.length) return '';
   var subtitles = {
-    4:'For each output, select how regularly your finance team produces it.',
-    5:'For each exit-readiness output, select how regularly it is produced.',
-    6:'For each cash and working capital output, select how regularly it is produced.',
-    7:'For each analytical output, select how regularly your team produces it.',
-    8:'For each commercial finance output, select how regularly it is produced.',
+    4:'For each output, select how regularly your finance team produces it. Use N/A if the output is genuinely not relevant to your business.',
+    5:'For each exit-readiness output, select how regularly it is produced. Use N/A if not applicable.',
+    6:'For each cash and working capital output, select how regularly it is produced. Use N/A if not applicable.',
+    7:'For each analytical output, select how regularly your team produces it. Use N/A if the output is genuinely not relevant.',
+    8:'For each commercial finance output, select how regularly it is produced. Use N/A if not applicable.',
   };
-  var sub = subtitles[dimIdx] || 'For each output, select how regularly your finance team produces it.';
+  var sub = subtitles[dimIdx] || 'For each output, select how regularly your finance team produces it. Use N/A if genuinely not applicable.';
   var items = '';
   caps.forEach(function(cap) {
-    var val = myCapabilities[cap.id]; // 'monthly', 'adhoc', 'no', or undefined
+    var val = myCapabilities[cap.id]; // 'monthly', 'adhoc', 'no', 'na', or undefined
     var stateClass = val ? ' state-' + val : '';
-    items += '<div class="cap-item' + stateClass + '">'
+    var unanswered = val === undefined;
+    items += '<div class="cap-item' + stateClass + (unanswered ? ' cap-unanswered' : '') + '">'
            + '<div class="cap-item-header">'
-           + '<div class="cap-item-label">' + cap.label + '</div>'
+           + '<div class="cap-item-label">' + cap.label + (unanswered ? ' <span style="font-size:9px;color:#C0392B;font-weight:400">(not yet answered)</span>' : '') + '</div>'
            + '<div class="cap-item-help">' + cap.help + '</div>'
            + '</div>'
            + '<div class="cap-item-btns">'
-           + '<button class="cap-btn' + (val==='monthly'?' sel-monthly':'') + '" onclick="setCapAndRender(\'' + cap.id + '\',\'monthly\',' + dimIdx + ')">✓ Present<br>Monthly</button>'
-           + '<button class="cap-btn' + (val==='adhoc'?' sel-adhoc':'') + '" onclick="setCapAndRender(\'' + cap.id + '\',\'adhoc\',' + dimIdx + ')">~ Produce<br>Ad-Hoc</button>'
-           + '<button class="cap-btn' + (val==='no'?' sel-no':'') + '" onclick="setCapAndRender(\'' + cap.id + '\',\'no\',' + dimIdx + ')">✗ Don&#39;t / Can&#39;t<br>Produce</button>'
+           + '<button class="cap-btn' + (val==='monthly'?' sel-monthly':'') + '" onclick="setCapAndRender(\'' + cap.id + '\',\'monthly\',' + dimIdx + ')">&#10003; Monthly</button>'
+           + '<button class="cap-btn' + (val==='adhoc'?' sel-adhoc':'') + '" onclick="setCapAndRender(\'' + cap.id + '\',\'adhoc\',' + dimIdx + ')">~ Ad-Hoc</button>'
+           + '<button class="cap-btn' + (val==='no'?' sel-no':'') + '" onclick="setCapAndRender(\'' + cap.id + '\',\'no\',' + dimIdx + ')">&#10005; Not Currently</button>'
+           + '<button class="cap-btn' + (val==='na'?' sel-na':'') + '" onclick="setCapAndRender(\'' + cap.id + '\',\'na\',' + dimIdx + ')">N/A</button>'
            + '</div>'
            + '</div>';
   });
@@ -1197,7 +1317,7 @@ function renderResults() {
         <li>What is the single biggest risk to your finance function if nothing changes in the next 12 months?</li>
         <li>Looking across all nine dimensions — which one gap would a buyer most likely identify first in a DD process?</li>
         <li>Which of your scores surprised you most — and why?</li>
-        <li>Is your current CFO profile the right one for the next stage of the hold?</li>
+        <li>How could coaching develop your skillset and profile for the next stage of the hold?</li>
         <li>If a buyer ran DD on your finance function today, what would they find?</li>
         <li>What resource or support do you need from your PE investor to make your top priority happen?</li>
         <li>How would you rate your exit readiness compared to where you need to be in 18 months?</li>
@@ -1218,7 +1338,12 @@ function toggleCap(id,checked){myCapabilities[id]=checked;}
 function capScore(val) {
   if (val === 'monthly') return 2;
   if (val === 'adhoc')   return 1;
-  return 0;
+  if (val === 'no')      return 0;
+  return null; // undefined or 'na' excluded from scoring
+}
+
+function capAnswered(val) {
+  return val === 'monthly' || val === 'adhoc' || val === 'no';
 }
 
 function capCell(val) {
@@ -1229,7 +1354,7 @@ function capCell(val) {
 }
 
 function renderParticipantHeatmap() {
-  var hasCaps = CAPABILITIES.some(function(c){ return myCapabilities[c.id] !== undefined; });
+  var hasCaps = CAPABILITIES.some(function(c){ return myCapabilities[c.id] !== undefined && myCapabilities[c.id] !== null; });
   if (!hasCaps) return '';
 
   var dimOrder = [7, 8, 4, 6, 5];
@@ -1246,8 +1371,9 @@ function renderParticipantHeatmap() {
     });
   });
 
-  var answered = CAPABILITIES.filter(function(c){ return myCapabilities[c.id] !== undefined; });
-  var totalScore = answered.reduce(function(a,c){ return a + capScore(myCapabilities[c.id]); }, 0);
+  var answered = CAPABILITIES.filter(function(c){ return capAnswered(myCapabilities[c.id]); });
+  var na_count = CAPABILITIES.filter(function(c){ return myCapabilities[c.id]==='na'; }).length;
+  var totalScore = answered.reduce(function(a,c){ var s=capScore(myCapabilities[c.id]); return a+(s!==null?s:0); }, 0);
   var maxScore = answered.length * 2;
   var pct = maxScore > 0 ? Math.round(totalScore/maxScore*100) : 0;
   var monthly = answered.filter(function(c){ return myCapabilities[c.id]==='monthly'; }).length;
@@ -1262,7 +1388,7 @@ function renderParticipantHeatmap() {
        + '<div style="background:var(--ow);border-radius:2px;padding:9px 10px;border:1px solid var(--pearl);text-align:center"><div style="font-size:20px;font-weight:700;color:' + color + '">' + pct + '%</div><div style="font-size:10px;color:var(--slate)">Maturity score</div></div>'
        + '<div style="background:#118B8010;border-radius:2px;padding:9px 10px;border:1px solid #118B8030;text-align:center"><div style="font-size:20px;font-weight:700;color:#118B80">' + monthly + '</div><div style="font-size:10px;color:var(--slate)">Monthly</div></div>'
        + '<div style="background:#8B749510;border-radius:2px;padding:9px 10px;border:1px solid #8B749530;text-align:center"><div style="font-size:20px;font-weight:700;color:#8B7495">' + adhoc + '</div><div style="font-size:10px;color:var(--slate)">Ad-Hoc</div></div>'
-       + '<div style="background:#C0392B10;border-radius:2px;padding:9px 10px;border:1px solid #C0392B30;text-align:center"><div style="font-size:20px;font-weight:700;color:#C0392B">' + no + '</div><div style="font-size:10px;color:var(--slate)">Cannot Produce</div></div>'
+       + '<div style="background:#C0392B10;border-radius:2px;padding:9px 10px;border:1px solid #C0392B30;text-align:center"><div style="font-size:20px;font-weight:700;color:#C0392B">' + no + '</div><div style="font-size:10px;color:var(--slate)">Not Currently</div></div>'
        + '</div>'
        + '<div style="font-size:11.5px;color:var(--slate);margin-bottom:10px;font-style:italic">' + label + '</div>'
        + '<div class="heatmap-wrap"><table class="heatmap">'
@@ -1375,7 +1501,7 @@ function exportToExcel() {
           var val = caps_data[cap.id];
           if (val === undefined) { row.push('—'); }
           else {
-            var label = val==='monthly'?'Monthly':val==='adhoc'?'Ad-Hoc':'No';
+            var label = val==='monthly'?'Monthly':val==='adhoc'?'Ad-Hoc':val==='na'?'N/A':'No';
             row.push(label);
             yesCount += (val==='monthly'?2:val==='adhoc'?1:0);
             attempted++;
@@ -1816,14 +1942,16 @@ function renderGroupHeatmap(responses) {
         if (val === 'monthly') return '<td class="hm-monthly">M</td>';
         if (val === 'adhoc')   return '<td class="hm-adhoc">A</td>';
         if (val === 'no')      return '<td class="hm-no">No</td>';
+        if (val === 'na')      return '<td style="text-align:center;font-size:9px;color:#9192AB;font-weight:600">N/A</td>';
         return '<td style="text-align:center;color:#ccc;font-size:10px">\u2014</td>';
       }).join('');
 
       // Group summary — weighted score: monthly=2, adhoc=1, no=0
-      var attempted = responses.filter(function(r){ return r.capabilities && r.capabilities[cap.id] !== undefined; });
+      var attempted = responses.filter(function(r){ return r.capabilities && capAnswered(r.capabilities[cap.id]); });
+      var naCount = responses.filter(function(r){ return r.capabilities && r.capabilities[cap.id]==='na'; }).length;
       var totalScore = attempted.reduce(function(a,r){
-        var v = r.capabilities[cap.id];
-        return a + (v==='monthly'?2:v==='adhoc'?1:0);
+        var s = capScore(r.capabilities[cap.id]);
+        return a + (s !== null ? s : 0);
       }, 0);
       var maxScore = attempted.length * 2;
       var pct = maxScore > 0 ? Math.round(totalScore/maxScore*100) : null;
@@ -1859,10 +1987,9 @@ function renderGroupHeatmap(responses) {
 
 function renderFacilitator() {
   var sh=document.getElementById('shell');
-  // Show loading state while fetching
   sh.innerHTML='<div class="card"><div style="text-align:center;padding:2rem;color:var(--slate)"><div style="font-size:24px;margin-bottom:10px">&#8635;</div>Loading responses...</div></div>';
-  loadResponses().then(function(responses) {
-    renderFacilitatorWithData(sh, responses);
+  Promise.all([loadResponses(), loadSponsorView()]).then(function(results) {
+    renderFacilitatorWithData(sh, results[0]);
   }).catch(function(e) {
     sh.innerHTML='<div class="card"><div style="color:#C0392B;padding:1rem">Error loading responses: '+e.message+'</div></div>';
   });
@@ -2047,9 +2174,9 @@ function renderDimEnrichment(di, modal, responses) {
   var out = '';
   var bandColors4 = ['#C0392B','#88395A','#006C80','#118B80'];
 
-  // G. Capability heat map excerpt (dims with caps: 4,5,6,7,8)
+  // G. Capability heat map excerpt — rendered separately in slide layout, skip here
   var caps = capsByDim(di);
-  if (caps.length && responses.length) {
+  if (false && caps.length && responses.length) {
     var hasCaps = responses.some(function(r){ return r.capabilities && Object.keys(r.capabilities).length > 0; });
     if (hasCaps) {
       var pHeaders = responses.map(function(r){ return '<th style="text-align:center;font-size:9px;padding:4px 3px;background:var(--navy);color:#fff;white-space:nowrap">P'+r.id+'</th>'; }).join('');
@@ -2200,8 +2327,9 @@ function renderTechStack() {
 
 function renderFacilitatorWithData(sh, responses) {
   var n = responses.length;
+  var TOTAL_SLIDES = 13;
 
-  // Compute group stats
+  // ── Group stats ───────────────────────────────────────────────────────────
   var dimAvgBand = DIMS.map(function(_,d){
     var vs=responses.map(function(r){return r.scores[d];}).filter(function(v){return v!=null;});
     return vs.length?(vs.reduce(function(a,b){return a+b;},0)/vs.length):0;
@@ -2219,234 +2347,399 @@ function renderFacilitatorWithData(sh, responses) {
     return vs.length?Math.round(vs.reduce(function(a,b){return a+b;},0)/vs.length):null;
   });
 
-  // Slide definitions
-  // Slides 0-8: one per dimension
-  // Slide 9: Group overview (radar + value foundations + heatmap)
-  // Slide 10: Action plan
-  // Slide 11: Individual profiles + discussion prompts
-  var TOTAL_SLIDES = 12;
-
-  function goSlide(n) {
-    facSlide = Math.max(0, Math.min(TOTAL_SLIDES-1, n));
-    renderFacilitator();
-  }
-
-  // ── Nav bar ──────────────────────────────────────────────────────────────
-  var slideLabels = DIMS.map(function(d){ return d.short; })
-    .concat(['Overview','Action Plan','Profiles & Prompts']);
-  var dots = slideLabels.map(function(l,i){
-    var cls = i===facSlide?'active':i<facSlide?'done':'';
-    return '<button class="slide-dot '+cls+'" title="'+l+'" onclick="goSlide('+i+')" aria-label="'+l+'"></button>';
-  }).join('');
-
-  var navBar = '<div class="slide-nav-bar">'
-    + '<button class="slide-btn" onclick="goSlide('+(facSlide-1)+')" '+(facSlide===0?'disabled':'')+'>&#8592; Prev</button>'
-    + '<div style="flex:1;text-align:center">'
-    + '<div class="slide-dots">'+dots+'</div>'
-    + '<div class="slide-counter" style="margin-top:5px"><strong>'+slideLabels[facSlide]+'</strong> &nbsp;·&nbsp; '+( facSlide+1)+' / '+TOTAL_SLIDES+'</div>'
-    + '</div>'
-    + '<button class="slide-btn primary" onclick="goSlide('+(facSlide+1)+')" '+(facSlide===TOTAL_SLIDES-1?'disabled':'')+'>Next &#8594;</button>'
-    + '</div>';
+  // Slide map:
+  // 0  = Overview
+  // 1  = Capability heat map
+  // 2-10 = Dimensions 0-8
+  // 11 = Action plan
+  // 12 = Profiles + prompts
+  var slideLabels = ['Overview','Capabilities'];
+  DIMS.forEach(function(d){ slideLabels.push(d.short); });
+  slideLabels.push('Action Plan','Profiles');
 
   // ── Toolbar ───────────────────────────────────────────────────────────────
   var toolbar = '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">'
     + '<div class="section-title">Facilitator Dashboard</div>'
     + '<div style="display:flex;gap:6px;flex-wrap:wrap">'
-    + '<button class="btn" onclick="renderFacilitator()" style="font-size:11px;padding:6px 12px">&#8635; Refresh</button>'
-    + '<button class="btn" onclick="showQR()" style="font-size:11px;padding:6px 12px;background:var(--teal);color:#fff;border-color:var(--teal)">QR Code</button>'
+    + '<span style="font-size:11px;color:var(--slate);padding:4px 8px;background:var(--ow);border:1px solid var(--pearl);border-radius:2px">'+n+' response'+(n!==1?'s':'')+' &nbsp;&middot;&nbsp; <strong style="color:'+BAND_COLORS[overallBand]+'">'+BAND_NAMES[overallBand]+'</strong></span>'
+    + '<button class="btn" onclick="renderFacilitator()" style="font-size:11px;padding:6px 12px">&#8635;</button>'
+    + (sponsorView.some(function(v){ return v!==null&&!isNaN(parseFloat(v)); })
+        ? '<button class="btn" onclick="toggleSponsor()" style="font-size:11px;padding:6px 12px;'
+          + (showSponsor ? 'background:#FF6661;color:#fff;border-color:#FF6661' : 'color:#FF6661;border-color:#FF6661')
+          + '">' + (showSponsor ? '&#9670; Hide sponsor' : '&#9670; Show sponsor') + '</button>'
+        : '')
+    + '<button class="btn" onclick="showQR()" style="font-size:11px;padding:6px 12px;background:var(--teal);color:#fff;border-color:var(--teal)">QR</button>'
     + '<button class="btn" onclick="exportToExcel()" style="font-size:11px;padding:6px 12px;background:var(--emerald);color:#fff;border-color:var(--emerald)">&#8595; Excel</button>'
-    + '<button class="btn" onclick="if(confirm(\'Clear all responses?\')){clearResponses().then(function(){renderFacilitator();});}" style="font-size:11px;padding:6px 12px;color:#C0392B;border-color:#C0392B">Clear all</button>'
+    + '<button class="btn" onclick="if(confirm(\'Clear all responses?\')){clearResponses().then(function(){renderFacilitator();});}" style="font-size:11px;padding:6px 12px;color:#C0392B;border-color:#C0392B">Clear</button>'
     + '</div></div>'
-    + '<div class="section-rule"></div>'
-    + '<div style="font-size:12px;color:var(--slate);margin-bottom:10px">'
-    + n + ' response' + (n!==1?'s':'') + ' received &nbsp;·&nbsp; Group overall: '
-    + '<strong style="color:'+BAND_COLORS[overallBand]+'">'+BAND_NAMES[overallBand]+'</strong>'
-    + '</div>';
+    + '<div class="section-rule"></div>';
 
-  // ── No responses state ───────────────────────────────────────────────────
-  if (!n) {
-    sh.innerHTML = '<div class="card">' + toolbar
-      + '<div class="empty-state"><div style="font-size:32px;margin-bottom:10px">&#128202;</div>'
-      + '<div>No responses yet.</div>'
-      + '<div style="font-size:12px;margin-top:6px">Ask participants to complete the assessment and click "Submit to group".</div></div>'
-      + '<div style="margin-top:14px;text-align:center"><button class="btn" onclick="renderFacilitator()" style="font-size:12px">&#8635; Refresh</button></div>'
+  // ── Nav bar ───────────────────────────────────────────────────────────────
+  function makeNav() {
+    var dots = slideLabels.map(function(l,i){
+      var cls = i===facSlide?'active':i<facSlide?'done':'';
+      return '<button class="slide-dot '+cls+'" title="'+l+'" onclick="goSlide('+i+')" style="width:'+(i===0||i===1||i===11||i===12?'10':'8')+'px;height:'+(i===0||i===1||i===11||i===12?'10':'8')+'px"></button>';
+    }).join('');
+    return '<div class="slide-nav-bar">'
+      + '<button class="slide-btn" onclick="goSlide('+(facSlide-1)+')" '+(facSlide===0?'disabled':'')+'>&#8592; Prev</button>'
+      + '<div style="flex:1;text-align:center">'
+      + '<div class="slide-dots" style="margin-bottom:4px">'+dots+'</div>'
+      + '<div class="slide-counter"><strong>'+slideLabels[facSlide]+'</strong> &nbsp;&middot;&nbsp; '+(facSlide+1)+' / '+TOTAL_SLIDES+'</div>'
+      + '</div>'
+      + '<button class="slide-btn primary" onclick="goSlide('+(facSlide+1)+')" '+(facSlide===TOTAL_SLIDES-1?'disabled':'')+'>Next &#8594;</button>'
       + '</div>';
+  }
+
+  function wrap(inner) {
+    return '<div class="card slide-shell">' + toolbar + makeNav() + inner + '</div>';
+  }
+
+  // ── No responses ──────────────────────────────────────────────────────────
+  if (!n) {
+    sh.innerHTML = wrap('<div class="empty-state"><div style="font-size:32px;margin-bottom:10px">&#128202;</div>'
+      + '<div>No responses yet.</div>'
+      + '<div style="font-size:12px;margin-top:6px">Ask participants to complete and click Submit to group.</div>'
+      + '<div style="margin-top:12px"><button class="btn" onclick="renderFacilitator()">&#8635; Refresh</button></div></div>');
     return;
   }
 
-  // ── Dimension slide (slides 0-8) ──────────────────────────────────────────
-  if (facSlide <= 8) {
-    var di = facSlide;
+  // ══════════════════════════════════════════════════════════════════════════
+  // SLIDE 0: Overview
+  // ══════════════════════════════════════════════════════════════════════════
+  if (facSlide === 0) {
+    var radarSvg = drawRadar(groupBands, 260, '#006C80');
+    // Also draw sponsor radar overlay if data exists
+    var hasSponsor = showSponsor && sponsorView.some(function(v){ return v !== null && v !== undefined && !isNaN(parseFloat(v)); });
+    if (hasSponsor) {
+      var sponsorBands = sponsorView.map(function(v){ return v !== null && !isNaN(parseFloat(v)) ? parseFloat(v) : null; });
+      var sponsorRadar = drawRadar(sponsorBands, 260, '#FF6661');
+      // Overlay: extract the polygon path from the sponsor radar and inject into the group radar
+      // Extract the data polygon from sponsorRadar (has fill-opacity=".15")
+      var sponsorPolyMatch = sponsorRadar.match(/<polygon points="[^"]*" fill="#FF6661" fill-opacity="\.15" stroke="#FF6661" stroke-width="2\.5"\/>/);
+      if (sponsorPolyMatch) {
+        var sponsorPoly = sponsorPolyMatch[0]
+          .replace('fill="#FF6661" fill-opacity=".15"', 'fill="rgba(255,102,97,0.25)"')
+          .replace('stroke-width="2.5"', 'stroke-width="2" stroke-dasharray="4,3"');
+        // Also extract sponsor dots
+        var sponsorDots = sponsorRadar.match(/<circle[^>]*fill="#FF6661"[^>]*\/>/g) || [];
+        radarSvg = radarSvg.replace('</svg>', sponsorPoly + sponsorDots.join('') + '</svg>');
+      }
+    }
+    var dimGrid = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px">'
+      + DIMS.map(function(d,i){
+          var v=groupBands[i], c=v!=null?BAND_COLORS[v]:'#ccc';
+          var sv2 = showSponsor ? sponsorView[i] : null;
+          var svLabel = (sv2 !== null && sv2 !== undefined && !isNaN(parseFloat(sv2)))
+            ? '<div style="font-size:9px;color:#FF6661;font-weight:700;margin-top:2px">&#9670; Sponsor: '+(parseFloat(sv2)+1).toFixed(1)+'</div>'
+            : '';
+          return '<div style="background:var(--bm-offwhite);border:1px solid var(--bm-warmgrey);border-radius:2px;padding:7px 9px;border-left:3px solid '+c+'">'
+            +'<div style="font-size:9px;color:var(--bm-lilacgrey);margin-bottom:2px">'+d.short+'</div>'
+            +'<div style="font-size:11px;font-weight:700;color:'+c+'">'+(v!=null?BAND_NAMES[v]:'—')+'</div>'
+            +svLabel
+            +'</div>';
+        }).join('')
+      + '</div>';
+    sh.innerHTML = wrap(
+      '<div style="display:grid;grid-template-columns:260px 1fr;gap:20px;align-items:start">'
+      + '<div><div class="slide-section-label">Group radar</div>'+radarSvg
+      + '<div style="text-align:center;margin-top:8px">'
+      + '<div style="font-size:11px;color:var(--slate)">Overall</div>'
+      + '<div style="font-size:22px;font-weight:700;color:'+BAND_COLORS[overallBand]+'">'+BAND_NAMES[overallBand]+'</div>'
+      + '</div></div>'
+      + '<div><div class="slide-section-label">Dimension summary</div>'+dimGrid+renderFoundations(groupBands)+'</div>'
+      + '</div>'
+    );
+    return;
+  }
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // SLIDE 1: Capability heat map
+  // ══════════════════════════════════════════════════════════════════════════
+  if (facSlide === 1) {
+    sh.innerHTML = wrap(
+      '<div class="slide-section-label">Group capability heat map</div>'
+      + '<div style="font-size:12px;color:var(--slate);margin-bottom:10px">M = monthly &nbsp;&middot;&nbsp; A = ad-hoc &nbsp;&middot;&nbsp; No = cannot produce &nbsp;&middot;&nbsp; % = weighted maturity score</div>'
+      + renderGroupHeatmap(responses)
+    );
+    return;
+  }
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // SLIDES 2-10: One slide per dimension
+  // ══════════════════════════════════════════════════════════════════════════
+  if (facSlide >= 2 && facSlide <= 10) {
+    var di = facSlide - 2;
     var counts = dists[di];
     var total = counts.reduce(function(a,b){return a+b;},0);
     var avg = dimAvgBand[di];
     var modal = Math.round(avg);
     var ac = BAND_COLORS[modal];
 
-    // Mini bar chart SVG
-    var rawMax = Math.max.apply(null,counts);
-    var yMax = rawMax + 1;
+    // Bar chart
+    var rawMax=Math.max.apply(null,counts)||1, yMax=rawMax+1;
     var chartH=90,leftPad=22,topPad=10,botPad=24,barW=44,gap=14;
-    var innerW = 4*(barW+gap)-gap;
-    var totalW = leftPad+innerW+8;
-    var totalH = topPad+chartH+botPad;
-    var gridLines = '';
-    for (var gi=0;gi<=yMax;gi++) {
-      var gy = topPad+chartH-Math.round((gi/yMax)*chartH);
-      gridLines += '<line x1="'+(leftPad-4)+'" y1="'+gy+'" x2="'+(leftPad+innerW+4)+'" y2="'+gy+'" stroke="#E4DEE0" stroke-width="1"/>';
-      gridLines += '<text x="'+(leftPad-6)+'" y="'+(gy+4)+'" text-anchor="end" font-size="9" fill="#9192AB" font-family="Arial,sans-serif">'+gi+'</text>';
+    var innerW=4*(barW+gap)-gap, totalW=leftPad+innerW+8, totalH=topPad+chartH+botPad;
+    var gridLines='';
+    for(var gi=0;gi<=yMax;gi++){
+      var gy=topPad+chartH-Math.round((gi/yMax)*chartH);
+      gridLines+='<line x1="'+(leftPad-4)+'" y1="'+gy+'" x2="'+(leftPad+innerW+4)+'" y2="'+gy+'" stroke="#E4DEE0" stroke-width="1"/>'
+        +'<text x="'+(leftPad-6)+'" y="'+(gy+4)+'" text-anchor="end" font-size="9" fill="#9192AB" font-family="Arial,sans-serif">'+gi+'</text>';
     }
-    var svgBars = counts.map(function(c,j){
-      var bH = c>0?Math.max(4,Math.round((c/yMax)*chartH)):0;
-      var bx = leftPad+j*(barW+gap);
-      var by = topPad+chartH-bH;
-      return (bH>0?'<rect x="'+bx+'" y="'+by+'" width="'+barW+'" height="'+bH+'" rx="2" fill="'+BAND_COLORS[j]+'"/>':'')
-        +(c>0?'<text x="'+(bx+barW/2)+'" y="'+(by-5)+'" text-anchor="middle" font-size="11" font-weight="700" fill="#0B0C44" font-family="Arial,sans-serif">'+c+'</text>':'')
+    var svgBars=counts.map(function(c,j){
+      var bH=c>0?Math.max(4,Math.round((c/yMax)*chartH)):0;
+      var bx=leftPad+j*(barW+gap), by=topPad+chartH-bH;
+      return(bH>0?'<rect x="'+bx+'" y="'+by+'" width="'+barW+'" height="'+bH+'" rx="2" fill="'+BAND_COLORS[j]+'"/>':'')
+        +(c>0?'<text x="'+(bx+barW/2)+'" y="'+(by-5)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#0B0C44" font-family="Arial,sans-serif">'+c+'</text>':'')
         +'<text x="'+(bx+barW/2)+'" y="'+(topPad+chartH+16)+'" text-anchor="middle" font-size="9" fill="#9192AB" font-family="Arial,sans-serif">'+BAND_SHORT[j]+'</text>';
     }).join('');
-    var chartSvg = '<svg viewBox="0 0 '+totalW+' '+totalH+'" style="width:100%;height:auto;display:block">'
-      + '<line x1="'+(leftPad-4)+'" y1="'+topPad+'" x2="'+(leftPad-4)+'" y2="'+(topPad+chartH)+'" stroke="#E4DEE0" stroke-width="1"/>'
-      + '<line x1="'+(leftPad-4)+'" y1="'+(topPad+chartH)+'" x2="'+(leftPad+innerW+4)+'" y2="'+(topPad+chartH)+'" stroke="#E4DEE0" stroke-width="1"/>'
-      + gridLines + svgBars + '</svg>';
-
-    // Group snapshot panel
-    var pct = function(v){ return total>0?Math.round(v/total*100):0; };
-    var lagEm=counts[0]+counts[1], eff=counts[2], bic=counts[3];
-    var interp = avg>=2.5?'Group is broadly at PE-standard on this dimension.'
-               : avg>=1.5?'Functional but investment needed to reach Effective.'
-               : 'Significant gaps — this dimension needs urgent prioritisation.';
-
-    var snapshotPanel = '<div style="background:var(--ow);border:1px solid var(--pearl);border-radius:2px;padding:13px 14px">'
-      + '<div style="font-size:10px;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Group snapshot</div>'
-      + '<div style="font-size:22px;font-weight:700;color:'+ac+';margin-bottom:4px">'+BAND_NAMES[modal]+'</div>'
-      + '<div style="font-size:11px;color:var(--slate);margin-bottom:10px">'+total+' responses</div>'
-      + [['Lagging–Emerging',lagEm,BAND_COLORS[0]],['Effective',eff,BAND_COLORS[2]],['Best-in-Class',bic,BAND_COLORS[3]]].map(function(b){
-          return '<div style="margin-bottom:6px">'
-            +'<div style="display:flex;justify-content:space-between;margin-bottom:2px">'
-            +'<div style="font-size:11px;color:var(--steel)">'+b[0]+'</div>'
-            +'<div style="font-size:11px;font-weight:700;color:'+b[2]+'">'+b[1]+' ('+pct(b[1])+'%)</div>'
-            +'</div>'
-            +'<div style="height:4px;background:var(--pearl);border-radius:2px;overflow:hidden">'
-            +'<div style="height:100%;width:'+pct(b[1])+'%;background:'+b[2]+';border-radius:2px"></div>'
-            +'</div></div>';
-        }).join('')
-      + '<div style="font-size:11.5px;color:var(--steel);font-style:italic;margin-top:8px;padding-top:8px;border-top:1px solid var(--pearl)">'+interp+'</div>'
-      + '</div>';
-
-    // KPI benchmarks
-    var kpiData = BENCHMARKS_KPI.find(function(b){return b.dim===DIMS[di].label;});
-    var kpiHtml = kpiData ? '<div class="slide-section-label">KPI benchmarks</div>'
-      + '<table class="benchmark-table"><thead><tr><th>KPI</th><th>Effective</th><th>Best-in-Class</th></tr></thead><tbody>'
-      + kpiData.kpis.map(function(k){return '<tr><td class="bm-kpi">'+k.kpi+'</td><td class="bm-eff">'+k.eff+'</td><td class="bm-bic">'+k.bic+'</td></tr>';}).join('')
-      + '</tbody></table>' : '';
-
-    // Failure patterns
-    var fp = FAILURE_PATTERNS.find(function(f){return f.dim===di;});
-    var fpHtml = '';
-    if (fp) {
-      var bkeys = ['lag','emg','eff','bic'];
-      var bnames = ['Lagging','Emerging','Effective','Best-in-Class'];
-      var ftabs = bkeys.map(function(bk,bi){
-        var act = bi===modal?' act-'+['lag','emg','eff','bic'][bi]:'';
-        return '<button class="slide-ftab'+act+'" onclick="slideFPTab('+di+','+bi+')">'+ bnames[bi]+'</button>';
-      }).join('');
-      var fbodies = bkeys.map(function(bk,bi){
-        return '<div class="slide-fbody'+(bi===modal?' open':'')+'" id="sfp-'+di+'-'+bi+'">'+fp.patterns[bk]+'</div>';
-      }).join('');
-      fpHtml = '<div class="slide-section-label">Common failure patterns</div>'
-        + '<div class="slide-failure-tabs">'+ftabs+'</div>'+fbodies;
+    // Sponsor overlay — coral diamond at decimal position
+    var sponsorOverlay = '';
+    var sv = showSponsor ? sponsorView[di] : null;
+    if (sv !== null && sv !== undefined && !isNaN(parseFloat(sv))) {
+      var svf = parseFloat(sv);
+      // x position: map 0-3 range to bar centres
+      // each band occupies barW+gap pixels; centre of band j = leftPad + j*(barW+gap) + barW/2
+      // for decimal value, interpolate between band centres
+      var svFloor = Math.floor(Math.max(0, Math.min(2.99, svf)));
+      var svFrac  = svf - svFloor;
+      var xLeft   = leftPad + svFloor*(barW+gap) + barW/2;
+      var xRight  = leftPad + (svFloor+1)*(barW+gap) + barW/2;
+      var svX     = svf <= 0 ? leftPad + barW/2
+                  : svf >= 3 ? leftPad + 3*(barW+gap) + barW/2
+                  : xLeft + svFrac*(xRight-xLeft);
+      var dSize = 7;
+      var dy    = topPad + chartH + 6;
+      // Vertical dotted guide line
+      sponsorOverlay = '<line x1="'+svX+'" y1="'+topPad+'" x2="'+svX+'" y2="'+(topPad+chartH)+'" stroke="#FF6661" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.7"/>'
+        // Diamond marker on baseline
+        +'<polygon points="'+svX+','+(dy)+' '+(svX+dSize)+','+(dy+dSize)+' '+svX+','+(dy+dSize*2)+' '+(svX-dSize)+','+(dy+dSize)+'" fill="#FF6661" opacity="0.9"/>'
+        // Label
+        +'<text x="'+svX+'" y="'+(dy+dSize*2+11)+'" text-anchor="middle" font-size="8" font-weight="700" fill="#FF6661" font-family="Arial,sans-serif">Sponsor: '+(svf+1).toFixed(1)+'</text>';
     }
 
-    // Top action for this dimension
-    var ta = TOP_ACTIONS.find(function(a){return a.dim===di;});
-    var bkey = avg<1?'lag':avg<2?'emg':avg<2.7?'eff':'bic';
-    var actionHtml = ta ? '<div class="slide-section-label">Priority action</div>'
-      + '<div class="action-slide-item" style="border-left-color:'+ac+'">'
-      + '<div style="font-size:9px;font-weight:700;color:'+ac+';text-transform:uppercase;letter-spacing:0.4px;flex-shrink:0;padding-top:1px;width:70px">'+DIMS[di].short+'</div>'
-      + '<div style="font-size:12.5px;color:var(--steel);line-height:1.5">'+ta[bkey]+'</div>'
-      + '</div>' : '';
+    var chartSvg='<svg viewBox="0 0 '+totalW+' '+(totalH+(sv!==null&&sv!==undefined?22:0))+'" style="width:100%;height:auto;display:block">'
+      +'<line x1="'+(leftPad-4)+'" y1="'+topPad+'" x2="'+(leftPad-4)+'" y2="'+(topPad+chartH)+'" stroke="#E4DEE0" stroke-width="1"/>'
+      +'<line x1="'+(leftPad-4)+'" y1="'+(topPad+chartH)+'" x2="'+(leftPad+innerW+4)+'" y2="'+(topPad+chartH)+'" stroke="#E4DEE0" stroke-width="1"/>'
+      +gridLines+svgBars+sponsorOverlay+'</svg>';
 
-    var enrichHtml = renderDimEnrichment(di, modal, responses);
-    var orgHtml = renderOrgChartForDim(di);
+    // Snapshot
+    var pct=function(v){return total>0?Math.round(v/total*100):0;};
+    var lagEm=counts[0]+counts[1],eff=counts[2],bic=counts[3];
+    var interp=avg>=2.5?'Group broadly at PE-standard.':avg>=1.5?'Functional — targeted investment needed.':'Significant gaps — urgent prioritisation required.';
+    var snapshot='<div style="background:var(--ow);border:1px solid var(--pearl);border-radius:2px;padding:12px 14px">'
+      +'<div style="font-size:22px;font-weight:700;color:'+ac+';margin-bottom:2px">'+BAND_NAMES[modal]+'</div>'
+      +'<div style="font-size:11px;color:var(--slate);margin-bottom:10px">'+total+' responses &nbsp;&middot;&nbsp; modal band</div>'
+      +[['Lagging\u2013Emerging',lagEm,BAND_COLORS[0]],['Effective',eff,BAND_COLORS[2]],['Best-in-Class',bic,BAND_COLORS[3]]].map(function(b){
+          return '<div style="margin-bottom:7px">'
+            +'<div style="display:flex;justify-content:space-between;margin-bottom:2px">'
+            +'<span style="font-size:11px;color:var(--steel)">'+b[0]+'</span>'
+            +'<span style="font-size:11px;font-weight:700;color:'+b[2]+'">'+b[1]+' ('+pct(b[1])+'%)</span>'
+            +'</div><div style="height:5px;background:var(--pearl);border-radius:2px;overflow:hidden">'
+            +'<div style="height:100%;width:'+pct(b[1])+'%;background:'+b[2]+';border-radius:2px"></div></div></div>';
+        }).join('')
+      +'<div style="font-size:11.5px;color:var(--steel);font-style:italic;padding-top:8px;border-top:1px solid var(--pearl)">'+interp+'</div>'
+      +'</div>';
 
-    var slideHtml = '<div class="card slide-shell">' + toolbar + navBar
-      + '<div class="slide-title-bar">'
-      + '<div class="slide-dim-badge">'+(di+1)+'</div>'
-      + '<div><div class="slide-dim-title">'+DIMS[di].label+'</div>'
-      + '<div class="slide-dim-compass">'+DIMS[di].compass+'</div></div>'
-      + '</div>'
-      + '<div class="slide-two-col">'
+    // KPI benchmarks
+    var kpiData=BENCHMARKS_KPI.find(function(b){return b.dim===DIMS[di].label;});
+    var kpiHtml=kpiData?'<div class="slide-section-label">KPI benchmarks</div>'
+      +'<table class="benchmark-table"><thead><tr><th>KPI</th><th>Effective</th><th>Best-in-Class</th></tr></thead><tbody>'
+      +kpiData.kpis.map(function(k){return'<tr><td class="bm-kpi">'+k.kpi+'</td><td class="bm-eff">'+k.eff+'</td><td class="bm-bic">'+k.bic+'</td></tr>';}).join('')
+      +'</tbody></table>':'';
+
+    // Red flags
+    var rf=RED_FLAGS.find(function(r){return r.dim===di;});
+    var rfHtml=rf?'<div class="slide-section-label">Red flags</div>'
+      +'<div style="background:#C0392B08;border:1px solid #C0392B28;border-radius:2px;padding:10px 12px">'
+      +rf.flags.map(function(f){
+          return '<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:5px">'
+            +'<div style="color:#C0392B;font-size:12px;flex-shrink:0">\u26a0</div>'
+            +'<div style="font-size:11.5px;color:var(--steel);line-height:1.4">'+f+'</div></div>';
+        }).join('')
+      +'</div>':'';
+
+    // Diagnostic questions
+    var dq=DIAG_QUESTIONS.find(function(d){return d.dim===di;});
+    var dqHtml=dq?'<div class="slide-section-label">Diagnostic questions</div>'
+      +'<div style="display:flex;flex-direction:column;gap:5px">'
+      +dq.questions.map(function(q,qi){
+          return '<div style="display:flex;gap:9px;align-items:flex-start;padding:7px 10px;background:var(--ow);border:1px solid var(--pearl);border-radius:2px">'
+            +'<div style="width:18px;height:18px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--aqua);flex-shrink:0">'+(qi+1)+'</div>'
+            +'<div style="font-size:11.5px;color:var(--steel);line-height:1.45">'+q+'</div></div>';
+        }).join('')
+      +'</div>':'';
+
+    // Priority action
+    var ta=TOP_ACTIONS.find(function(a){return a.dim===di;});
+    var bkey=avg<1?'lag':avg<2?'emg':avg<2.7?'eff':'bic';
+    var actionHtml=ta?'<div class="slide-section-label">Priority action</div>'
+      +'<div class="action-slide-item" style="border-left-color:'+ac+'">'
+      +'<div style="font-size:9px;font-weight:700;color:'+ac+';text-transform:uppercase;width:70px;flex-shrink:0">'+DIMS[di].short+'</div>'
+      +'<div style="font-size:12.5px;color:var(--steel);line-height:1.5">'+ta[bkey]+'</div>'
+      +'</div>':'';
+
+    // Collapsible extra detail
+    var extraId = 'extra-detail-'+di;
+    var hs=HOLD_STAGE.find(function(h){return h.dim===di;});
+    var hsHtml=hs?'<div class="slide-section-label">Target band by hold stage</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">'
+      +hs.stages.map(function(st){
+          var stageColors={'Lag/Em':'#C0392B','Emerging':'#88395A','Effective':'#006C80','BIC':'#118B80'};
+          var c=stageColors[st.t]||'#465576';
+          return '<div style="border-radius:2px;padding:8px 10px;background:'+c+'10;border:1px solid '+c+'30">'
+            +'<div style="font-size:9px;font-weight:700;color:var(--slate);margin-bottom:3px">'+st.s+'</div>'
+            +'<div style="font-size:11px;font-weight:700;color:'+c+';margin-bottom:2px">'+st.t+'</div>'
+            +'<div style="font-size:10px;color:var(--steel);line-height:1.3">'+st.n+'</div>'
+            +'</div>';
+        }).join('')
+      +'</div>':'';
+
+    var bc=BENCHMARK_CALLOUTS.find(function(b){return b.dim===di;});
+    var bcHtml=bc?'<div class="slide-section-label">Benchmark spotlight</div>'
+      +'<div style="background:var(--navy);border-radius:2px;padding:11px 14px;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start">'
+      +'<div style="text-align:center;padding:7px 12px;background:rgba(255,255,255,0.08);border-radius:2px;min-width:90px">'
+      +'<div style="font-size:9px;color:#9192AB;margin-bottom:3px;text-transform:uppercase">'+bc.stat+'</div>'
+      +'<div style="font-size:10px;font-weight:700;color:var(--teal)">EFF: '+bc.eff+'</div>'
+      +'<div style="font-size:10px;font-weight:700;color:var(--aqua)">BIC: '+bc.bic+'</div>'
+      +'</div>'
+      +'<div style="font-size:11.5px;color:#C8CAD8;line-height:1.5">'+bc.insight+'</div>'
+      +'</div>':'';
+
+    var fpExtra='';
+    var fp=FAILURE_PATTERNS.find(function(f){return f.dim===di;});
+    if(fp){
+      var bkeys=['lag','emg','eff','bic'],bnames=['Lagging','Emerging','Effective','Best-in-Class'];
+      var ftabs=bkeys.map(function(bk,bi){
+        var act=bi===modal?' act-'+bkeys[bi]:'';
+        return'<button class="slide-ftab'+act+'" onclick="slideFPTab('+di+','+bi+')">' +bnames[bi]+'</button>';
+      }).join('');
+      var fbodies=bkeys.map(function(bk,bi){
+        return'<div class="slide-fbody'+(bi===modal?' open':'')+'" id="sfp-'+di+'-'+bi+'">'+fp.patterns[bk]+'</div>';
+      }).join('');
+      fpExtra='<div class="slide-section-label">Failure patterns</div>'
+        +'<div class="slide-failure-tabs">'+ftabs+'</div>'+fbodies;
+    }
+
+    var orgExtra = renderOrgChartForDim(di);
+
+    // Capability snapshot for relevant dims — shown directly in right column
+    var capSnapHtml = '';
+    var caps = capsByDim(di);
+    if (caps.length && responses.length) {
+      var hasCaps2 = responses.some(function(r){ return r.capabilities && Object.keys(r.capabilities).length > 0; });
+      if (hasCaps2) {
+        var pHeaders2 = responses.map(function(r){ return '<th style="text-align:center;font-size:9px;padding:4px 3px;background:var(--bm-blue);color:#fff;white-space:nowrap">P'+r.id+'</th>'; }).join('');
+        var capRows2 = caps.map(function(cap) {
+          var cells2 = responses.map(function(r) {
+            var v = r.capabilities && r.capabilities[cap.id];
+            if (v==='monthly') return '<td class="hm-monthly">M</td>';
+            if (v==='adhoc')   return '<td class="hm-adhoc">A</td>';
+            if (v==='no')      return '<td class="hm-no">No</td>';
+            if (v==='na')      return '<td style="text-align:center;font-size:9px;color:#9192AB;font-weight:600">N/A</td>';
+            return '<td style="text-align:center;color:#ccc;font-size:9px">—</td>';
+          }).join('');
+          var att2 = responses.filter(function(r){ return r.capabilities && capAnswered(r.capabilities[cap.id]); });
+          var score2 = att2.reduce(function(a,r){ var s=capScore(r.capabilities[cap.id]); return a+(s!==null?s:0); },0);
+          var pct2 = att2.length ? Math.round(score2/(att2.length*2)*100) : null;
+          var pc2 = pct2===null?'#ccc':pct2>=70?'#118B80':pct2>=40?'#8B7495':'#C0392B';
+          return '<tr><td class="hm-label">'+cap.label+'</td>'+cells2+'<td style="text-align:center;font-weight:700;font-size:10px;color:'+pc2+'">'+(pct2===null?'—':pct2+'%')+'</td></tr>';
+        }).join('');
+        capSnapHtml = '<div class="slide-section-label">Capability snapshot</div>'
+          + '<div class="heatmap-wrap"><table class="heatmap"><thead><tr>'
+          + '<th style="background:var(--bm-blue);color:#fff;font-size:10px;padding:5px 8px">Capability</th>'
+          + pHeaders2
+          + '<th style="text-align:center;background:var(--teal);color:#fff;font-size:9px;padding:4px 6px;white-space:nowrap">Score</th>'
+          + '</tr></thead><tbody>'+capRows2+'</tbody></table></div>';
+      }
+    }
+
+    var enrichExtra = renderDimEnrichment(di, modal, responses);
+    // Remove the capability section from enrichExtra (it's now in the right col)
+    // enrichExtra already excludes caps since capSnapHtml is built separately above
+
+    var extraContent = hsHtml + bcHtml + fpExtra + orgExtra;
+
+    var collapseHtml = '<div style="margin-top:14px;border-top:1px solid var(--pearl);padding-top:10px">'
+      + '<button onclick="var el=document.getElementById(\''+extraId+'\');var btn=this;if(el.style.display===\'none\'){el.style.display=\'block\';btn.textContent=\'&#9650; Less detail\';}else{el.style.display=\'none\';btn.textContent=\'&#9660; More detail\';}" '
+      + 'style="font-size:11px;font-weight:700;color:var(--teal);background:none;border:none;cursor:pointer;font-family:inherit;padding:0">&#9660; More detail</button>'
+      + '<div id="'+extraId+'" style="display:none;margin-top:10px">'+extraContent+'</div>'
+      + '</div>';
+
+    // Dim header
+    var dimHeader = '<div style="background:var(--navy);border-radius:2px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;gap:10px">'
+      +'<div class="slide-dim-badge" style="width:30px;height:30px;font-size:13px">'+(di+1)+'</div>'
+      +'<div><div style="font-size:16px;font-weight:700;color:#fff">'+DIMS[di].label+'</div>'
+      +'<div style="font-size:10px;color:var(--slate)">'+DIMS[di].compass+' &nbsp;&middot;&nbsp; <span style="color:'+BAND_COLORS[modal]+'">Group modal: '+BAND_NAMES[modal]+'</span></div>'
+      +'</div></div>';
+
+    // Two-column layout:
+    // Left  = chart + snapshot + KPI benchmarks + action
+    // Right = red flags + diagnostic questions + capability snapshot + more detail
+    var leftCol = '<div style="display:flex;flex-direction:column;gap:12px">'
+      + '<div class="slide-two-col" style="gap:12px">'
       + '<div>'+chartSvg+'</div>'
-      + '<div>'+snapshotPanel+'</div>'
+      + '<div>'+snapshot+'</div>'
       + '</div>'
       + kpiHtml
-      + fpHtml
       + actionHtml
-      + enrichHtml
-      + orgHtml
       + '</div>';
 
-    sh.innerHTML = slideHtml;
+    var rightCol = '<div style="display:flex;flex-direction:column;gap:12px;overflow-y:auto;max-height:calc(100vh - 240px);padding-right:4px">'
+      + capSnapHtml
+      + rfHtml
+      + dqHtml
+      + collapseHtml
+      + '</div>';
+
+    sh.innerHTML = wrap(
+      dimHeader
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">'
+      + leftCol
+      + rightCol
+      + '</div>'
+    );
     return;
   }
 
-  // ── Slide 9: Group overview ───────────────────────────────────────────────
-  if (facSlide === 9) {
-    var radarSvg = drawRadar(groupBands, 280, '#006C80');
-    var foundHtml = renderFoundations(groupBands);
-    sh.innerHTML = '<div class="card slide-shell">' + toolbar + navBar
-      + '<div class="slide-section-label">Group radar — all dimensions</div>'
-      + '<div style="max-width:300px;margin:0 auto 1.2rem">'+radarSvg+'</div>'
-      + '<div class="sep"></div>'
-      + '<div class="slide-section-label">Value foundations</div>'
-      + foundHtml
-      + '<div class="sep"></div>'
-      + '<div class="slide-section-label">Group capability heat map</div>'
-      + '<div style="font-size:12px;color:var(--slate);margin-bottom:8px">Ticks show capabilities each participant confirmed. Gaps in red are likely DD risk areas.</div>'
-      + renderGroupHeatmap(responses)
-      + '</div>';
+  // ══════════════════════════════════════════════════════════════════════════
+  // SLIDE 11: Action plan
+  // ══════════════════════════════════════════════════════════════════════════
+  if (facSlide === 11) {
+    sh.innerHTML = wrap(renderConsolidatedNextSteps(responses, dimAvgBand));
     return;
   }
 
-  // ── Slide 10: Action plan ─────────────────────────────────────────────────
-  if (facSlide === 10) {
-    sh.innerHTML = '<div class="card slide-shell">' + toolbar + navBar
-      + renderConsolidatedNextSteps(responses, dimAvgBand)
-      + '</div>';
-    return;
-  }
-
-  // ── Slide 11: Individual profiles + discussion prompts ────────────────────
-  var lagCount = dists[weakIdx][0]+dists[weakIdx][1];
-  var spread = dists[weakIdx].filter(function(c){return c>0;}).length>2;
-  var prompts = [
-    '<strong>'+DIMS[weakIdx].label+'</strong> is the group weakest dimension'+(lagCount>0?' — '+lagCount+' participant'+(lagCount>1?'s':'')+' rated themselves Lagging or Emerging.':'.  ')+' What is the single biggest structural barrier holding this area back?',
-    spread?'There is a wide spread of bands on <strong>'+DIMS[weakIdx].label+'</strong>. What explains the gap between those at Effective/BIC and those at Lagging/Emerging?':'<strong>'+DIMS[strongIdx].label+'</strong> is the group strongest area. Is that strength sustainable through a buy-and-build or pre-exit period?',
-    'Looking at Cash &amp; Working Capital — how many of you are running cash as a genuine strategic lever vs. just reporting it? What would it take to change that?',
-    'On Business Partnering — is finance in the room when commercial decisions get made, or does it find out afterwards? What is the single change that would shift that dynamic?',
-    'On Data Quality — how many of you have a KPI that means something different in finance vs. in the business? That gap is also an exit risk: buyers will find the inconsistency.',
-    'If you had to move one dimension from Lagging/Emerging to Effective in the next 90 days, which would it be — and what is the single first action?',
-    'Looking at the Value Foundations overlay — is the weakness structural (People, Process) or operational (Technology, Data)? How does that change your prioritisation?',
+  // ══════════════════════════════════════════════════════════════════════════
+  // SLIDE 12: Profiles + discussion prompts
+  // ══════════════════════════════════════════════════════════════════════════
+  var lagCount=dists[weakIdx][0]+dists[weakIdx][1];
+  var spread=dists[weakIdx].filter(function(c){return c>0;}).length>2;
+  var prompts=[
+    '<strong>'+DIMS[weakIdx].label+'</strong> is the group weakest dimension'+(lagCount>0?' \u2014 '+lagCount+' participant'+(lagCount>1?'s':'')+' rated Lagging or Emerging.':'. ')+' What is the single biggest structural barrier?',
+    spread?'Wide spread on <strong>'+DIMS[weakIdx].label+'</strong>. What explains the gap between Effective/BIC and Lagging/Emerging?':'<strong>'+DIMS[strongIdx].label+'</strong> is the group strongest area. Is that sustainable through a buy-and-build or pre-exit period?',
+    'Cash &amp; Working Capital \u2014 how many are running cash as a strategic lever vs. just reporting it?',
+    'Business Partnering \u2014 is finance in the room when commercial decisions are made, or does it find out afterwards?',
+    'Data Quality \u2014 does the same KPI mean the same thing in finance and in the business?',
+    'If you had to move one dimension from Lagging/Emerging to Effective in 90 days \u2014 which would it be and what is the first action?',
+    'Is the biggest weakness structural (People, Process) or operational (Technology, Data)?',
   ];
-
-  var profileHtml = responses.map(function(r){
-    var vs=r.scores;
-    var avgB=Math.round(vs.filter(function(v){return v!=null;}).reduce(function(a,b){return a+b;},0)/vs.filter(function(v){return v!=null;}).length||0);
-    return '<div class="profile-card"><div class="profile-id">Participant '+r.id+'</div>'
-      +DIMS.map(function(d,di){var v=vs[di];return '<div class="profile-row"><div class="profile-dim" title="'+d.label+'">'+d.short+'</div><div class="profile-bar-track"><div class="profile-bar-fill" style="width:'+(v==null?0:(v+1)/4*100)+'%;background:'+bandColor(v)+'"></div></div><div class="profile-band" style="color:'+bandColor(v)+'">'+(v==null?'—':BAND_SHORT[v])+'</div></div>';}).join('')
+  var profileHtml=responses.map(function(r){
+    var vs=r.scores, validVs=vs.filter(function(v){return v!=null;});
+    var avgB=validVs.length?Math.round(validVs.reduce(function(a,b){return a+b;},0)/validVs.length):0;
+    return'<div class="profile-card"><div class="profile-id">P'+r.id+'</div>'
+      +DIMS.map(function(d,di){var v=vs[di];return'<div class="profile-row"><div class="profile-dim" title="'+d.label+'">'+d.short+'</div><div class="profile-bar-track"><div class="profile-bar-fill" style="width:'+(v==null?0:(v+1)/4*100)+'%;background:'+bandColor(v)+'"></div></div><div class="profile-band" style="color:'+bandColor(v)+'">'+(v==null?'\u2014':BAND_SHORT[v])+'</div></div>';}).join('')
       +'<div class="profile-avg" style="color:'+BAND_COLORS[avgB]+'">'+BAND_NAMES[avgB]+'</div></div>';
   }).join('');
 
-  sh.innerHTML = '<div class="card slide-shell">' + toolbar + navBar
-    + '<div class="slide-section-label">Individual profiles (anonymised)</div>'
-    + '<div class="profiles-grid" style="margin-bottom:1.2rem">'+profileHtml+'</div>'
-    + '<div class="sep"></div>'
-    + '<div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px">Discussion prompts</div>'
-    + prompts.map(function(p,i){return '<div class="prompt-row"><div class="prompt-num">'+(i+1)+'</div><div class="prompt-text">'+p+'</div></div>';}).join('')
-    + '<div style="margin-top:1.2rem;display:flex;gap:8px;flex-wrap:wrap">'
-    + '<button class="print-btn" onclick="window.print()">&#128438; Print dashboard</button>'
-    + '</div>'
-    + '</div>';
+  sh.innerHTML = wrap(
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'
+    +'<div><div class="slide-section-label">Individual profiles (anonymised)</div>'
+    +'<div class="profiles-grid">'+profileHtml+'</div></div>'
+    +'<div><div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px">Discussion prompts</div>'
+    +prompts.map(function(p,i){return'<div class="prompt-row"><div class="prompt-num">'+(i+1)+'</div><div class="prompt-text">'+p+'</div></div>';}).join('')
+    +'<div style="margin-top:12px"><button class="print-btn" onclick="window.print()">&#128438; Print</button></div>'
+    +'</div></div>'
+  );
 }
 
 
@@ -2545,10 +2838,64 @@ function renderEditor(){
     });
     html+=`</div>`;
   });
+  // Sponsor perception section
+  html += '<div style="margin-top:24px;border-top:2px solid var(--bm-coral);padding-top:16px">'
+    + '<div style="font-size:16px;font-weight:300;color:var(--bm-blue);font-family:var(--font-heading);letter-spacing:-0.01em;margin-bottom:4px">Sponsor perception overlay</div>'
+    + '<div style="height:3px;background:var(--bm-coral);width:36px;margin-bottom:12px"></div>'
+    + '<div style="font-size:12.5px;color:var(--bm-bluegrey);margin-bottom:16px;line-height:1.55">'
+    + 'Enter the Investment Team\u2019s average score for each dimension (0.0\u20133.0). '
+    + 'These appear as a coral diamond marker on each dimension chart in the facilitator view only \u2014 participants never see them. '
+    + 'Enter the average of your team\u2019s responses to one decimal place (1.0 = Lagging, 2.0 = Emerging, 3.0 = Effective, 4.0 = Best-in-Class).</div>'
+    + '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:16px">';
+
+  DIMS.forEach(function(d, di) {
+    var sv = (sponsorView[di] !== null && sponsorView[di] !== undefined) ? parseFloat(sponsorView[di]) : '';
+    html += '<div style="background:var(--bm-white);border:1px solid var(--bm-warmgrey);border-radius:2px;padding:10px 12px">'
+      + '<div style="font-size:10px;font-weight:700;color:var(--bm-blue);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px">' + d.label + '</div>'
+      + '<div style="display:flex;align-items:center;gap:8px">'
+      + '<input type="number" id="sv-' + di + '" min="1" max="4" step="0.1" value="' + (sv !== '' ? (parseFloat(sv)+1).toFixed(1) : '') + '" '
+      + 'style="width:70px;padding:6px 8px;border:1px solid var(--bm-warmgrey);border-radius:2px;font-size:13px;font-family:var(--font-body);color:var(--bm-blue)" '
+      + 'placeholder="1.0\u20134.0" oninput="previewSponsor(' + di + ',this.value)">'
+      + '<div id="sv-preview-' + di + '" style="font-size:11px;color:#FF6661;font-weight:700">'
+      + (sv !== '' ? '\u9670 ' + (parseFloat(sv)+1).toFixed(1) : '') + '</div>'
+      + '</div></div>';
+  });
+
+  html += '</div>'
+    + '<button class="btn btn-primary" onclick="saveSponsorInputs()" style="margin-right:8px">Save sponsor scores</button>'
+    + '<button class="btn" onclick="clearSponsorView()" style="color:#C0392B;border-color:#C0392B">Clear sponsor data</button>'
+    + '</div>';
+
   html+=`<div class="nav-row"><button class="btn" onclick="if(confirm('Reset all to defaults?')){resetNS();renderEditor();}" style="color:#C0392B;border-color:#C0392B;font-size:12px">Reset to defaults</button><button class="btn btn-primary" onclick="setMode('participant')">Done editing</button></div></div>`;
   sh.innerHTML=html;
 }
-function renderEdItem(di,bi,ii,item){const safe=(item.text||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');return`<div class="ed-item" id="ed-item-${di}-${bi}-${ii}"><select class="ed-type" onchange="updateEdItem(${di},${bi},${ii},'type',this.value)"><option value="process"${item.type==='process'?' selected':''}>Process</option><option value="vendor"${item.type==='vendor'?' selected':''}>Vendor</option></select><input class="ed-input" value="${safe}" oninput="updateEdItem(${di},${bi},${ii},'text',this.value)" placeholder="Enter recommendation..."><button class="ed-del" onclick="removeEdItem(${di},${bi},${ii})">×</button></div>`;}
+
+function previewSponsor(di, val) {
+  var el = document.getElementById('sv-preview-' + di);
+  if (!el) return;
+  var v = parseFloat(val);
+  el.textContent = (!isNaN(v) && v >= 1 && v <= 4) ? '◆ ' + v.toFixed(1) : '';
+}
+
+function saveSponsorInputs() {
+  var scores = DIMS.map(function(_, di) {
+    var input = document.getElementById('sv-' + di);
+    if (!input || input.value === '') return null;
+    var v = parseFloat(input.value);
+    return (!isNaN(v) && v >= 1 && v <= 4) ? Math.round((v - 1) * 10) / 10 : null;
+  });
+  saveSponsorView(scores).then(function() {
+    var btn = document.querySelector('[onclick="saveSponsorInputs()"]');
+    if (btn) { btn.textContent = '✓ Saved'; setTimeout(function(){ btn.textContent = 'Save sponsor scores'; }, 2000); }
+  });
+}
+
+function clearSponsorView() {
+  if (!confirm('Clear all sponsor perception scores?')) return;
+  sponsorView = Array(9).fill(null);
+  saveSponsorView(Array(9).fill(null)).then(function(){ renderEditor(); });
+}
+function renderEdItem(di,bi,ii,item){const safe=(item.text||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');return`<div class="ed-item" id="ed-item-${di}-${bi}-${ii}"><select class="ed-type" onchange="updateEdItem(${di},${bi},${ii},'type',this.value)"><option value="process"${item.type==='process'?' selected':''}>Process</option><option value="potential_project"${item.type==='potential_project'?' selected':''}>Potential project</option></select><input class="ed-input" value="${safe}" oninput="updateEdItem(${di},${bi},${ii},'text',this.value)" placeholder="Enter recommendation..."><button class="ed-del" onclick="removeEdItem(${di},${bi},${ii})">×</button></div>`;}
 function getOrCreateEntry(dimLabel,bandIdx){let e=nsData.find(e=>e.dim===dimLabel&&e.band===bandIdx);if(!e){e={dim:dimLabel,band:bandIdx,items:[]};nsData.push(e);}return e;}
 function updateEdItem(di,bi,ii,field,val){const e=getOrCreateEntry(DIMS[di].label,bi);if(e.items[ii]){e.items[ii][field]=val;saveNS();}}
 function removeEdItem(di,bi,ii){const e=getOrCreateEntry(DIMS[di].label,bi);e.items.splice(ii,1);saveNS();renderEditor();}
@@ -2562,8 +2909,13 @@ go(0);
 // ── Facilitator slide state ──────────────────────────────────────────────────
 var facSlide = 0; // current slide index
 
+function toggleSponsor() {
+  showSponsor = !showSponsor;
+  renderFacilitator();
+}
+
 function goSlide(n) {
-  facSlide = Math.max(0, Math.min(11, n));
+  facSlide = Math.max(0, Math.min(12, n));
   renderFacilitator();
 }
 
